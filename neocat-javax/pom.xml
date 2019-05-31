@@ -8,7 +8,7 @@
 	<parent>
 		<groupId>com.neohope.neocat</groupId>
 		<artifactId>neocat-parent</artifactId>
-		<version>0.1.0</version>
+		<version>0.2.0</version>
 		<relativePath>../neocat-parent/pom.xml</relativePath>
 	</parent>
 
