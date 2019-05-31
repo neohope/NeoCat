@@ -435,6 +435,9 @@ public final class Bootstrap {
      * @param args Command line arguments to be processed
      */
     public static void main(String args[]) {
+    	
+    	//neocat: do not use naming
+    	System.setProperty("catalina.useNaming", "false");
 
         synchronized (daemonLock) {
             if (daemon == null) {
