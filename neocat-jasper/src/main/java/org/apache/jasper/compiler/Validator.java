@@ -524,8 +524,10 @@ class Validator {
             this.err = compiler.getErrorDispatcher();
             this.loader = compiler.getCompilationContext().getClassLoader();
             
-            // Something is wrong
-            JspFactory.setDefaultFactory(new JspFactoryImpl());
+            // neocat: something is wrong
+            if(JspFactory.getDefaultFactory()==null) {
+            	JspFactory.setDefaultFactory(new JspFactoryImpl());
+            }
             
             // Get the cached EL expression factory for this context
             ServletContext servletContext = compiler.getCompilationContext().getServletContext();

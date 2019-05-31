@@ -31,6 +31,7 @@ import javax.servlet.SingleThreadModel;
 import javax.servlet.UnavailableException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.jsp.JspFactory;
 import javax.servlet.jsp.tagext.TagInfo;
 
 import org.apache.jasper.JasperException;
@@ -43,6 +44,7 @@ import org.apache.jasper.compiler.SmapInput;
 import org.apache.jasper.compiler.SmapStratum;
 import org.apache.jasper.runtime.ExceptionUtils;
 import org.apache.jasper.runtime.InstanceManagerFactory;
+import org.apache.jasper.runtime.JspFactoryImpl;
 import org.apache.jasper.runtime.JspSourceDependent;
 import org.apache.jasper.util.FastRemovalDequeue;
 import org.apache.juli.logging.Log;
@@ -473,6 +475,12 @@ public class JspServletWrapper {
                    servlet.service(request, response);
                 }
             } else {
+                
+            	// neocat: something is wrong
+                if(JspFactory.getDefaultFactory()==null) {
+                	JspFactory.setDefaultFactory(new JspFactoryImpl());
+                }
+                
                 servlet.service(request, response);
             }
         } catch (UnavailableException ex) {
