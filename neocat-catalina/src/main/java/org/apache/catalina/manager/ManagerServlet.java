@@ -67,9 +67,6 @@ import org.apache.coyote.http11.AbstractHttp11Protocol;
 import org.apache.tomcat.util.Diagnostics;
 import org.apache.tomcat.util.ExceptionUtils;
 import org.apache.tomcat.util.IntrospectionUtils;
-import org.apache.tomcat.util.net.SSLContext;
-import org.apache.tomcat.util.net.SSLHostConfig;
-import org.apache.tomcat.util.net.SSLHostConfigCertificate;
 import org.apache.tomcat.util.res.StringManager;
 import org.apache.tomcat.util.security.Escape;
 
@@ -118,8 +115,6 @@ import org.apache.tomcat.util.security.Escape;
  * <li><b>/expire?path=/xxx&amp;idle=mm</b> - Expire sessions
  *     for the context path <code>/xxx</code> which were idle for at
  *     least mm minutes.</li>
- * <li><b>/sslConnectorCiphers</b> - Display diagnostic info on SSL/TLS ciphers
- *     that are currently configured for each connector.
  * <li><b>/start?path=/xxx</b> - Start the web application attached to
  *     context path <code>/xxx</code> for this virtual host.</li>
  * <li><b>/stop?path=/xxx</b> - Stop the web application attached to
@@ -568,18 +563,7 @@ public class ManagerServlet extends HttpServlet implements ContainerServlet {
                 ProtocolHandler protocol = connector.getProtocolHandler();
                 if (protocol instanceof AbstractHttp11Protocol<?>) {
                     AbstractHttp11Protocol<?> http11Protoocol = (AbstractHttp11Protocol<?>) protocol;
-                    if (tlsHostName == null || tlsHostName.length() == 0) {
-                        found = true;
-                        http11Protoocol.reloadSslHostConfigs();
-                    } else {
-                        SSLHostConfig[] sslHostConfigs = http11Protoocol.findSslHostConfigs();
-                        for (SSLHostConfig sslHostConfig : sslHostConfigs) {
-                            if (sslHostConfig.getHostName().equalsIgnoreCase(tlsHostName)) {
-                                found = true;
-                                http11Protoocol.reloadSslHostConfig(tlsHostName);
-                            }
-                        }
-                    }
+                    found = true;
                 }
             }
         }
@@ -1688,19 +1672,9 @@ public class ManagerServlet extends HttpServlet implements ContainerServlet {
 
         Connector connectors[] = getConnectors();
         for (Connector connector : connectors) {
-            if (Boolean.TRUE.equals(connector.getProperty("SSLEnabled"))) {
-                SSLHostConfig[] sslHostConfigs = connector.getProtocolHandler().findSslHostConfigs();
-                for (SSLHostConfig sslHostConfig : sslHostConfigs) {
-                    String name = connector.toString() + "-" + sslHostConfig.getHostName();
-                    /* Add cipher list, keep order but remove duplicates */
-                    result.put(name, new ArrayList<>(new LinkedHashSet<>(
-                        Arrays.asList(sslHostConfig.getEnabledCiphers()))));
-                }
-            } else {
-                ArrayList<String> cipherList = new ArrayList<>(1);
-                cipherList.add(smClient.getString("managerServlet.notSslConnector"));
-                result.put(connector.toString(), cipherList);
-            }
+        	ArrayList<String> cipherList = new ArrayList<>(1);
+            cipherList.add(smClient.getString("managerServlet.notSslConnector"));
+            result.put(connector.toString(), cipherList);
         }
         return result;
     }
@@ -1711,44 +1685,9 @@ public class ManagerServlet extends HttpServlet implements ContainerServlet {
 
         Connector connectors[] = getConnectors();
         for (Connector connector : connectors) {
-            if (Boolean.TRUE.equals(connector.getProperty("SSLEnabled"))) {
-                SSLHostConfig[] sslHostConfigs = connector.getProtocolHandler().findSslHostConfigs();
-                for (SSLHostConfig sslHostConfig : sslHostConfigs) {
-                    if (sslHostConfig.getOpenSslContext().longValue() == 0) {
-                        // Not set. Must be JSSE based.
-                        Set<SSLHostConfigCertificate> sslHostConfigCerts =
-                                sslHostConfig.getCertificates();
-                        for (SSLHostConfigCertificate sslHostConfigCert : sslHostConfigCerts) {
-                            String name = connector.toString() + "-" + sslHostConfig.getHostName() +
-                                    "-" + sslHostConfigCert.getType();
-                            List<String> certList = new ArrayList<>();
-                            SSLContext sslContext = sslHostConfigCert.getSslContext();
-                            String alias = sslHostConfigCert.getCertificateKeyAlias();
-                            if (alias == null) {
-                                alias = "tomcat";
-                            }
-                            X509Certificate[] certs = sslContext.getCertificateChain(alias);
-                            if (certs == null) {
-                                certList.add(smClient.getString("managerServlet.certsNotAvailable"));
-                            } else {
-                                for (Certificate cert : certs) {
-                                    certList.add(cert.toString());
-                                }
-                            }
-                            result.put(name, certList);
-                        }
-                    } else {
-                        List<String> certList = new ArrayList<>();
-                        certList.add(smClient.getString("managerServlet.certsNotAvailable"));
-                        String name = connector.toString() + "-" + sslHostConfig.getHostName();
-                        result.put(name, certList);
-                    }
-                }
-            } else {
-                List<String> certList = new ArrayList<>(1);
-                certList.add(smClient.getString("managerServlet.notSslConnector"));
-                result.put(connector.toString(), certList);
-            }
+        	List<String> certList = new ArrayList<>(1);
+            certList.add(smClient.getString("managerServlet.notSslConnector"));
+            result.put(connector.toString(), certList);
         }
 
         return result;
@@ -1760,35 +1699,9 @@ public class ManagerServlet extends HttpServlet implements ContainerServlet {
 
         Connector connectors[] = getConnectors();
         for (Connector connector : connectors) {
-            if (Boolean.TRUE.equals(connector.getProperty("SSLEnabled"))) {
-                SSLHostConfig[] sslHostConfigs = connector.getProtocolHandler().findSslHostConfigs();
-                for (SSLHostConfig sslHostConfig : sslHostConfigs) {
-                    String name = connector.toString() + "-" + sslHostConfig.getHostName();
-                    List<String> certList = new ArrayList<>();
-                    if (sslHostConfig.getOpenSslContext().longValue() == 0) {
-                        // Not set. Must be JSSE based.
-                        SSLContext sslContext =
-                                sslHostConfig.getCertificates().iterator().next().getSslContext();
-                        X509Certificate[] certs = sslContext.getAcceptedIssuers();
-                        if (certs == null) {
-                            certList.add(smClient.getString("managerServlet.certsNotAvailable"));
-                        } else if (certs.length == 0) {
-                            certList.add(smClient.getString("managerServlet.trustedCertsNotConfigured"));
-                        } else {
-                            for (Certificate cert : certs) {
-                                certList.add(cert.toString());
-                            }
-                        }
-                    } else {
-                        certList.add(smClient.getString("managerServlet.certsNotAvailable"));
-                    }
-                    result.put(name, certList);
-                }
-            } else {
-                List<String> certList = new ArrayList<>(1);
-                certList.add(smClient.getString("managerServlet.notSslConnector"));
-                result.put(connector.toString(), certList);
-            }
+        	List<String> certList = new ArrayList<>(1);
+            certList.add(smClient.getString("managerServlet.notSslConnector"));
+            result.put(connector.toString(), certList);
         }
 
         return result;

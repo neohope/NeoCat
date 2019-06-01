@@ -120,16 +120,6 @@ public abstract class RealmBase extends LifecycleMBeanBase implements Realm {
      */
     protected boolean validate = true;
 
-    /**
-     * The name of the class to use for retrieving user names from X509
-     * certificates.
-     */
-    protected String x509UsernameRetrieverClassName;
-
-    /**
-     * The object that will extract user names from X509 client certificates.
-     */
-    protected X509UsernameRetriever x509UsernameRetriever;
 
     /**
      * The all role mode.
@@ -245,28 +235,6 @@ public abstract class RealmBase extends LifecycleMBeanBase implements Realm {
 
     }
 
-    /**
-     * Gets the name of the class that will be used to extract user names
-     * from X509 client certificates.
-     * @return The name of the class that will be used to extract user names
-     *         from X509 client certificates.
-     */
-    public String getX509UsernameRetrieverClassName() {
-        return x509UsernameRetrieverClassName;
-    }
-
-    /**
-     * Sets the name of the class that will be used to extract user names
-     * from X509 client certificates. The class must implement
-     * X509UsernameRetriever.
-     *
-     * @param className The name of the class that will be used to extract user names
-     *                  from X509 client certificates.
-     * @see X509UsernameRetriever
-     */
-    public void setX509UsernameRetrieverClassName(String className) {
-        this.x509UsernameRetrieverClassName = className;
-    }
 
     public boolean isStripRealmForGss() {
         return stripRealmForGss;
@@ -427,42 +395,6 @@ public abstract class RealmBase extends LifecycleMBeanBase implements Realm {
         }
 
         return null;
-    }
-
-
-    /**
-     * Return the Principal associated with the specified chain of X509
-     * client certificates.  If there is none, return <code>null</code>.
-     *
-     * @param certs Array of client certificates, with the first one in
-     *  the array being the certificate of the client itself.
-     */
-    @Override
-    public Principal authenticate(X509Certificate certs[]) {
-
-        if ((certs == null) || (certs.length < 1))
-            return null;
-
-        // Check the validity of each certificate in the chain
-        if (log.isDebugEnabled())
-            log.debug("Authenticating client certificate chain");
-        if (validate) {
-            for (int i = 0; i < certs.length; i++) {
-                if (log.isDebugEnabled())
-                    log.debug(" Checking validity for '" +
-                        certs[i].getSubjectDN().getName() + "'");
-                try {
-                    certs[i].checkValidity();
-                } catch (Exception e) {
-                    if (log.isDebugEnabled())
-                        log.debug("  Validity exception", e);
-                    return null;
-                }
-            }
-        }
-
-        // Check the existence of the client Principal in our database
-        return getPrincipal(certs[0]);
     }
 
 
@@ -1083,8 +1015,6 @@ public abstract class RealmBase extends LifecycleMBeanBase implements Realm {
         if (container != null) {
             this.containerLog = container.getLogger();
         }
-
-        x509UsernameRetriever = createUsernameRetriever(x509UsernameRetrieverClassName);
     }
 
     /**
@@ -1190,21 +1120,6 @@ public abstract class RealmBase extends LifecycleMBeanBase implements Realm {
      * @return the password associated with the given principal's user name.
      */
     protected abstract String getPassword(String username);
-
-
-    /**
-     * Get the principal associated with the specified certificate.
-     * @param usercert The user certificate
-     * @return the Principal associated with the given certificate.
-     */
-    protected Principal getPrincipal(X509Certificate usercert) {
-        String username = x509UsernameRetriever.getUsername(usercert);
-
-        if(log.isDebugEnabled())
-            log.debug(sm.getString("realmBase.gotX509Username", username));
-
-        return getPrincipal(username);
-    }
 
 
     /**
@@ -1493,22 +1408,6 @@ public abstract class RealmBase extends LifecycleMBeanBase implements Realm {
         @Override
         public String toString() {
             return name;
-        }
-    }
-
-    private static X509UsernameRetriever createUsernameRetriever(String className)
-        throws LifecycleException {
-        if(null == className || "".equals(className.trim()))
-            return new X509SubjectDnRetriever();
-
-        try {
-            @SuppressWarnings("unchecked")
-            Class<? extends X509UsernameRetriever> clazz = (Class<? extends X509UsernameRetriever>)Class.forName(className);
-            return clazz.getConstructor().newInstance();
-        } catch (ReflectiveOperationException e) {
-            throw new LifecycleException(sm.getString("realmBase.createUsernameRetriever.newInstance", className), e);
-        } catch (ClassCastException e) {
-            throw new LifecycleException(sm.getString("realmBase.createUsernameRetriever.ClassCastException", className), e);
         }
     }
 

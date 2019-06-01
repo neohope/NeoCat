@@ -156,25 +156,6 @@ public class LockOutRealm extends CombinedRealm {
 
 
     /**
-     * Return the Principal associated with the specified chain of X509
-     * client certificates.  If there is none, return <code>null</code>.
-     *
-     * @param certs Array of client certificates, with the first one in
-     *  the array being the certificate of the client itself.
-     */
-    @Override
-    public Principal authenticate(X509Certificate[] certs) {
-        String username = null;
-        if (certs != null && certs.length >0) {
-            username = certs[0].getSubjectDN().getName();
-        }
-
-        Principal authenticatedUser = super.authenticate(certs);
-        return filterLockedAccounts(username, authenticatedUser);
-    }
-
-
-    /**
      * {@inheritDoc}
      */
     @Override

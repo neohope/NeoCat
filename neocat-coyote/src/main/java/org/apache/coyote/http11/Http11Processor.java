@@ -54,7 +54,6 @@ import org.apache.tomcat.util.http.MimeHeaders;
 import org.apache.tomcat.util.http.parser.HttpParser;
 import org.apache.tomcat.util.log.UserDataHelper;
 import org.apache.tomcat.util.net.AbstractEndpoint.Handler.SocketState;
-import org.apache.tomcat.util.net.SSLSupport;
 import org.apache.tomcat.util.net.SendfileDataBase;
 import org.apache.tomcat.util.net.SendfileKeepAliveState;
 import org.apache.tomcat.util.net.SendfileState;
@@ -563,9 +562,6 @@ public class Http11Processor extends AbstractProcessor {
         http09 = false;
         contentDelimitation = false;
 
-        if (protocol.isSSLEnabled()) {
-            request.scheme().setString("https");
-        }
         MessageBytes protocolMB = request.protocol();
         if (protocolMB.equals(Constants.HTTP_11)) {
             protocolMB.setString(Constants.HTTP_11);
@@ -1178,38 +1174,6 @@ public class Http11Processor extends AbstractProcessor {
 
 
     @Override
-    protected final void sslReHandShake() throws IOException {
-        if (sslSupport != null) {
-            // Consume and buffer the request body, so that it does not
-            // interfere with the client's handshake messages
-            InputFilter[] inputFilters = inputBuffer.getFilters();
-            ((BufferedInputFilter) inputFilters[Constants.BUFFERED_FILTER]).setLimit(
-                    protocol.getMaxSavePostSize());
-            inputBuffer.addActiveFilter(inputFilters[Constants.BUFFERED_FILTER]);
-
-            /*
-             * Outside the try/catch because we want I/O errors during
-             * renegotiation to be thrown for the caller to handle since they
-             * will be fatal to the connection.
-             */
-            socketWrapper.doClientAuth(sslSupport);
-            try {
-                /*
-                 * Errors processing the cert chain do not affect the client
-                 * connection so they can be logged and swallowed here.
-                 */
-                Object sslO = sslSupport.getPeerCertificateChain();
-                if (sslO != null) {
-                    request.setAttribute(SSLSupport.CERTIFICATE_KEY, sslO);
-                }
-            } catch (IOException ioe) {
-                log.warn(sm.getString("http11processor.socket.ssl"), ioe);
-            }
-        }
-    }
-
-
-    @Override
     protected final boolean isRequestBodyFullyRead() {
         return inputBuffer.isFinished();
     }
@@ -1327,7 +1291,6 @@ public class Http11Processor extends AbstractProcessor {
         upgradeToken = null;
         socketWrapper = null;
         sendfileData = null;
-        sslSupport = null;
     }
 
 

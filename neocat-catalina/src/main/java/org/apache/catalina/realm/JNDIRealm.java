@@ -451,19 +451,6 @@ public class JNDIRealm extends RealmBase {
     protected String spnegoDelegationQop = "auth-conf";
 
     /**
-     * Whether to use TLS for connections
-     */
-    private boolean useStartTls = false;
-
-    private StartTlsResponse tls = null;
-
-    /**
-     * The list of enabled cipher suites used for establishing tls connections.
-     * <code>null</code> means to use the default cipher suites.
-     */
-    private String[] cipherSuitesArray = null;
-
-    /**
      * Verifier for hostnames in a StartTLS secured connection. <code>null</code>
      * means to use the default verifier.
      */
@@ -1111,44 +1098,6 @@ public class JNDIRealm extends RealmBase {
 
     public void setSpnegoDelegationQop(String spnegoDelegationQop) {
         this.spnegoDelegationQop = spnegoDelegationQop;
-    }
-
-
-    /**
-     * @return flag whether to use StartTLS for connections to the ldap server
-     */
-    public boolean getUseStartTls() {
-        return useStartTls;
-    }
-
-    /**
-     * Flag whether StartTLS should be used when connecting to the ldap server
-     *
-     * @param useStartTls
-     *            {@code true} when StartTLS should be used. Default is
-     *            {@code false}.
-     */
-    public void setUseStartTls(boolean useStartTls) {
-        this.useStartTls = useStartTls;
-    }
-
-    /**
-     * @return list of the allowed cipher suites when connections are made using
-     *         StartTLS
-     */
-    private String[] getCipherSuitesArray() {
-        if (cipherSuites == null || cipherSuitesArray != null) {
-            return cipherSuitesArray;
-        }
-        if (this.cipherSuites.trim().isEmpty()) {
-            containerLog.warn(sm.getString("jndiRealm.emptyCipherSuites"));
-            this.cipherSuitesArray = null;
-        } else {
-            this.cipherSuitesArray = cipherSuites.trim().split("\\s*,\\s*");
-            containerLog.debug(sm.getString("jndiRealm.cipherSuites",
-                    Arrays.toString(this.cipherSuitesArray)));
-        }
-        return this.cipherSuitesArray;
     }
 
     /**
@@ -2188,14 +2137,6 @@ public class JNDIRealm extends RealmBase {
         if (context == null)
             return;
 
-        // Close tls startResponse if used
-        if (tls != null) {
-            try {
-                tls.close();
-            } catch (IOException e) {
-                containerLog.error(sm.getString("jndiRealm.tlsClose"), e);
-            }
-        }
         // Close our opened connection
         try {
             if (containerLog.isDebugEnabled())
@@ -2417,112 +2358,7 @@ public class JNDIRealm extends RealmBase {
     }
 
     private DirContext createDirContext(Hashtable<String, String> env) throws NamingException {
-        if (useStartTls) {
-            return createTlsDirContext(env);
-        } else {
-            return new InitialDirContext(env);
-        }
-    }
-
-    private SSLSocketFactory getSSLSocketFactory() {
-        if (sslSocketFactory != null) {
-            return sslSocketFactory;
-        }
-        final SSLSocketFactory result;
-        if (this.sslSocketFactoryClassName != null
-                && !sslSocketFactoryClassName.trim().equals("")) {
-            result = createSSLSocketFactoryFromClassName(this.sslSocketFactoryClassName);
-        } else {
-            result = createSSLContextFactoryFromProtocol(sslProtocol);
-        }
-        this.sslSocketFactory = result;
-        return result;
-    }
-
-    private SSLSocketFactory createSSLSocketFactoryFromClassName(String className) {
-        try {
-            Object o = constructInstance(className);
-            if (o instanceof SSLSocketFactory) {
-                return sslSocketFactory;
-            } else {
-                throw new IllegalArgumentException(sm.getString(
-                        "jndiRealm.invalidSslSocketFactory",
-                        className));
-            }
-        } catch (ReflectiveOperationException | SecurityException e) {
-            throw new IllegalArgumentException(sm.getString(
-                    "jndiRealm.invalidSslSocketFactory",
-                    className), e);
-        }
-    }
-
-    private SSLSocketFactory createSSLContextFactoryFromProtocol(String protocol) {
-        try {
-            SSLContext sslContext;
-            if (protocol != null) {
-                sslContext = SSLContext.getInstance(protocol);
-                sslContext.init(null, null, null);
-            } else {
-                sslContext = SSLContext.getDefault();
-            }
-            return sslContext.getSocketFactory();
-        } catch (NoSuchAlgorithmException | KeyManagementException e) {
-            List<String> allowedProtocols = Arrays
-                    .asList(getSupportedSslProtocols());
-            throw new IllegalArgumentException(
-                    sm.getString("jndiRealm.invalidSslProtocol", protocol,
-                            allowedProtocols), e);
-        }
-    }
-
-    /**
-     * Create a tls enabled LdapContext and set the StartTlsResponse tls
-     * instance variable.
-     *
-     * @param env
-     *            Environment to use for context creation
-     * @return configured {@link LdapContext}
-     * @throws NamingException
-     *             when something goes wrong while negotiating the connection
-     */
-    private DirContext createTlsDirContext(
-            Hashtable<String, String> env) throws NamingException {
-        Map<String, Object> savedEnv = new HashMap<>();
-        for (String key : Arrays.asList(Context.SECURITY_AUTHENTICATION,
-                Context.SECURITY_CREDENTIALS, Context.SECURITY_PRINCIPAL,
-                Context.SECURITY_PROTOCOL)) {
-            Object entry = env.remove(key);
-            if (entry != null) {
-                savedEnv.put(key, entry);
-            }
-        }
-        LdapContext result = null;
-        try {
-            result = new InitialLdapContext(env, null);
-            tls = (StartTlsResponse) result
-                    .extendedOperation(new StartTlsRequest());
-            if (getHostnameVerifier() != null) {
-                tls.setHostnameVerifier(getHostnameVerifier());
-            }
-            if (getCipherSuitesArray() != null) {
-                tls.setEnabledCipherSuites(getCipherSuitesArray());
-            }
-            try {
-                SSLSession negotiate = tls.negotiate(getSSLSocketFactory());
-                containerLog.debug(sm.getString("jndiRealm.negotiatedTls",
-                        negotiate.getProtocol()));
-            } catch (IOException e) {
-                throw new NamingException(e.getMessage());
-            }
-        } finally {
-            if (result != null) {
-                for (Map.Entry<String, Object> savedEntry : savedEnv.entrySet()) {
-                    result.addToEnvironment(savedEntry.getKey(),
-                            savedEntry.getValue());
-                }
-            }
-        }
-        return result;
+    	return new InitialDirContext(env);
     }
 
     /**

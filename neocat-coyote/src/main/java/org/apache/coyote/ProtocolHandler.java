@@ -19,8 +19,6 @@ package org.apache.coyote;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ScheduledExecutorService;
 
-import org.apache.tomcat.util.net.SSLHostConfig;
-
 /**
  * Abstract the protocol implementation, including threading, etc.
  *
@@ -150,22 +148,7 @@ public interface ProtocolHandler {
      *         otherwise <code>false</code>
      */
     public boolean isSendfileSupported();
-
-
-    /**
-     * Add a new SSL configuration for a virtual host.
-     * @param sslHostConfig the configuration
-     */
-    public void addSslHostConfig(SSLHostConfig sslHostConfig);
-
-
-    /**
-     * Find all configured SSL virtual host configurations which will be used
-     * by SNI.
-     * @return the configurations
-     */
-    public SSLHostConfig[] findSslHostConfigs();
-
+    
 
     /**
      * Add a new protocol for used by HTTP/1.1 upgrade or ALPN.

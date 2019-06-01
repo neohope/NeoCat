@@ -49,7 +49,6 @@ import org.apache.tomcat.util.buf.CharChunk;
 import org.apache.tomcat.util.buf.MessageBytes;
 import org.apache.tomcat.util.http.ServerCookie;
 import org.apache.tomcat.util.http.ServerCookies;
-import org.apache.tomcat.util.net.SSLSupport;
 import org.apache.tomcat.util.net.SocketEvent;
 import org.apache.tomcat.util.res.StringManager;
 
@@ -728,7 +727,6 @@ public class CoyoteAdapter implements Adapter {
 
             // Look for session ID in cookies and SSL session
             parseSessionCookiesId(request);
-            parseSessionSslId(request);
 
             sessionID = request.getRequestedSessionId();
 
@@ -971,26 +969,6 @@ public class CoyoteAdapter implements Adapter {
             }
 
             semicolon = uriBC.indexOf(';', semicolon);
-        }
-    }
-
-
-    /**
-     * Look for SSL session ID if required. Only look for SSL Session ID if it
-     * is the only tracking method enabled.
-     *
-     * @param request The Servlet request object
-     */
-    protected void parseSessionSslId(Request request) {
-        if (request.getRequestedSessionId() == null &&
-                SSL_ONLY.equals(request.getServletContext()
-                        .getEffectiveSessionTrackingModes()) &&
-                        request.connector.secure) {
-            String sessionId = (String) request.getAttribute(SSLSupport.SESSION_ID_KEY);
-            if (sessionId != null) {
-                request.setRequestedSessionId(sessionId);
-                request.setRequestedSessionSSL(true);
-            }
         }
     }
 

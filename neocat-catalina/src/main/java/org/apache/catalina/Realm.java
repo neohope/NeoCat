@@ -117,16 +117,6 @@ public interface Realm extends Contained {
 
 
     /**
-     * Try to authenticate using {@link X509Certificate}s
-     *
-     * @param certs Array of client certificates, with the first one in
-     *  the array being the certificate of the client itself.
-     * @return the associated principal, or <code>null</code> if there is none
-     */
-    public Principal authenticate(X509Certificate certs[]);
-
-
-    /**
      * Execute a periodic task, such as reloading, etc. This method will be
      * invoked inside the classloading context of this container. Unexpected
      * throwables will be caught and logged.

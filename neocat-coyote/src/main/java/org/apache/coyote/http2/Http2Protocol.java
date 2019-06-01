@@ -89,12 +89,8 @@ public class Http2Protocol implements UpgradeProtocol {
     private final CompressionConfig compressionConfig = new CompressionConfig();
 
     @Override
-    public String getHttpUpgradeName(boolean isSSLEnabled) {
-        if (isSSLEnabled) {
-            return null;
-        } else {
-            return HTTP_UPGRADE_NAME;
-        }
+    public String getHttpUpgradeName() {
+    	return HTTP_UPGRADE_NAME;
     }
 
     @Override

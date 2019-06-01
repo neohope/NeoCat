@@ -20,7 +20,6 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 
 import org.apache.tomcat.util.net.AbstractEndpoint.Handler.SocketState;
-import org.apache.tomcat.util.net.SSLSupport;
 import org.apache.tomcat.util.net.SocketEvent;
 import org.apache.tomcat.util.net.SocketWrapperBase;
 
@@ -85,13 +84,6 @@ public interface Processor {
      * same connection or a different connection.
      */
     void recycle();
-
-    /**
-     * Set the SSL information for this HTTP connection.
-     *
-     * @param sslSupport The SSL support object to use for this connection
-     */
-    void setSslSupport(SSLSupport sslSupport);
 
     /**
      * Allows retrieving additional input during the upgrade process.

@@ -49,12 +49,11 @@ import org.apache.tomcat.util.ExceptionUtils;
 import org.apache.tomcat.util.collections.SynchronizedStack;
 import org.apache.tomcat.util.net.AbstractEndpoint.Handler.SocketState;
 import org.apache.tomcat.util.net.Acceptor.AcceptorState;
-import org.apache.tomcat.util.net.jsse.JSSESupport;
 
 /**
  * NIO2 endpoint.
  */
-public class Nio2Endpoint extends AbstractJsseEndpoint<Nio2Channel,AsynchronousSocketChannel> {
+public class Nio2Endpoint extends AbstractEndpoint<Nio2Channel,AsynchronousSocketChannel> {
 
 
     // -------------------------------------------------------------- Constants
@@ -146,9 +145,6 @@ public class Nio2Endpoint extends AbstractJsseEndpoint<Nio2Channel,AsynchronousS
         if (acceptorThreadCount != 1) {
             acceptorThreadCount = 1;
         }
-
-        // Initialize SSL if needed
-        initialiseSsl();
     }
 
 
@@ -254,8 +250,7 @@ public class Nio2Endpoint extends AbstractJsseEndpoint<Nio2Channel,AsynchronousS
             stop();
         }
         doCloseServerSocket();
-        destroySsl();
-        super.unbind();
+
         // Unlike other connectors, the thread pool is tied to the server socket
         shutdownExecutor();
         if (getHandler() != null) {
@@ -324,18 +319,14 @@ public class Nio2Endpoint extends AbstractJsseEndpoint<Nio2Channel,AsynchronousS
                         socketProperties.getAppReadBufSize(),
                         socketProperties.getAppWriteBufSize(),
                         socketProperties.getDirectBuffer());
-                if (isSSLEnabled()) {
-                    channel = new SecureNio2Channel(bufhandler, this);
-                } else {
-                    channel = new Nio2Channel(bufhandler);
-                }
+                channel = new Nio2Channel(bufhandler);
             }
             Nio2SocketWrapper socketWrapper = new Nio2SocketWrapper(channel, this);
             channel.reset(socket, socketWrapper);
             socketWrapper.setReadTimeout(getConnectionTimeout());
             socketWrapper.setWriteTimeout(getConnectionTimeout());
             socketWrapper.setKeepAliveLeft(Nio2Endpoint.this.getMaxKeepAliveRequests());
-            socketWrapper.setSecure(isSSLEnabled());
+            socketWrapper.setSecure(false);
             // Continue processing on another thread
             return processSocket(socketWrapper, SocketEvent.OPEN_READ, false);
         } catch (Throwable t) {
@@ -359,8 +350,7 @@ public class Nio2Endpoint extends AbstractJsseEndpoint<Nio2Channel,AsynchronousS
         }
     }
 
-
-    @Override
+    
     protected NetworkChannel getServerSocket() {
         return serverSock;
     }
@@ -1689,35 +1679,6 @@ public class Nio2Endpoint extends AbstractJsseEndpoint<Nio2Channel,AsynchronousS
         }
 
 
-        /**
-         * {@inheritDoc}
-         * @param clientCertProvider Ignored for this implementation
-         */
-        @Override
-        public SSLSupport getSslSupport(String clientCertProvider) {
-            if (getSocket() instanceof SecureNio2Channel) {
-                SecureNio2Channel ch = (SecureNio2Channel) getSocket();
-                SSLSession session = ch.getSslEngine().getSession();
-                return ((Nio2Endpoint) getEndpoint()).getSslImplementation().getSSLSupport(session);
-            } else {
-                return null;
-            }
-        }
-
-
-        @Override
-        public void doClientAuth(SSLSupport sslSupport) throws IOException {
-            SecureNio2Channel sslChannel = (SecureNio2Channel) getSocket();
-            SSLEngine engine = sslChannel.getSslEngine();
-            if (!engine.getNeedClientAuth()) {
-                // Need to re-negotiate SSL connection
-                engine.setNeedClientAuth(true);
-                sslChannel.rehandshake();
-                ((JSSESupport) sslSupport).setSession(engine.getSession());
-            }
-        }
-
-
         @Override
         public void setAppReadBufHandler(ApplicationBufferHandler handler) {
             getSocket().setAppReadBufHandler(handler);
@@ -1855,4 +1816,23 @@ public class Nio2Endpoint extends AbstractJsseEndpoint<Nio2Channel,AsynchronousS
             super(filename, pos, length);
         }
     }
+
+	@Override
+	protected InetSocketAddress getLocalAddress() throws IOException {
+        NetworkChannel serverSock = getServerSocket();
+        if (serverSock == null) {
+            return null;
+        }
+        SocketAddress sa = serverSock.getLocalAddress();
+        if (sa instanceof InetSocketAddress) {
+            return (InetSocketAddress) sa;
+        }
+        return null;
+	}
+
+
+	@Override
+	public boolean isAlpnSupported() {
+		return false;
+	}
 }

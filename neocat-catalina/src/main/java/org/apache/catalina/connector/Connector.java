@@ -28,19 +28,15 @@ import javax.management.ObjectName;
 import org.apache.catalina.LifecycleException;
 import org.apache.catalina.LifecycleState;
 import org.apache.catalina.Service;
-import org.apache.catalina.core.AprLifecycleListener;
 import org.apache.catalina.util.LifecycleMBeanBase;
 import org.apache.coyote.AbstractProtocol;
 import org.apache.coyote.Adapter;
 import org.apache.coyote.ProtocolHandler;
 import org.apache.coyote.UpgradeProtocol;
-import org.apache.coyote.http11.AbstractHttp11JsseProtocol;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.apache.tomcat.util.IntrospectionUtils;
 import org.apache.tomcat.util.buf.B2CConverter;
-import org.apache.tomcat.util.net.SSLHostConfig;
-import org.apache.tomcat.util.net.openssl.OpenSSLImplementation;
 import org.apache.tomcat.util.res.StringManager;
 
 
@@ -76,15 +72,9 @@ public class Connector extends LifecycleMBeanBase  {
 
 
     public Connector(String protocol) {
-        boolean aprConnector = AprLifecycleListener.isAprAvailable() &&
-                AprLifecycleListener.getUseAprConnector();
 
         if ("HTTP/1.1".equals(protocol) || protocol == null) {
-            if (aprConnector) {
-                protocolHandlerClassName = "org.apache.coyote.http11.Http11AprProtocol";
-            } else {
-                protocolHandlerClassName = "org.apache.coyote.http11.Http11NioProtocol";
-            }
+        	protocolHandlerClassName = "org.apache.coyote.http11.Http11NioProtocol";
         } else {
             protocolHandlerClassName = protocol;
         }
@@ -574,10 +564,7 @@ public class Connector extends LifecycleMBeanBase  {
      * @return the Coyote protocol handler in use.
      */
     public String getProtocol() {
-        if (("org.apache.coyote.http11.Http11NioProtocol".equals(getProtocolHandlerClassName()) &&
-                    (!AprLifecycleListener.isAprAvailable() || !AprLifecycleListener.getUseAprConnector())) ||
-                "org.apache.coyote.http11.Http11AprProtocol".equals(getProtocolHandlerClassName()) &&
-                    AprLifecycleListener.getUseAprConnector()) {
+        if ("org.apache.coyote.http11.Http11NioProtocol".equals(getProtocolHandlerClassName())){
             return "HTTP/1.1";
         } 
         
@@ -818,17 +805,6 @@ public class Connector extends LifecycleMBeanBase  {
         return INTERNAL_EXECUTOR_NAME;
     }
 
-
-    public void addSslHostConfig(SSLHostConfig sslHostConfig) {
-        protocolHandler.addSslHostConfig(sslHostConfig);
-    }
-
-
-    public SSLHostConfig[] findSslHostConfigs() {
-        return protocolHandler.findSslHostConfigs();
-    }
-
-
     public void addUpgradeProtocol(UpgradeProtocol upgradeProtocol) {
         protocolHandler.addUpgradeProtocol(upgradeProtocol);
     }
@@ -939,25 +915,6 @@ public class Connector extends LifecycleMBeanBase  {
         // Make sure parseBodyMethodsSet has a default
         if (null == parseBodyMethodsSet) {
             setParseBodyMethods(getParseBodyMethods());
-        }
-
-        if (protocolHandler.isAprRequired() && !AprLifecycleListener.isInstanceCreated()) {
-            throw new LifecycleException(sm.getString("coyoteConnector.protocolHandlerNoAprListener",
-                    getProtocolHandlerClassName()));
-        }
-        if (protocolHandler.isAprRequired() && !AprLifecycleListener.isAprAvailable()) {
-            throw new LifecycleException(sm.getString("coyoteConnector.protocolHandlerNoAprLibrary",
-                    getProtocolHandlerClassName()));
-        }
-        if (AprLifecycleListener.isAprAvailable() && AprLifecycleListener.getUseOpenSSL() &&
-                protocolHandler instanceof AbstractHttp11JsseProtocol) {
-            AbstractHttp11JsseProtocol<?> jsseProtocolHandler =
-                    (AbstractHttp11JsseProtocol<?>) protocolHandler;
-            if (jsseProtocolHandler.isSSLEnabled() &&
-                    jsseProtocolHandler.getSslImplementationName() == null) {
-                // OpenSSL is compatible with the JSSE configuration, so use it if APR is available
-                jsseProtocolHandler.setSslImplementationName(OpenSSLImplementation.class.getName());
-            }
         }
 
         try {

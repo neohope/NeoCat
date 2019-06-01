@@ -25,7 +25,6 @@ import org.apache.coyote.UpgradeToken;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.apache.tomcat.util.net.AbstractEndpoint.Handler.SocketState;
-import org.apache.tomcat.util.net.SSLSupport;
 import org.apache.tomcat.util.net.SocketEvent;
 import org.apache.tomcat.util.net.SocketWrapperBase;
 
@@ -52,12 +51,6 @@ public class UpgradeProcessorInternal extends UpgradeProcessorBase {
     @Override
     public SocketState dispatch(SocketEvent status) {
         return internalHttpUpgradeHandler.upgradeDispatch(status);
-    }
-
-
-    @Override
-    public final void setSslSupport(SSLSupport sslSupport) {
-        internalHttpUpgradeHandler.setSslSupport(sslSupport);
     }
 
 

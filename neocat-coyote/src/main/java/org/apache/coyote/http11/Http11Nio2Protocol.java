@@ -25,7 +25,7 @@ import org.apache.tomcat.util.net.Nio2Endpoint;
 /**
  * HTTP/1.1 protocol implementation using NIO2.
  */
-public class Http11Nio2Protocol extends AbstractHttp11JsseProtocol<Nio2Channel> {
+public class Http11Nio2Protocol extends AbstractHttp11Protocol<Nio2Channel> {
 
     private static final Logger log = LoggerFactory.getLogger(Http11Nio2Protocol.class);
 
@@ -33,7 +33,6 @@ public class Http11Nio2Protocol extends AbstractHttp11JsseProtocol<Nio2Channel> 
     public Http11Nio2Protocol() {
         super(new Nio2Endpoint());
     }
-
 
     @Override
     protected Logger getLog() { return log; }
@@ -43,10 +42,6 @@ public class Http11Nio2Protocol extends AbstractHttp11JsseProtocol<Nio2Channel> 
 
     @Override
     protected String getNamePrefix() {
-        if (isSSLEnabled()) {
-            return "https-" + getSslImplementationShortName()+ "-nio2";
-        } else {
-            return "http-nio2";
-        }
+    	return "http-nio2";
     }
 }

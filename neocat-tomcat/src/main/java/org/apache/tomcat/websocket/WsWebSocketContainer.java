@@ -49,11 +49,7 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLEngine;
 import javax.net.ssl.SSLException;
-import javax.net.ssl.SSLParameters;
-import javax.net.ssl.TrustManagerFactory;
 import javax.websocket.ClientEndpoint;
 import javax.websocket.ClientEndpointConfig;
 import javax.websocket.CloseReason;
@@ -202,7 +198,6 @@ public class WsWebSocketContainer implements WebSocketContainer, BackgroundProce
             Set<URI> redirectSet)
             throws DeploymentException {
 
-        boolean secure = false;
         ByteBuffer proxyConnect = null;
         URI proxyPath;
 
@@ -210,9 +205,6 @@ public class WsWebSocketContainer implements WebSocketContainer, BackgroundProce
         String scheme = path.getScheme();
         if ("ws".equalsIgnoreCase(scheme)) {
             proxyPath = URI.create("http" + path.toString().substring(2));
-        } else if ("wss".equalsIgnoreCase(scheme)) {
-            proxyPath = URI.create("https" + path.toString().substring(3));
-            secure = true;
         } else {
             throw new DeploymentException(sm.getString(
                     "wsWebSocketContainer.pathWrongScheme", scheme));
@@ -327,13 +319,7 @@ public class WsWebSocketContainer implements WebSocketContainer, BackgroundProce
             }
         }
 
-        if (secure) {
-            // Regardless of whether a non-secure wrapper was created for a
-            // proxy CONNECT, need to use TLS from this point on so wrap the
-            // original AsynchronousSocketChannel
-            SSLEngine sslEngine = createSSLEngine(userProperties, host, port);
-            channel = new AsyncChannelWrapperSecure(socketChannel, sslEngine);
-        } else if (channel == null) {
+        if (channel == null) {
             // Only need to wrap as this point if it wasn't wrapped to process a
             // proxy CONNECT
             channel = new AsyncChannelWrapperNonSecure(socketChannel);
@@ -497,7 +483,7 @@ public class WsWebSocketContainer implements WebSocketContainer, BackgroundProce
 
         WsSession wsSession = new WsSession(endpoint, wsRemoteEndpointClient,
                 this, null, null, null, null, null, extensionsAgreed,
-                subProtocol, Collections.<String,String>emptyMap(), secure,
+                subProtocol, Collections.<String,String>emptyMap(), false,
                 clientEndpointConfiguration);
 
         WsFrameClient wsFrameClient = new WsFrameClient(response, channel,
@@ -885,70 +871,6 @@ public class WsWebSocketContainer implements WebSocketContainer, BackgroundProce
         }
 
         return sb.toString();
-    }
-
-
-    private SSLEngine createSSLEngine(Map<String,Object> userProperties, String host, int port)
-            throws DeploymentException {
-
-        try {
-            // See if a custom SSLContext has been provided
-            SSLContext sslContext =
-                    (SSLContext) userProperties.get(Constants.SSL_CONTEXT_PROPERTY);
-
-            if (sslContext == null) {
-                // Create the SSL Context
-                sslContext = SSLContext.getInstance("TLS");
-
-                // Trust store
-                String sslTrustStoreValue =
-                        (String) userProperties.get(Constants.SSL_TRUSTSTORE_PROPERTY);
-                if (sslTrustStoreValue != null) {
-                    String sslTrustStorePwdValue = (String) userProperties.get(
-                            Constants.SSL_TRUSTSTORE_PWD_PROPERTY);
-                    if (sslTrustStorePwdValue == null) {
-                        sslTrustStorePwdValue = Constants.SSL_TRUSTSTORE_PWD_DEFAULT;
-                    }
-
-                    File keyStoreFile = new File(sslTrustStoreValue);
-                    KeyStore ks = KeyStore.getInstance("JKS");
-                    try (InputStream is = new FileInputStream(keyStoreFile)) {
-                        KeyStoreUtil.load(ks, is, sslTrustStorePwdValue.toCharArray());
-                    }
-
-                    TrustManagerFactory tmf = TrustManagerFactory.getInstance(
-                            TrustManagerFactory.getDefaultAlgorithm());
-                    tmf.init(ks);
-
-                    sslContext.init(null, tmf.getTrustManagers(), null);
-                } else {
-                    sslContext.init(null, null, null);
-                }
-            }
-
-            SSLEngine engine = sslContext.createSSLEngine(host, port);
-
-            String sslProtocolsValue =
-                    (String) userProperties.get(Constants.SSL_PROTOCOLS_PROPERTY);
-            if (sslProtocolsValue != null) {
-                engine.setEnabledProtocols(sslProtocolsValue.split(","));
-            }
-
-            engine.setUseClientMode(true);
-
-            // Enable host verification
-            // Start with current settings (returns a copy)
-            SSLParameters sslParams = engine.getSSLParameters();
-            // Use HTTPS since WebSocket starts over HTTP(S)
-            sslParams.setEndpointIdentificationAlgorithm("HTTPS");
-            // Write the parameters back
-            engine.setSSLParameters(sslParams);
-
-            return engine;
-        } catch (Exception e) {
-            throw new DeploymentException(sm.getString(
-                    "wsWebSocketContainer.sslEngineFail"), e);
-        }
     }
 
 

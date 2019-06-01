@@ -300,44 +300,6 @@ public class CombinedRealm extends RealmBase {
         }
     }
 
-    /**
-     * Return the Principal associated with the specified chain of X509
-     * client certificates.  If there is none, return <code>null</code>.
-     *
-     * @param certs Array of client certificates, with the first one in
-     *  the array being the certificate of the client itself.
-     */
-    @Override
-    public Principal authenticate(X509Certificate[] certs) {
-        Principal authenticatedUser = null;
-        String username = null;
-        if (certs != null && certs.length >0) {
-            username = certs[0].getSubjectDN().getName();
-        }
-
-        for (Realm realm : realms) {
-            if (log.isDebugEnabled()) {
-                log.debug(sm.getString("combinedRealm.authStart", username,
-                        realm.getClass().getName()));
-            }
-
-            authenticatedUser = realm.authenticate(certs);
-
-            if (authenticatedUser == null) {
-                if (log.isDebugEnabled()) {
-                    log.debug(sm.getString("combinedRealm.authFail", username,
-                            realm.getClass().getName()));
-                }
-            } else {
-                if (log.isDebugEnabled()) {
-                    log.debug(sm.getString("combinedRealm.authSuccess",
-                            username, realm.getClass().getName()));
-                }
-                break;
-            }
-        }
-        return authenticatedUser;
-    }
 
     /**
      * {@inheritDoc}

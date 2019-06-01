@@ -155,10 +155,6 @@ public class SignCode extends Task {
             }
         }
 
-        // Set up the TLS client
-        System.setProperty("javax.net.ssl.keyStore", keyStore);
-        System.setProperty("javax.net.ssl.keyStorePassword", keyStorePassword);
-
         try {
             String signingSetID = makeSigningRequest(filesToSign);
             downloadSignedFiles(filesToSign, signingSetID);

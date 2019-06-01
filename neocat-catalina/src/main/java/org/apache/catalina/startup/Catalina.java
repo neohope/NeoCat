@@ -333,35 +333,6 @@ public class Catalina {
 
         digester.addRule("Server/Service/Connector", new AddPortOffsetRule());
 
-        digester.addObjectCreate("Server/Service/Connector/SSLHostConfig",
-                                 "org.apache.tomcat.util.net.SSLHostConfig");
-        digester.addSetProperties("Server/Service/Connector/SSLHostConfig");
-        digester.addSetNext("Server/Service/Connector/SSLHostConfig",
-                "addSslHostConfig",
-                "org.apache.tomcat.util.net.SSLHostConfig");
-
-        digester.addRule("Server/Service/Connector/SSLHostConfig/Certificate",
-                         new CertificateCreateRule());
-        digester.addRule("Server/Service/Connector/SSLHostConfig/Certificate",
-                         new SetAllPropertiesRule(new String[]{"type"}));
-        digester.addSetNext("Server/Service/Connector/SSLHostConfig/Certificate",
-                            "addCertificate",
-                            "org.apache.tomcat.util.net.SSLHostConfigCertificate");
-
-        digester.addObjectCreate("Server/Service/Connector/SSLHostConfig/OpenSSLConf",
-                                 "org.apache.tomcat.util.net.openssl.OpenSSLConf");
-        digester.addSetProperties("Server/Service/Connector/SSLHostConfig/OpenSSLConf");
-        digester.addSetNext("Server/Service/Connector/SSLHostConfig/OpenSSLConf",
-                            "setOpenSslConf",
-                            "org.apache.tomcat.util.net.openssl.OpenSSLConf");
-
-        digester.addObjectCreate("Server/Service/Connector/SSLHostConfig/OpenSSLConf/OpenSSLConfCmd",
-                                 "org.apache.tomcat.util.net.openssl.OpenSSLConfCmd");
-        digester.addSetProperties("Server/Service/Connector/SSLHostConfig/OpenSSLConf/OpenSSLConfCmd");
-        digester.addSetNext("Server/Service/Connector/SSLHostConfig/OpenSSLConf/OpenSSLConfCmd",
-                            "addCmd",
-                            "org.apache.tomcat.util.net.openssl.OpenSSLConfCmd");
-
         digester.addObjectCreate("Server/Service/Connector/Listener",
                                  null, // MUST be specified in the element
                                  "className");
@@ -383,13 +354,11 @@ public class Catalina {
         digester.addRuleSet(new EngineRuleSet("Server/Service/"));
         digester.addRuleSet(new HostRuleSet("Server/Service/Engine/"));
         digester.addRuleSet(new ContextRuleSet("Server/Service/Engine/Host/"));
-        addClusterRuleSet(digester, "Server/Service/Engine/Host/Cluster/");
         digester.addRuleSet(new NamingRuleSet("Server/Service/Engine/Host/Context/"));
 
         // When the 'engine' is found, set the parentClassLoader.
         digester.addRule("Server/Service/Engine",
                          new SetParentClassLoaderRule(parentClassLoader));
-        addClusterRuleSet(digester, "Server/Service/Engine/Cluster/");
 
         long t2=System.currentTimeMillis();
         if (log.isDebugEnabled()) {

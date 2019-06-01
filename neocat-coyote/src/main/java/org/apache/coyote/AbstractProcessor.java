@@ -32,7 +32,6 @@ import org.apache.tomcat.util.http.parser.Host;
 import org.apache.tomcat.util.log.UserDataHelper;
 import org.apache.tomcat.util.net.AbstractEndpoint.Handler.SocketState;
 import org.apache.tomcat.util.net.DispatchType;
-import org.apache.tomcat.util.net.SSLSupport;
 import org.apache.tomcat.util.net.SocketEvent;
 import org.apache.tomcat.util.net.SocketWrapperBase;
 import org.apache.tomcat.util.res.StringManager;
@@ -64,7 +63,6 @@ public abstract class AbstractProcessor extends AbstractProcessorLight implement
     protected final Request request;
     protected final Response response;
     protected volatile SocketWrapperBase<?> socketWrapper = null;
-    protected volatile SSLSupport sslSupport;
 
 
     /**
@@ -159,12 +157,6 @@ public abstract class AbstractProcessor extends AbstractProcessorLight implement
      */
     protected final SocketWrapperBase<?> getSocketWrapper() {
         return socketWrapper;
-    }
-
-
-    @Override
-    public final void setSslSupport(SSLSupport sslSupport) {
-        this.sslSupport = sslSupport;
     }
 
 
@@ -472,19 +464,6 @@ public abstract class AbstractProcessor extends AbstractProcessorLight implement
             break;
         }
 
-        // SSL request attribute support
-        case REQ_SSL_ATTRIBUTE: {
-            populateSslRequestAttributes();
-            break;
-        }
-        case REQ_SSL_CERTIFICATE: {
-            try {
-                sslReHandShake();
-            } catch (IOException ioe) {
-                setErrorState(ErrorState.CLOSE_CONNECTION_NOW, ioe);
-            }
-            break;
-        }
 
         // Servlet 3.0 asynchronous support
         case ASYNC_START: {
@@ -724,57 +703,6 @@ public abstract class AbstractProcessor extends AbstractProcessorLight implement
             request.remoteHost().setString(socketWrapper.getRemoteHost());
         }
     }
-
-
-    /**
-     * Populate the TLS related request attributes from the {@link SSLSupport}
-     * instance associated with this processor. Protocols that populate TLS
-     * attributes from a different source (e.g. AJP) should override this
-     * method.
-     */
-    protected void populateSslRequestAttributes() {
-        try {
-            if (sslSupport != null) {
-                Object sslO = sslSupport.getCipherSuite();
-                if (sslO != null) {
-                    request.setAttribute(SSLSupport.CIPHER_SUITE_KEY, sslO);
-                }
-                sslO = sslSupport.getPeerCertificateChain();
-                if (sslO != null) {
-                    request.setAttribute(SSLSupport.CERTIFICATE_KEY, sslO);
-                }
-                sslO = sslSupport.getKeySize();
-                if (sslO != null) {
-                    request.setAttribute (SSLSupport.KEY_SIZE_KEY, sslO);
-                }
-                sslO = sslSupport.getSessionId();
-                if (sslO != null) {
-                    request.setAttribute(SSLSupport.SESSION_ID_KEY, sslO);
-                }
-                sslO = sslSupport.getProtocol();
-                if (sslO != null) {
-                    request.setAttribute(SSLSupport.PROTOCOL_VERSION_KEY, sslO);
-                }
-                request.setAttribute(SSLSupport.SESSION_MGR, sslSupport);
-            }
-        } catch (Exception e) {
-            getLog().warn(sm.getString("abstractProcessor.socket.ssl"), e);
-        }
-    }
-
-
-    /**
-     * Processors that can perform a TLS re-handshake (e.g. HTTP/1.1) should
-     * override this method and implement the re-handshake.
-     *
-     * @throws IOException If authentication is required then there will be I/O
-     *                     with the client and this exception will be thrown if
-     *                     that goes wrong
-     */
-    protected void sslReHandShake() throws IOException {
-        // NO-OP
-    }
-
 
     protected void processSocketEvent(SocketEvent event, boolean dispatch) {
         SocketWrapperBase<?> socketWrapper = getSocketWrapper();

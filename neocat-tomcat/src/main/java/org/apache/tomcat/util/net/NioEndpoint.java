@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.net.SocketAddress;
 import java.net.SocketTimeoutException;
 import java.nio.ByteBuffer;
 import java.nio.channels.CancelledKeyException;
@@ -55,7 +56,6 @@ import org.apache.tomcat.util.IntrospectionUtils;
 import org.apache.tomcat.util.collections.SynchronizedQueue;
 import org.apache.tomcat.util.collections.SynchronizedStack;
 import org.apache.tomcat.util.net.AbstractEndpoint.Handler.SocketState;
-import org.apache.tomcat.util.net.jsse.JSSESupport;
 
 /**
  * NIO tailored thread pool, providing the following services:
@@ -71,7 +71,7 @@ import org.apache.tomcat.util.net.jsse.JSSESupport;
  * @author Mladen Turk
  * @author Remy Maucherat
  */
-public class NioEndpoint extends AbstractJsseEndpoint<NioChannel,SocketChannel> {
+public class NioEndpoint extends AbstractEndpoint<NioChannel,SocketChannel> {
 
 
     // -------------------------------------------------------------- Constants
@@ -108,27 +108,6 @@ public class NioEndpoint extends AbstractJsseEndpoint<NioChannel,SocketChannel> 
 
 
     // ------------------------------------------------------------- Properties
-
-
-    /**
-     * Generic properties, introspected
-     */
-    @Override
-    public boolean setProperty(String name, String value) {
-        final String selectorPoolName = "selectorPool.";
-        try {
-            if (name.startsWith(selectorPoolName)) {
-                return IntrospectionUtils.setProperty(selectorPool, name.substring(selectorPoolName.length()), value);
-            } else {
-                return super.setProperty(name, value);
-            }
-        } catch (Exception e) {
-            log.error(sm.getString("endpoint.setAttributeError", name, value), e);
-            return false;
-        }
-    }
-
-
     /**
      * Use System.inheritableChannel to obtain channel from stdin/stdout.
      */
@@ -229,9 +208,6 @@ public class NioEndpoint extends AbstractJsseEndpoint<NioChannel,SocketChannel> 
             pollerThreadCount = 1;
         }
         setStopLatch(new CountDownLatch(pollerThreadCount));
-
-        // Initialize SSL if needed
-        initialiseSsl();
 
         selectorPool.open(getName());
     }
@@ -357,8 +333,7 @@ public class NioEndpoint extends AbstractJsseEndpoint<NioChannel,SocketChannel> 
             stop();
         }
         doCloseServerSocket();
-        destroySsl();
-        super.unbind();
+
         if (getHandler() != null ) {
             getHandler().recycle();
         }
@@ -422,11 +397,7 @@ public class NioEndpoint extends AbstractJsseEndpoint<NioChannel,SocketChannel> 
                         socketProperties.getAppReadBufSize(),
                         socketProperties.getAppWriteBufSize(),
                         socketProperties.getDirectBuffer());
-                if (isSSLEnabled()) {
-                    channel = new SecureNioChannel(socket, bufhandler, selectorPool, this);
-                } else {
-                    channel = new NioChannel(socket, bufhandler);
-                }
+                channel = new NioChannel(socket, bufhandler);
             } else {
                 channel.setIOChannel(socket);
                 channel.reset();
@@ -466,7 +437,6 @@ public class NioEndpoint extends AbstractJsseEndpoint<NioChannel,SocketChannel> 
     }
 
 
-    @Override
     protected NetworkChannel getServerSocket() {
         return serverSock;
     }
@@ -696,7 +666,7 @@ public class NioEndpoint extends AbstractJsseEndpoint<NioChannel,SocketChannel> 
             socketWrapper.setReadTimeout(getConnectionTimeout());
             socketWrapper.setWriteTimeout(getConnectionTimeout());
             socketWrapper.setKeepAliveLeft(NioEndpoint.this.getMaxKeepAliveRequests());
-            socketWrapper.setSecure(isSSLEnabled());
+            socketWrapper.setSecure(false);
             socketWrapper.interestOps(SelectionKey.OP_READ);//this is what OP_REGISTER turns into.
             PollerEvent r = null;
             if (eventCache != null) {
@@ -875,7 +845,7 @@ public class NioEndpoint extends AbstractJsseEndpoint<NioChannel,SocketChannel> 
                 // Configure output channel
                 sc = socketWrapper.getSocket();
                 // TLS/SSL channel is slightly different
-                WritableByteChannel wc = ((sc instanceof SecureNioChannel) ? sc : sc.getIOChannel());
+                WritableByteChannel wc = sc.getIOChannel();
 
                 // We still have data in the buffer
                 if (sc.getOutboundRemaining() > 0) {
@@ -1425,35 +1395,6 @@ public class NioEndpoint extends AbstractJsseEndpoint<NioChannel,SocketChannel> 
         }
 
 
-        /**
-         * {@inheritDoc}
-         * @param clientCertProvider Ignored for this implementation
-         */
-        @Override
-        public SSLSupport getSslSupport(String clientCertProvider) {
-            if (getSocket() instanceof SecureNioChannel) {
-                SecureNioChannel ch = (SecureNioChannel) getSocket();
-                SSLSession session = ch.getSslEngine().getSession();
-                return ((NioEndpoint) getEndpoint()).getSslImplementation().getSSLSupport(session);
-            } else {
-                return null;
-            }
-        }
-
-
-        @Override
-        public void doClientAuth(SSLSupport sslSupport) throws IOException {
-            SecureNioChannel sslChannel = (SecureNioChannel) getSocket();
-            SSLEngine engine = sslChannel.getSslEngine();
-            if (!engine.getNeedClientAuth()) {
-                // Need to re-negotiate SSL connection
-                engine.setNeedClientAuth(true);
-                sslChannel.rehandshake(getEndpoint().getConnectionTimeout());
-                ((JSSESupport) sslSupport).setSession(engine.getSession());
-            }
-        }
-
-
         @Override
         public void setAppReadBufHandler(ApplicationBufferHandler handler) {
             getSocket().setAppReadBufHandler(handler);
@@ -1867,4 +1808,22 @@ public class NioEndpoint extends AbstractJsseEndpoint<NioChannel,SocketChannel> 
 
         protected volatile FileChannel fchannel;
     }
+
+	@Override
+	protected InetSocketAddress getLocalAddress() throws IOException {
+        NetworkChannel serverSock = getServerSocket();
+        if (serverSock == null) {
+            return null;
+        }
+        SocketAddress sa = serverSock.getLocalAddress();
+        if (sa instanceof InetSocketAddress) {
+            return (InetSocketAddress) sa;
+        }
+        return null;
+	}
+
+	@Override
+	public boolean isAlpnSupported() {
+		return false;
+	}
 }

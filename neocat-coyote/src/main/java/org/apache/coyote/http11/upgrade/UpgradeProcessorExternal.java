@@ -25,7 +25,6 @@ import org.apache.coyote.UpgradeToken;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.apache.tomcat.util.net.AbstractEndpoint.Handler.SocketState;
-import org.apache.tomcat.util.net.SSLSupport;
 import org.apache.tomcat.util.net.SocketEvent;
 import org.apache.tomcat.util.net.SocketWrapperBase;
 import org.apache.tomcat.util.res.StringManager;
@@ -125,12 +124,6 @@ public class UpgradeProcessorExternal extends UpgradeProcessorBase {
 
 
     // ----------------------------------------- Unimplemented Processor methods
-
-    @Override
-    public final void setSslSupport(SSLSupport sslSupport) {
-        // NO-OP
-    }
-
 
     @Override
     public void pause() {

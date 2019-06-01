@@ -33,7 +33,6 @@ import org.apache.coyote.http11.upgrade.InternalHttpUpgradeHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.apache.tomcat.util.net.AbstractEndpoint.Handler.SocketState;
-import org.apache.tomcat.util.net.SSLSupport;
 import org.apache.tomcat.util.net.SocketEvent;
 import org.apache.tomcat.util.net.SocketWrapperBase;
 import org.apache.tomcat.util.res.StringManager;
@@ -230,12 +229,5 @@ public class WsHttpUpgradeHandler implements InternalHttpUpgradeHandler {
          * whatever messed up state the client put the connection into.
          */
         wsSession.onClose(cr);
-    }
-
-
-    @Override
-    public void setSslSupport(SSLSupport sslSupport) {
-        // NO-OP. WebSocket has no requirement to access the TLS information
-        // associated with the underlying connection.
     }
 }

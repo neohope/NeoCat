@@ -51,7 +51,6 @@ import org.slf4j.LoggerFactory;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.apache.tomcat.util.http.MimeHeaders;
 import org.apache.tomcat.util.net.AbstractEndpoint.Handler.SocketState;
-import org.apache.tomcat.util.net.SSLSupport;
 import org.apache.tomcat.util.net.SendfileState;
 import org.apache.tomcat.util.net.SocketEvent;
 import org.apache.tomcat.util.net.SocketWrapperBase;
@@ -101,7 +100,6 @@ class Http2UpgradeHandler extends AbstractStream implements InternalHttpUpgradeH
     protected final Http2Protocol protocol;
     private final Adapter adapter;
     protected volatile SocketWrapperBase<?> socketWrapper;
-    private volatile SSLSupport sslSupport;
 
     private volatile Http2Parser parser;
 
@@ -263,7 +261,6 @@ class Http2UpgradeHandler extends AbstractStream implements InternalHttpUpgradeH
 
     private void processStreamOnContainerThread(Stream stream) {
         StreamProcessor streamProcessor = new StreamProcessor(this, stream, adapter, socketWrapper);
-        streamProcessor.setSslSupport(sslSupport);
         processStreamOnContainerThread(streamProcessor, SocketEvent.OPEN_READ);
     }
 
@@ -286,12 +283,6 @@ class Http2UpgradeHandler extends AbstractStream implements InternalHttpUpgradeH
     @Override
     public void setSocketWrapper(SocketWrapperBase<?> wrapper) {
         this.socketWrapper = wrapper;
-    }
-
-
-    @Override
-    public void setSslSupport(SSLSupport sslSupport) {
-        this.sslSupport = sslSupport;
     }
 
 

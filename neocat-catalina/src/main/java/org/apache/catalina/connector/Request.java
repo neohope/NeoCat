@@ -83,7 +83,6 @@ import org.apache.catalina.core.AsyncContextImpl;
 import org.apache.catalina.mapper.MappingData;
 import org.apache.catalina.util.ParameterMap;
 import org.apache.catalina.util.RequestUtil;
-import org.apache.catalina.util.TLSUtil;
 import org.apache.catalina.util.URLEncoder;
 import org.apache.coyote.ActionCode;
 import org.apache.coyote.UpgradeToken;
@@ -104,7 +103,6 @@ import org.apache.tomcat.util.http.Parameters.FailReason;
 import org.apache.tomcat.util.http.ServerCookie;
 import org.apache.tomcat.util.http.ServerCookies;
 import org.apache.tomcat.util.http.parser.AcceptLanguage;
-import org.apache.tomcat.util.net.SSLSupport;
 import org.apache.tomcat.util.res.StringManager;
 import org.ietf.jgss.GSSCredential;
 import org.ietf.jgss.GSSException;
@@ -869,35 +867,7 @@ public class Request implements HttpServletRequest {
         if (attr != null) {
             return attr;
         }
-        if (TLSUtil.isTLSRequestAttribute(name)) {
-            coyoteRequest.action(ActionCode.REQ_SSL_ATTRIBUTE, coyoteRequest);
-            attr = coyoteRequest.getAttribute(Globals.CERTIFICATES_ATTR);
-            if (attr != null) {
-                attributes.put(Globals.CERTIFICATES_ATTR, attr);
-            }
-            attr = coyoteRequest.getAttribute(Globals.CIPHER_SUITE_ATTR);
-            if (attr != null) {
-                attributes.put(Globals.CIPHER_SUITE_ATTR, attr);
-            }
-            attr = coyoteRequest.getAttribute(Globals.KEY_SIZE_ATTR);
-            if (attr != null) {
-                attributes.put(Globals.KEY_SIZE_ATTR, attr);
-            }
-            attr = coyoteRequest.getAttribute(Globals.SSL_SESSION_ID_ATTR);
-            if (attr != null) {
-                attributes.put(Globals.SSL_SESSION_ID_ATTR, attr);
-            }
-            attr = coyoteRequest.getAttribute(Globals.SSL_SESSION_MGR_ATTR);
-            if (attr != null) {
-                attributes.put(Globals.SSL_SESSION_MGR_ATTR, attr);
-            }
-            attr = coyoteRequest.getAttribute(SSLSupport.PROTOCOL_VERSION_KEY);
-            if (attr != null) {
-                attributes.put(SSLSupport.PROTOCOL_VERSION_KEY, attr);
-            }
-            attr = attributes.get(name);
-            sslAttributesParsed = true;
-        }
+
         return attr;
     }
 
