@@ -17,4 +17,5 @@ version
 =========
 1. update tomcat9 project to mvn project, keeping all the code, remove some unnecessary file.
 2. remove naming, cluster, ant, ejb, ssi, cgi, mbeans.
+3. remove modeler, fileupload, dbcp, ajp. Replace juli with slf4j.
 
