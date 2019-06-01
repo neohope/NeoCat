@@ -24,8 +24,8 @@ import java.util.zip.GZIPOutputStream;
 import org.apache.coyote.Response;
 import org.apache.coyote.http11.HttpOutputBuffer;
 import org.apache.coyote.http11.OutputFilter;
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Gzip output filter.
@@ -34,7 +34,7 @@ import org.apache.juli.logging.LogFactory;
  */
 public class GzipOutputFilter implements OutputFilter {
 
-    protected static final Log log = LogFactory.getLog(GzipOutputFilter.class);
+    protected static final Logger log = LoggerFactory.getLogger(GzipOutputFilter.class);
 
 
     // ----------------------------------------------------- Instance Variables

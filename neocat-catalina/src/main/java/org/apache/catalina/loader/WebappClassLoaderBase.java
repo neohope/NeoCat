@@ -68,9 +68,8 @@ import org.apache.catalina.LifecycleState;
 import org.apache.catalina.WebResource;
 import org.apache.catalina.WebResourceRoot;
 import org.apache.catalina.webresources.TomcatURLStreamHandlerFactory;
-import org.apache.juli.WebappProperties;
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.tomcat.InstrumentableClassLoader;
 import org.apache.tomcat.util.ExceptionUtils;
 import org.apache.tomcat.util.IntrospectionUtils;
@@ -124,7 +123,7 @@ import org.apache.tomcat.util.security.PermissionCheck;
 public abstract class WebappClassLoaderBase extends URLClassLoader
         implements Lifecycle, InstrumentableClassLoader, WebappProperties, PermissionCheck {
 
-    private static final Log log = LogFactory.getLog(WebappClassLoaderBase.class);
+    private static final Logger log = LoggerFactory.getLogger(WebappClassLoaderBase.class);
 
     /**
      * List of ThreadGroup names to ignore when scanning for web application
@@ -1635,11 +1634,6 @@ public abstract class WebappClassLoaderBase extends URLClassLoader
 
          // Clear the IntrospectionUtils cache.
         IntrospectionUtils.clear();
-
-        // Clear the classloader reference in common-logging
-        if (clearReferencesLogFactoryRelease) {
-            org.apache.juli.logging.LogFactory.release(this);
-        }
 
         // Clear the classloader reference in the VM's bean introspector
         java.beans.Introspector.flushCaches();

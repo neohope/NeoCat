@@ -25,8 +25,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.catalina.LifecycleException;
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.tomcat.util.digester.Digester;
 import org.apache.tomcat.util.file.ConfigFileLoader;
 
@@ -45,7 +45,7 @@ import org.apache.tomcat.util.file.ConfigFileLoader;
  */
 public class MemoryRealm  extends RealmBase {
 
-    private static final Log log = LogFactory.getLog(MemoryRealm.class);
+    private static final Logger log = LoggerFactory.getLogger(MemoryRealm.class);
 
     // ----------------------------------------------------- Instance Variables
 

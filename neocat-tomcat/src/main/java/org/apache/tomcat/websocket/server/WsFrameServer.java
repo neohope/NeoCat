@@ -20,8 +20,8 @@ import java.io.EOFException;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.tomcat.util.net.AbstractEndpoint.Handler.SocketState;
 import org.apache.tomcat.util.net.SocketEvent;
 import org.apache.tomcat.util.net.SocketWrapperBase;
@@ -33,7 +33,7 @@ import org.apache.tomcat.websocket.WsSession;
 
 public class WsFrameServer extends WsFrameBase {
 
-    private final Log log = LogFactory.getLog(WsFrameServer.class); // must not be static
+    private final Logger log = LoggerFactory.getLogger(WsFrameServer.class); // must not be static
     private static final StringManager sm = StringManager.getManager(WsFrameServer.class);
 
     private final SocketWrapperBase<?> socketWrapper;
@@ -106,7 +106,7 @@ public class WsFrameServer extends WsFrameBase {
 
 
     @Override
-    protected Log getLog() {
+    protected Logger getLog() {
         return log;
     }
 

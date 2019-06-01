@@ -32,8 +32,8 @@ import org.apache.catalina.Host;
 import org.apache.catalina.LifecycleException;
 import org.apache.catalina.connector.Request;
 import org.apache.catalina.connector.Response;
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Web crawlers can trigger the creation of many thousands of sessions as they
@@ -44,7 +44,7 @@ import org.apache.juli.logging.LogFactory;
  */
 public class CrawlerSessionManagerValve extends ValveBase implements HttpSessionBindingListener {
 
-    private static final Log log = LogFactory.getLog(CrawlerSessionManagerValve.class);
+    private static final Logger log = LoggerFactory.getLogger(CrawlerSessionManagerValve.class);
 
     private final Map<String, String> clientIdSessionId = new ConcurrentHashMap<>();
     private final Map<String, String> sessionIdClientId = new ConcurrentHashMap<>();

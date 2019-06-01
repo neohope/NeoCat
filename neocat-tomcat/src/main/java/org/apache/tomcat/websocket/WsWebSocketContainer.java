@@ -65,8 +65,8 @@ import javax.websocket.HandshakeResponse;
 import javax.websocket.Session;
 import javax.websocket.WebSocketContainer;
 
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.tomcat.InstanceManager;
 import org.apache.tomcat.util.buf.StringUtils;
 import org.apache.tomcat.util.codec.binary.Base64;
@@ -89,7 +89,7 @@ public class WsWebSocketContainer implements WebSocketContainer, BackgroundProce
     private volatile AsynchronousChannelGroup asynchronousChannelGroup = null;
     private final Object asynchronousChannelGroupLock = new Object();
 
-    private final Log log = LogFactory.getLog(WsWebSocketContainer.class); // must not be static
+    private final Logger log = LoggerFactory.getLogger(WsWebSocketContainer.class); // must not be static
     // Server side uses the endpoint path as the key
     // Client side uses the client endpoint instance
     private final Map<Object, Set<WsSession>> endpointSessionMap = new HashMap<>();

@@ -20,8 +20,8 @@ import java.util.Collection;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.locks.AbstractQueuedSynchronizer;
 
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Shared latch that allows the latch to be acquired a limited number of times
@@ -30,7 +30,7 @@ import org.apache.juli.logging.LogFactory;
  */
 public class LimitLatch {
 
-    private static final Log log = LogFactory.getLog(LimitLatch.class);
+    private static final Logger log = LoggerFactory.getLogger(LimitLatch.class);
 
     private class Sync extends AbstractQueuedSynchronizer {
         private static final long serialVersionUID = 1L;

@@ -28,8 +28,8 @@ import org.apache.coyote.ErrorState;
 import org.apache.coyote.Request;
 import org.apache.coyote.Response;
 import org.apache.coyote.http11.filters.GzipOutputFilter;
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.tomcat.util.buf.ByteChunk;
 import org.apache.tomcat.util.http.FastHttpDateFormat;
 import org.apache.tomcat.util.http.MimeHeaders;
@@ -42,7 +42,7 @@ import org.apache.tomcat.util.res.StringManager;
 
 class StreamProcessor extends AbstractProcessor {
 
-    private static final Log log = LogFactory.getLog(StreamProcessor.class);
+    private static final Logger log = LoggerFactory.getLogger(StreamProcessor.class);
     private static final StringManager sm = StringManager.getManager(StreamProcessor.class);
 
     private final Http2UpgradeHandler handler;
@@ -338,7 +338,7 @@ class StreamProcessor extends AbstractProcessor {
 
 
     @Override
-    protected final Log getLog() {
+    protected final Logger getLog() {
         return log;
     }
 

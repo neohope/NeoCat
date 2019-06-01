@@ -58,13 +58,14 @@ import org.apache.catalina.util.SessionIdGeneratorBase;
 import org.apache.catalina.util.StandardSessionIdGenerator;
 import org.apache.catalina.valves.ValveBase;
 import org.apache.coyote.ActionCode;
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.tomcat.util.ExceptionUtils;
 import org.apache.tomcat.util.descriptor.web.LoginConfig;
 import org.apache.tomcat.util.descriptor.web.SecurityConstraint;
 import org.apache.tomcat.util.http.FastHttpDateFormat;
 import org.apache.tomcat.util.res.StringManager;
+
 
 /**
  * Basic implementation of the <b>Valve</b> interface that enforces the
@@ -87,7 +88,7 @@ import org.apache.tomcat.util.res.StringManager;
 public abstract class AuthenticatorBase extends ValveBase
         implements Authenticator, RegistrationListener {
 
-    private final Log log = LogFactory.getLog(AuthenticatorBase.class); // must not be static
+    private final Logger log = LoggerFactory.getLogger(AuthenticatorBase.class); // must not be static
 
     /**
      * "Expires" header always set to Date(1), so generate once only

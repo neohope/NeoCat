@@ -43,15 +43,15 @@ import org.apache.catalina.connector.Request;
 import org.apache.coyote.ActionCode;
 import org.apache.coyote.AsyncContextCallback;
 import org.apache.coyote.RequestInfo;
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.tomcat.util.ExceptionUtils;
 import org.apache.tomcat.util.buf.UDecoder;
 import org.apache.tomcat.util.res.StringManager;
 
 public class AsyncContextImpl implements AsyncContext, AsyncContextCallback {
 
-    private static final Log log = LogFactory.getLog(AsyncContextImpl.class);
+    private static final Logger log = LoggerFactory.getLogger(AsyncContextImpl.class);
 
     protected static final StringManager sm =
         StringManager.getManager(Constants.Package);

@@ -35,8 +35,8 @@ import javax.servlet.ServletException;
 import org.apache.catalina.Context;
 import org.apache.catalina.Globals;
 import org.apache.catalina.security.SecurityUtil;
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.tomcat.util.ExceptionUtils;
 import org.apache.tomcat.util.descriptor.web.FilterDef;
 import org.apache.tomcat.util.log.SystemLogHandler;
@@ -57,7 +57,7 @@ public final class ApplicationFilterConfig implements FilterConfig, Serializable
     static final StringManager sm =
         StringManager.getManager(Constants.Package);
 
-    private transient Log log = LogFactory.getLog(ApplicationFilterConfig.class); // must not be static
+    private transient Logger log = LoggerFactory.getLogger(ApplicationFilterConfig.class); // must not be static
 
     /**
      * Empty String collection to serve as the basis for empty enumerations.
@@ -382,7 +382,7 @@ public final class ApplicationFilterConfig implements FilterConfig, Serializable
      */
     private void readObject(ObjectInputStream ois) throws ClassNotFoundException, IOException {
         ois.defaultReadObject();
-        log = LogFactory.getLog(ApplicationFilterConfig.class);
+        log = LoggerFactory.getLogger(ApplicationFilterConfig.class);
     }
 
 }

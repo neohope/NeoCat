@@ -32,8 +32,8 @@ import java.util.jar.JarFile;
 import java.util.zip.ZipException;
 
 import org.apache.catalina.Host;
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.tomcat.util.res.StringManager;
 
 /**
@@ -45,7 +45,7 @@ import org.apache.tomcat.util.res.StringManager;
  */
 public class ExpandWar {
 
-    private static final Log log = LogFactory.getLog(ExpandWar.class);
+    private static final Logger log = LoggerFactory.getLogger(ExpandWar.class);
 
     /**
      * The string resources for this package.

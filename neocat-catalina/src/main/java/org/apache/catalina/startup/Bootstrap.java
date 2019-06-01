@@ -31,8 +31,8 @@ import org.apache.catalina.Globals;
 import org.apache.catalina.security.SecurityClassLoad;
 import org.apache.catalina.startup.ClassLoaderFactory.Repository;
 import org.apache.catalina.startup.ClassLoaderFactory.RepositoryType;
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 /**
@@ -49,7 +49,7 @@ import org.apache.juli.logging.LogFactory;
  */
 public final class Bootstrap {
 
-    private static final Log log = LogFactory.getLog(Bootstrap.class);
+    private static final Logger log = LoggerFactory.getLogger(Bootstrap.class);
 
     /**
      * Daemon object used by main.

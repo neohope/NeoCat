@@ -38,8 +38,8 @@ import javax.servlet.descriptor.TaglibDescriptor;
 
 import org.apache.jasper.compiler.JarScannerFactory;
 import org.apache.jasper.compiler.Localizer;
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.tomcat.Jar;
 import org.apache.tomcat.JarScanType;
 import org.apache.tomcat.JarScanner;
@@ -53,7 +53,7 @@ import org.xml.sax.SAXException;
  * Scans for and loads Tag Library Descriptors contained in a web application.
  */
 public class TldScanner {
-    private final Log log = LogFactory.getLog(TldScanner.class); // must not be static
+    private final Logger log = LoggerFactory.getLogger(TldScanner.class); // must not be static
     private static final String MSG = "org.apache.jasper.servlet.TldScanner";
     private static final String TLD_EXT = ".tld";
     private static final String WEB_INF = "/WEB-INF/";

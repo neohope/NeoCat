@@ -38,8 +38,8 @@ import javax.net.ssl.SSLSessionBindingEvent;
 import javax.net.ssl.SSLSessionBindingListener;
 import javax.net.ssl.SSLSessionContext;
 
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.tomcat.jni.Buffer;
 import org.apache.tomcat.jni.Pool;
 import org.apache.tomcat.jni.SSL;
@@ -57,7 +57,7 @@ import org.apache.tomcat.util.res.StringManager;
  */
 public final class OpenSSLEngine extends SSLEngine implements SSLUtil.ProtocolInfo {
 
-    private static final Log logger = LogFactory.getLog(OpenSSLEngine.class);
+    private static final Logger logger = LoggerFactory.getLogger(OpenSSLEngine.class);
     private static final StringManager sm = StringManager.getManager(OpenSSLEngine.class);
 
     private static final Certificate[] EMPTY_CERTIFICATES = new Certificate[0];

@@ -38,8 +38,8 @@ import javax.net.ssl.SSLEngineResult.HandshakeStatus;
 import javax.net.ssl.SSLEngineResult.Status;
 import javax.net.ssl.SSLException;
 
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.tomcat.util.res.StringManager;
 
 /**
@@ -48,8 +48,8 @@ import org.apache.tomcat.util.res.StringManager;
  */
 public class AsyncChannelWrapperSecure implements AsyncChannelWrapper {
 
-    private final Log log =
-            LogFactory.getLog(AsyncChannelWrapperSecure.class);
+    private final Logger log =
+            LoggerFactory.getLogger(AsyncChannelWrapperSecure.class);
     private static final StringManager sm =
             StringManager.getManager(AsyncChannelWrapperSecure.class);
 

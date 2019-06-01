@@ -19,8 +19,8 @@ package org.apache.coyote.http2;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.tomcat.util.res.StringManager;
 
 /**
@@ -35,7 +35,7 @@ import org.apache.tomcat.util.res.StringManager;
  */
 class StreamStateMachine {
 
-    private static final Log log = LogFactory.getLog(StreamStateMachine.class);
+    private static final Logger log = LoggerFactory.getLogger(StreamStateMachine.class);
     private static final StringManager sm = StringManager.getManager(StreamStateMachine.class);
 
     private final Stream stream;

@@ -30,15 +30,15 @@ import org.apache.catalina.WebResource;
 import org.apache.catalina.WebResourceRoot;
 import org.apache.catalina.WebResourceRoot.ResourceSetType;
 import org.apache.catalina.util.ResourceSet;
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Represents a {@link org.apache.catalina.WebResourceSet} based on a directory.
  */
 public class DirResourceSet extends AbstractFileResourceSet {
 
-    private static final Log log = LogFactory.getLog(DirResourceSet.class);
+    private static final Logger log = LoggerFactory.getLogger(DirResourceSet.class);
 
     /**
      * A no argument constructor is required for this to work with the digester.

@@ -53,8 +53,8 @@ import org.apache.catalina.LifecycleException;
 import org.apache.catalina.LifecycleState;
 import org.apache.catalina.Wrapper;
 import org.apache.catalina.security.SecurityUtil;
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.tomcat.InstanceManager;
 import org.apache.tomcat.PeriodicEventListener;
 import org.apache.tomcat.util.ExceptionUtils;
@@ -72,7 +72,7 @@ import org.apache.tomcat.util.log.SystemLogHandler;
 public class StandardWrapper extends ContainerBase
     implements ServletConfig, Wrapper, NotificationEmitter {
 
-    private final Log log = LogFactory.getLog(StandardWrapper.class); // must not be static
+    private final Logger log = LoggerFactory.getLogger(StandardWrapper.class); // must not be static
 
     protected static final String[] DEFAULT_SERVLET_METHODS = new String[] {
                                                     "GET", "HEAD", "POST" };

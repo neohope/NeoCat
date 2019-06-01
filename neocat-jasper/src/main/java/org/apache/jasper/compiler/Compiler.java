@@ -33,8 +33,8 @@ import org.apache.jasper.JasperException;
 import org.apache.jasper.JspCompilationContext;
 import org.apache.jasper.Options;
 import org.apache.jasper.servlet.JspServletWrapper;
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.tomcat.Jar;
 import org.apache.tomcat.util.scan.JarFactory;
 
@@ -50,7 +50,7 @@ import org.apache.tomcat.util.scan.JarFactory;
  */
 public abstract class Compiler {
 
-    private final Log log = LogFactory.getLog(Compiler.class); // must not be static
+    private final Logger log = LoggerFactory.getLogger(Compiler.class); // must not be static
 
     // ----------------------------------------------------- Instance Variables
 

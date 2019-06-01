@@ -22,14 +22,14 @@ import java.nio.charset.StandardCharsets;
 
 import org.apache.coyote.ProtocolException;
 import org.apache.coyote.http2.HpackDecoder.HeaderEmitter;
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.tomcat.util.buf.ByteBufferUtils;
 import org.apache.tomcat.util.res.StringManager;
 
 class Http2Parser {
 
-    protected static final Log log = LogFactory.getLog(Http2Parser.class);
+    protected static final Logger log = LoggerFactory.getLogger(Http2Parser.class);
     protected static final StringManager sm = StringManager.getManager(Http2Parser.class);
 
     static final byte[] CLIENT_PREFACE_START =

@@ -29,8 +29,8 @@ import java.util.function.Supplier;
 
 import javax.servlet.WriteListener;
 
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.tomcat.util.buf.B2CConverter;
 import org.apache.tomcat.util.buf.MessageBytes;
 import org.apache.tomcat.util.http.MimeHeaders;
@@ -51,7 +51,7 @@ public final class Response {
 
     private static final StringManager sm = StringManager.getManager(Response.class);
 
-    private static final Log log = LogFactory.getLog(Response.class);
+    private static final Logger log = LoggerFactory.getLogger(Response.class);
 
     // ----------------------------------------------------- Class Variables
 

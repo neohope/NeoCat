@@ -39,8 +39,8 @@ import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509KeyManager;
 import javax.net.ssl.X509TrustManager;
 
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.tomcat.jni.CertificateVerifier;
 import org.apache.tomcat.jni.Pool;
 import org.apache.tomcat.jni.SSL;
@@ -55,7 +55,7 @@ import org.apache.tomcat.util.res.StringManager;
 
 public class OpenSSLContext implements org.apache.tomcat.util.net.SSLContext {
 
-    private static final Log log = LogFactory.getLog(OpenSSLContext.class);
+    private static final Logger log = LoggerFactory.getLogger(OpenSSLContext.class);
 
     // Note: this uses the main "net" package strings as many are common with APR
     private static final StringManager netSm = StringManager.getManager(AbstractEndpoint.class);

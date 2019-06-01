@@ -40,8 +40,8 @@ import org.apache.jasper.compiler.JspRuntimeContext;
 import org.apache.jasper.compiler.Localizer;
 import org.apache.jasper.runtime.ExceptionUtils;
 import org.apache.jasper.security.SecurityUtil;
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.tomcat.PeriodicEventListener;
 import org.apache.tomcat.util.security.Escape;
 
@@ -67,7 +67,7 @@ public class JspServlet extends HttpServlet implements PeriodicEventListener {
     private static final long serialVersionUID = 1L;
 
     // Logger
-    private final transient Log log = LogFactory.getLog(JspServlet.class);
+    private final transient Logger log = LoggerFactory.getLogger(JspServlet.class);
 
     private transient ServletContext context;
     private ServletConfig config;

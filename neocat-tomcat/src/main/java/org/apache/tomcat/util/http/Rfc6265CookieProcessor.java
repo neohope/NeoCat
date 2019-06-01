@@ -22,8 +22,8 @@ import java.text.FieldPosition;
 import java.util.BitSet;
 import java.util.Date;
 
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.tomcat.util.buf.ByteChunk;
 import org.apache.tomcat.util.buf.MessageBytes;
 import org.apache.tomcat.util.http.parser.Cookie;
@@ -31,7 +31,7 @@ import org.apache.tomcat.util.res.StringManager;
 
 public class Rfc6265CookieProcessor extends CookieProcessorBase {
 
-    private static final Log log = LogFactory.getLog(Rfc6265CookieProcessor.class);
+    private static final Logger log = LoggerFactory.getLogger(Rfc6265CookieProcessor.class);
 
     private static final StringManager sm =
             StringManager.getManager(Rfc6265CookieProcessor.class.getPackage().getName());

@@ -30,8 +30,8 @@ import org.apache.jasper.compiler.JspConfig;
 import org.apache.jasper.compiler.Localizer;
 import org.apache.jasper.compiler.TagPluginManager;
 import org.apache.jasper.compiler.TldCache;
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * A class to hold all init parameters specific to the JSP engine.
@@ -43,7 +43,7 @@ import org.apache.juli.logging.LogFactory;
 public final class EmbeddedServletOptions implements Options {
 
     // Logger
-    private final Log log = LogFactory.getLog(EmbeddedServletOptions.class); // must not be static
+    private final Logger log = LoggerFactory.getLogger(EmbeddedServletOptions.class); // must not be static
 
     private Properties settings = new Properties();
 
@@ -673,13 +673,13 @@ public final class EmbeddedServletOptions implements Options {
             }
         }
         if (this.scratchDir == null) {
-            log.fatal(Localizer.getMessage("jsp.error.no.scratch.dir"));
+            log.error(Localizer.getMessage("jsp.error.no.scratch.dir"));
             return;
         }
 
         if (!(scratchDir.exists() && scratchDir.canRead() &&
                 scratchDir.canWrite() && scratchDir.isDirectory()))
-            log.fatal(Localizer.getMessage("jsp.error.bad.scratch.dir",
+            log.error(Localizer.getMessage("jsp.error.bad.scratch.dir",
                     scratchDir.getAbsolutePath()));
 
         this.compiler = config.getInitParameter("compiler");

@@ -34,8 +34,8 @@ import org.apache.catalina.Service;
 import org.apache.catalina.WebResourceRoot;
 import org.apache.catalina.Wrapper;
 import org.apache.catalina.util.LifecycleMBeanBase;
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.tomcat.util.res.StringManager;
 
 
@@ -49,7 +49,7 @@ public class MapperListener extends LifecycleMBeanBase
         implements ContainerListener, LifecycleListener {
 
 
-    private static final Log log = LogFactory.getLog(MapperListener.class);
+    private static final Logger log = LoggerFactory.getLogger(MapperListener.class);
 
 
     // ----------------------------------------------------- Instance Variables

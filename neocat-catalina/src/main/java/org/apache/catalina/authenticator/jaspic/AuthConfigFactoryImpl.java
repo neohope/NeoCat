@@ -34,13 +34,13 @@ import javax.security.auth.message.config.RegistrationListener;
 import org.apache.catalina.Globals;
 import org.apache.catalina.authenticator.jaspic.PersistentProviderRegistrations.Provider;
 import org.apache.catalina.authenticator.jaspic.PersistentProviderRegistrations.Providers;
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.tomcat.util.res.StringManager;
 
 public class AuthConfigFactoryImpl extends AuthConfigFactory {
 
-    private final Log log = LogFactory.getLog(AuthConfigFactoryImpl.class); // must not be static
+    private final Logger log = LoggerFactory.getLogger(AuthConfigFactoryImpl.class); // must not be static
     private static final StringManager sm = StringManager.getManager(AuthConfigFactoryImpl.class);
 
     private static final String CONFIG_PATH = "conf/jaspic-providers.xml";

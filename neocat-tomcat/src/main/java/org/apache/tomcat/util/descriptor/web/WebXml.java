@@ -39,8 +39,8 @@ import javax.servlet.descriptor.JspConfigDescriptor;
 import javax.servlet.descriptor.JspPropertyGroupDescriptor;
 import javax.servlet.descriptor.TaglibDescriptor;
 
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.tomcat.util.buf.B2CConverter;
 import org.apache.tomcat.util.buf.UDecoder;
 import org.apache.tomcat.util.descriptor.XmlIdentifiers;
@@ -64,7 +64,7 @@ public class WebXml extends XmlEncodingBase implements DocumentProperties.Charse
     private static final StringManager sm =
         StringManager.getManager(Constants.PACKAGE_NAME);
 
-    private final Log log = LogFactory.getLog(WebXml.class); // must not be static
+    private final Logger log = LoggerFactory.getLogger(WebXml.class); // must not be static
 
     /**
      * Global defaults are overridable but Servlets and Servlet mappings need to

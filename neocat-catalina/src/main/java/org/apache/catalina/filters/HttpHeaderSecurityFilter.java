@@ -27,8 +27,8 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Provides a single configuration point for security measures that required the
@@ -38,7 +38,7 @@ public class HttpHeaderSecurityFilter extends FilterBase {
 
     // Log must be non-static as loggers are created per class-loader and this
     // Filter may be used in multiple class loaders
-    private final Log log = LogFactory.getLog(HttpHeaderSecurityFilter.class); // must not be static
+    private final Logger log = LoggerFactory.getLogger(HttpHeaderSecurityFilter.class); // must not be static
 
     // HSTS
     private static final String HSTS_HEADER_NAME = "Strict-Transport-Security";
@@ -128,7 +128,7 @@ public class HttpHeaderSecurityFilter extends FilterBase {
 
 
     @Override
-    protected Log getLogger() {
+    protected Logger getLogger() {
         return log;
     }
 

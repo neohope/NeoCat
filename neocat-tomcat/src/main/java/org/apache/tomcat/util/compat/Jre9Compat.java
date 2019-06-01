@@ -33,13 +33,13 @@ import java.util.zip.ZipFile;
 import javax.net.ssl.SSLEngine;
 import javax.net.ssl.SSLParameters;
 
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.tomcat.util.res.StringManager;
 
 class Jre9Compat extends JreCompat {
 
-    private static final Log log = LogFactory.getLog(Jre9Compat.class);
+    private static final Logger log = LoggerFactory.getLogger(Jre9Compat.class);
     private static final StringManager sm = StringManager.getManager(Jre9Compat.class);
 
     private static final Class<?> inaccessibleObjectExceptionClazz;

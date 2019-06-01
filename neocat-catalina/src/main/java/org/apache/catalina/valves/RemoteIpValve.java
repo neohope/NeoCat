@@ -29,8 +29,8 @@ import org.apache.catalina.AccessLog;
 import org.apache.catalina.Globals;
 import org.apache.catalina.connector.Request;
 import org.apache.catalina.connector.Response;
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.tomcat.util.http.MimeHeaders;
 
 /**
@@ -358,7 +358,7 @@ public class RemoteIpValve extends ValveBase {
     /**
      * Logger
      */
-    private static final Log log = LogFactory.getLog(RemoteIpValve.class);
+    private static final Logger log = LoggerFactory.getLogger(RemoteIpValve.class);
 
     /**
      * Convert a given comma delimited String into an array of String

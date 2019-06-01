@@ -36,8 +36,8 @@ import org.apache.coyote.Response;
 import org.apache.coyote.http11.HttpOutputBuffer;
 import org.apache.coyote.http11.OutputFilter;
 import org.apache.coyote.http2.HpackDecoder.HeaderEmitter;
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.tomcat.util.buf.ByteChunk;
 import org.apache.tomcat.util.buf.MessageBytes;
 import org.apache.tomcat.util.http.MimeHeaders;
@@ -48,7 +48,7 @@ import org.apache.tomcat.util.res.StringManager;
 
 class Stream extends AbstractStream implements HeaderEmitter {
 
-    private static final Log log = LogFactory.getLog(Stream.class);
+    private static final Logger log = LoggerFactory.getLogger(Stream.class);
     private static final StringManager sm = StringManager.getManager(Stream.class);
 
     private static final int HEADER_STATE_START = 0;

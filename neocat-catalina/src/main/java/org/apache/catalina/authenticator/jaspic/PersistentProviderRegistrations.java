@@ -31,8 +31,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.tomcat.util.digester.Digester;
 import org.apache.tomcat.util.res.StringManager;
 import org.xml.sax.SAXException;
@@ -138,7 +138,7 @@ final class PersistentProviderRegistrations {
             writer.write("</jaspic-providers>\n");
         } catch (IOException e) {
             if (!configFileNew.delete()) {
-                Log log = LogFactory.getLog(PersistentProviderRegistrations.class);
+                Logger log = LoggerFactory.getLogger(PersistentProviderRegistrations.class);
                 log.warn(sm.getString("persistentProviderRegistrations.deleteFail",
                         configFileNew.getAbsolutePath()));
             }
@@ -161,7 +161,7 @@ final class PersistentProviderRegistrations {
 
         // Remove the old file
         if (configFileOld.exists() && !configFileOld.delete()) {
-            Log log = LogFactory.getLog(PersistentProviderRegistrations.class);
+            Logger log = LoggerFactory.getLogger(PersistentProviderRegistrations.class);
             log.warn(sm.getString("persistentProviderRegistrations.deleteFail",
                     configFileOld.getAbsolutePath()));
         }

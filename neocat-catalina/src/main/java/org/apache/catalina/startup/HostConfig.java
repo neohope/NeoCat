@@ -65,8 +65,8 @@ import org.apache.catalina.core.StandardHost;
 import org.apache.catalina.security.DeployXmlPermission;
 import org.apache.catalina.util.ContextName;
 import org.apache.catalina.util.IOTools;
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.tomcat.util.ExceptionUtils;
 import org.apache.tomcat.util.buf.UriUtil;
 import org.apache.tomcat.util.digester.Digester;
@@ -81,7 +81,7 @@ import org.apache.tomcat.util.res.StringManager;
  */
 public class HostConfig implements LifecycleListener {
 
-    private static final Log log = LogFactory.getLog(HostConfig.class);
+    private static final Logger log = LoggerFactory.getLogger(HostConfig.class);
 
     /**
      * The string resources for this package.

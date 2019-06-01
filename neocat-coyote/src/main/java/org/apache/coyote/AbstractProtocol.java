@@ -39,7 +39,7 @@ import javax.management.ObjectName;
 import javax.servlet.http.HttpUpgradeHandler;
 import javax.servlet.http.WebConnection;
 
-import org.apache.juli.logging.Log;
+import org.slf4j.Logger;
 import org.apache.tomcat.InstanceManager;
 import org.apache.tomcat.util.ExceptionUtils;
 import org.apache.tomcat.util.collections.SynchronizedStack;
@@ -404,7 +404,7 @@ public abstract class AbstractProtocol<S> implements ProtocolHandler,
      * used by the abstract classes.
      * @return the logger
      */
-    protected abstract Log getLog();
+    protected abstract Logger getLog();
 
 
     /**
@@ -696,7 +696,7 @@ public abstract class AbstractProtocol<S> implements ProtocolHandler,
             return proto;
         }
 
-        protected Log getLog() {
+        protected Logger getLog() {
             return getProtocol().getLog();
         }
 

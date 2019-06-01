@@ -22,8 +22,8 @@ import javax.servlet.ServletException;
 
 import org.apache.catalina.connector.Request;
 import org.apache.catalina.connector.Response;
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Concrete implementation of <code>RequestFilterValve</code> that filters
@@ -34,7 +34,7 @@ import org.apache.juli.logging.LogFactory;
  */
 public final class RemoteHostValve extends RequestFilterValve {
 
-    private static final Log log = LogFactory.getLog(RemoteHostValve.class);
+    private static final Logger log = LoggerFactory.getLogger(RemoteHostValve.class);
 
 
     // --------------------------------------------------------- Public Methods
@@ -53,7 +53,7 @@ public final class RemoteHostValve extends RequestFilterValve {
 
 
     @Override
-    protected Log getLog() {
+    protected Logger getLog() {
         return log;
     }
 }

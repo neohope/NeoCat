@@ -27,8 +27,8 @@ import java.util.concurrent.TimeUnit;
 import javax.websocket.SendHandler;
 import javax.websocket.SendResult;
 
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.tomcat.util.net.SocketWrapperBase;
 import org.apache.tomcat.util.net.SocketWrapperBase.BlockingMode;
 import org.apache.tomcat.util.res.StringManager;
@@ -43,7 +43,7 @@ public class WsRemoteEndpointImplServer extends WsRemoteEndpointImplBase {
 
     private static final StringManager sm =
             StringManager.getManager(WsRemoteEndpointImplServer.class);
-    private final Log log = LogFactory.getLog(WsRemoteEndpointImplServer.class); // must not be static
+    private final Logger log = LoggerFactory.getLogger(WsRemoteEndpointImplServer.class); // must not be static
 
     private final SocketWrapperBase<?> socketWrapper;
     private final WsWriteTimeout wsWriteTimeout;

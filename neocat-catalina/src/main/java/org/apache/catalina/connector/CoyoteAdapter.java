@@ -40,8 +40,8 @@ import org.apache.catalina.util.SessionConfig;
 import org.apache.catalina.util.URLEncoder;
 import org.apache.coyote.ActionCode;
 import org.apache.coyote.Adapter;
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.tomcat.util.ExceptionUtils;
 import org.apache.tomcat.util.buf.B2CConverter;
 import org.apache.tomcat.util.buf.ByteChunk;
@@ -63,7 +63,7 @@ import org.apache.tomcat.util.res.StringManager;
  */
 public class CoyoteAdapter implements Adapter {
 
-    private static final Log log = LogFactory.getLog(CoyoteAdapter.class);
+    private static final Logger log = LoggerFactory.getLogger(CoyoteAdapter.class);
 
     // -------------------------------------------------------------- Constants
 

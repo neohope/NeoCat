@@ -30,15 +30,15 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.catalina.connector.Request;
 import org.apache.catalina.connector.Response;
 import org.apache.catalina.util.NetMask;
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public final class RemoteCIDRValve extends ValveBase {
 
     /**
      * Our logger
      */
-    private static final Log log = LogFactory.getLog(RemoteCIDRValve.class);
+    private static final Logger log = LoggerFactory.getLogger(RemoteCIDRValve.class);
 
     /**
      * The list of allowed {@link NetMask}s

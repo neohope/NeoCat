@@ -33,8 +33,8 @@ import java.util.Locale;
 import java.util.TimeZone;
 
 import org.apache.catalina.LifecycleException;
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.tomcat.util.ExceptionUtils;
 import org.apache.tomcat.util.buf.B2CConverter;
 
@@ -62,7 +62,7 @@ import org.apache.tomcat.util.buf.B2CConverter;
  */
 public class AccessLogValve extends AbstractAccessLogValve {
 
-    private static final Log log = LogFactory.getLog(AccessLogValve.class);
+    private static final Logger log = LoggerFactory.getLogger(AccessLogValve.class);
 
     //------------------------------------------------------ Constructor
     public AccessLogValve() {

@@ -31,8 +31,8 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 /**
@@ -67,7 +67,7 @@ public class RequestDumperFilter extends GenericFilter {
 
     // Log must be non-static as loggers are created per class-loader and this
     // Filter may be used in multiple class loaders
-    private transient Log log = LogFactory.getLog(RequestDumperFilter.class);
+    private transient Logger log = LoggerFactory.getLogger(RequestDumperFilter.class);
 
 
     /**
@@ -273,7 +273,7 @@ public class RequestDumperFilter extends GenericFilter {
      */
     private void readObject(ObjectInputStream ois) throws ClassNotFoundException, IOException {
         ois.defaultReadObject();
-        log = LogFactory.getLog(RequestDumperFilter.class);
+        log = LoggerFactory.getLogger(RequestDumperFilter.class);
     }
 
 

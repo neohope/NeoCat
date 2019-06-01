@@ -58,8 +58,8 @@ import org.apache.catalina.connector.Request;
 import org.apache.catalina.connector.Response;
 import org.apache.catalina.util.ContextName;
 import org.apache.catalina.util.LifecycleMBeanBase;
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.tomcat.util.ExceptionUtils;
 import org.apache.tomcat.util.MultiThrowable;
 import org.apache.tomcat.util.res.StringManager;
@@ -128,7 +128,7 @@ import org.apache.tomcat.util.threads.InlineExecutorService;
 public abstract class ContainerBase extends LifecycleMBeanBase
         implements Container {
 
-    private static final Log log = LogFactory.getLog(ContainerBase.class);
+    private static final Logger log = LoggerFactory.getLogger(ContainerBase.class);
 
     /**
      * Perform addChild with the permissions of this class.
@@ -185,7 +185,7 @@ public abstract class ContainerBase extends LifecycleMBeanBase
     /**
      * The Logger implementation with which this Container is associated.
      */
-    protected Log logger = null;
+    protected Logger logger = null;
 
 
     /**
@@ -316,10 +316,10 @@ public abstract class ContainerBase extends LifecycleMBeanBase
      * Return the Logger for this Container.
      */
     @Override
-    public Log getLogger() {
+    public Logger getLogger() {
         if (logger != null)
             return logger;
-        logger = LogFactory.getLog(getLogName());
+        logger = LoggerFactory.getLogger(getLogName());
         return logger;
     }
 

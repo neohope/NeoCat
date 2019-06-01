@@ -28,7 +28,7 @@ import java.util.WeakHashMap;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Pattern;
 
-import org.apache.juli.logging.Log;
+import org.slf4j.Logger;
 import org.apache.tomcat.util.res.StringManager;
 
 /**
@@ -51,7 +51,7 @@ public final class CustomObjectInputStream extends ObjectInputStream {
      */
     private final ClassLoader classLoader;
     private final Set<String> reportedClasses;
-    private final Log log;
+    private final Logger log;
 
     private final Pattern allowedClassNamePattern;
     private final String allowedClassNameFilter;
@@ -90,7 +90,7 @@ public final class CustomObjectInputStream extends ObjectInputStream {
      * @exception IOException if an input/output error occurs
      */
     public CustomObjectInputStream(InputStream stream, ClassLoader classLoader,
-            Log log, Pattern allowedClassNamePattern, boolean warnOnFailure)
+            Logger log, Pattern allowedClassNamePattern, boolean warnOnFailure)
             throws IOException {
         super(stream);
         if (log == null && allowedClassNamePattern != null && warnOnFailure) {

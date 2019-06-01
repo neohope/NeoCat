@@ -28,8 +28,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * <p>Utility class for building class loaders for Catalina.  The factory
@@ -51,7 +51,7 @@ import org.apache.juli.logging.LogFactory;
 public final class ClassLoaderFactory {
 
 
-    private static final Log log = LogFactory.getLog(ClassLoaderFactory.class);
+    private static final Logger log = LoggerFactory.getLogger(ClassLoaderFactory.class);
 
     // --------------------------------------------------------- Public Methods
 

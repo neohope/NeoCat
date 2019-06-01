@@ -23,7 +23,7 @@ import javax.management.ObjectName;
 
 import org.apache.catalina.connector.Request;
 import org.apache.catalina.connector.Response;
-import org.apache.juli.logging.Log;
+import org.slf4j.Logger;
 
 
 /**
@@ -119,7 +119,7 @@ public interface Container extends Lifecycle {
      *         no associated Logger, return the Logger associated with the
      *         parent Container (if any); otherwise return <code>null</code>.
      */
-    public Log getLogger();
+    public Logger getLogger();
 
 
     /**

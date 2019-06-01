@@ -36,8 +36,8 @@ import org.apache.catalina.LifecycleState;
 import org.apache.catalina.Loader;
 import org.apache.catalina.util.LifecycleMBeanBase;
 import org.apache.catalina.util.ToStringUtil;
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.tomcat.util.ExceptionUtils;
 import org.apache.tomcat.util.buf.UDecoder;
 import org.apache.tomcat.util.res.StringManager;
@@ -61,7 +61,7 @@ import org.apache.tomcat.util.res.StringManager;
 public class WebappLoader extends LifecycleMBeanBase
     implements Loader, PropertyChangeListener {
 
-    private static final Log log = LogFactory.getLog(WebappLoader.class);
+    private static final Logger log = LoggerFactory.getLogger(WebappLoader.class);
 
     // ----------------------------------------------------------- Constructors
 

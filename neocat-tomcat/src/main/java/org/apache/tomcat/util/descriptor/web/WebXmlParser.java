@@ -19,8 +19,8 @@ package org.apache.tomcat.util.descriptor.web;
 import java.io.IOException;
 import java.net.URL;
 
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.tomcat.util.descriptor.DigesterFactory;
 import org.apache.tomcat.util.descriptor.InputSourceUtil;
 import org.apache.tomcat.util.descriptor.XmlErrorHandler;
@@ -31,7 +31,7 @@ import org.xml.sax.SAXParseException;
 
 public class WebXmlParser {
 
-    private final Log log = LogFactory.getLog(WebXmlParser.class); // must not be static
+    private final Logger log = LoggerFactory.getLogger(WebXmlParser.class); // must not be static
 
     /**
      * The string resources for this package.

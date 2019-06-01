@@ -32,7 +32,7 @@ import javax.servlet.ServletSecurityElement;
 import javax.servlet.annotation.ServletSecurity;
 import javax.servlet.annotation.ServletSecurity.EmptyRoleSemantic;
 
-import org.apache.juli.logging.Log;
+import org.slf4j.Logger;
 import org.apache.tomcat.util.res.StringManager;
 
 
@@ -603,7 +603,7 @@ public class SecurityConstraint extends XmlEncodingBase implements Serializable 
 
     public static SecurityConstraint[] findUncoveredHttpMethods(
             SecurityConstraint[] constraints,
-            boolean denyUncoveredHttpMethods, Log log) {
+            boolean denyUncoveredHttpMethods, Logger log) {
 
         Set<String> coveredPatterns = new HashSet<>();
         Map<String,Set<String>> urlMethodMap = new HashMap<>();
@@ -728,7 +728,7 @@ public class SecurityConstraint extends XmlEncodingBase implements Serializable 
 
 
     private static void handleOmittedMethods(Set<String> omittedMethods, String pattern,
-            boolean denyUncoveredHttpMethods, List<SecurityConstraint> newConstraints, Log log) {
+            boolean denyUncoveredHttpMethods, List<SecurityConstraint> newConstraints, Logger log) {
         if (omittedMethods.size() > 0) {
             StringBuilder msg = new StringBuilder();
             for (String method : omittedMethods) {

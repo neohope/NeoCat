@@ -24,8 +24,8 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.apache.catalina.LifecycleException;
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.ietf.jgss.GSSContext;
 import org.ietf.jgss.GSSException;
 import org.ietf.jgss.GSSName;
@@ -44,7 +44,7 @@ import org.ietf.jgss.GSSName;
  */
 public class LockOutRealm extends CombinedRealm {
 
-    private static final Log log = LogFactory.getLog(LockOutRealm.class);
+    private static final Logger log = LoggerFactory.getLogger(LockOutRealm.class);
 
     /**
      * The number of times in a row a user has to fail authentication to be

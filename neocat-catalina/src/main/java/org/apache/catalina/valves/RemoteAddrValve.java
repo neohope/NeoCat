@@ -23,8 +23,8 @@ import javax.servlet.ServletException;
 
 import org.apache.catalina.connector.Request;
 import org.apache.catalina.connector.Response;
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 /**
@@ -36,7 +36,7 @@ import org.apache.juli.logging.LogFactory;
  */
 public final class RemoteAddrValve extends RequestFilterValve {
 
-    private static final Log log = LogFactory.getLog(RemoteAddrValve.class);
+    private static final Logger log = LoggerFactory.getLogger(RemoteAddrValve.class);
 
 
     // --------------------------------------------------------- Public Methods
@@ -56,7 +56,7 @@ public final class RemoteAddrValve extends RequestFilterValve {
 
 
     @Override
-    protected Log getLog() {
+    protected Logger getLog() {
         return log;
     }
 }

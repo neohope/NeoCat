@@ -21,7 +21,7 @@ import java.security.SecureRandom;
 import java.util.Random;
 
 import org.apache.catalina.CredentialHandler;
-import org.apache.juli.logging.Log;
+import org.slf4j.Logger;
 import org.apache.tomcat.util.buf.HexUtils;
 import org.apache.tomcat.util.res.StringManager;
 
@@ -291,5 +291,5 @@ public abstract class DigestCredentialHandlerBase implements CredentialHandler {
     /**
      * @return the logger for the CredentialHandler instance.
      */
-    protected abstract Log getLog();
+    protected abstract Logger getLog();
 }

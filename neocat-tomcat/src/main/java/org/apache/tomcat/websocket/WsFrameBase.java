@@ -31,7 +31,7 @@ import javax.websocket.Extension;
 import javax.websocket.MessageHandler;
 import javax.websocket.PongMessage;
 
-import org.apache.juli.logging.Log;
+import org.slf4j.Logger;
 import org.apache.tomcat.util.ExceptionUtils;
 import org.apache.tomcat.util.buf.Utf8Decoder;
 import org.apache.tomcat.util.res.StringManager;
@@ -229,7 +229,7 @@ public abstract class WsFrameBase {
 
 
     protected abstract boolean isMasked();
-    protected abstract Log getLog();
+    protected abstract Logger getLog();
 
 
     /**

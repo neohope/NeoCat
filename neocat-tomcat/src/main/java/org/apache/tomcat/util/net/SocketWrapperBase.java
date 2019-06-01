@@ -26,13 +26,13 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock.WriteLock;
 
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.tomcat.util.res.StringManager;
 
 public abstract class SocketWrapperBase<E> {
 
-    private static final Log log = LogFactory.getLog(SocketWrapperBase.class);
+    private static final Logger log = LoggerFactory.getLogger(SocketWrapperBase.class);
 
     protected static final StringManager sm = StringManager.getManager(SocketWrapperBase.class);
 

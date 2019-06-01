@@ -39,8 +39,8 @@ import org.apache.catalina.LifecycleState;
 import org.apache.catalina.Server;
 import org.apache.catalina.util.Introspection;
 import org.apache.catalina.util.LifecycleMBeanBase;
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 //import org.apache.naming.ContextBindings;
 import org.apache.tomcat.util.ExceptionUtils;
 import org.apache.tomcat.util.descriptor.web.ContextEjb;
@@ -69,7 +69,7 @@ public class NamingResourcesImpl extends LifecycleMBeanBase
 
     private static final long serialVersionUID = 1L;
 
-    private static final Log log = LogFactory.getLog(NamingResourcesImpl.class);
+    private static final Logger log = LoggerFactory.getLogger(NamingResourcesImpl.class);
 
     private static final StringManager sm = StringManager.getManager(NamingResourcesImpl.class);
 

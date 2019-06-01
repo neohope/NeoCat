@@ -27,8 +27,8 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpServletResponseWrapper;
 
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 /**
@@ -49,7 +49,7 @@ public class AddDefaultCharsetFilter extends FilterBase {
 
     // Log must be non-static as loggers are created per class-loader and this
     // Filter may be used in multiple class loaders
-    private final Log log = LogFactory.getLog(AddDefaultCharsetFilter.class); // must not be static
+    private final Logger log = LoggerFactory.getLogger(AddDefaultCharsetFilter.class); // must not be static
 
     private static final String DEFAULT_ENCODING = "ISO-8859-1";
 
@@ -60,7 +60,7 @@ public class AddDefaultCharsetFilter extends FilterBase {
     }
 
     @Override
-    protected Log getLogger() {
+    protected Logger getLogger() {
         return log;
     }
 

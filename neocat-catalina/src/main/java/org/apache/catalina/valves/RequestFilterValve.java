@@ -27,7 +27,7 @@ import org.apache.catalina.Context;
 import org.apache.catalina.LifecycleException;
 import org.apache.catalina.connector.Request;
 import org.apache.catalina.connector.Response;
-import org.apache.juli.logging.Log;
+import org.slf4j.Logger;
 
 /**
  * Implementation of a Valve that performs filtering based on comparing the
@@ -359,7 +359,7 @@ public abstract class RequestFilterValve extends ValveBase {
     }
 
 
-    protected abstract Log getLog();
+    protected abstract Logger getLog();
 
 
     /**

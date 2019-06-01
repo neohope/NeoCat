@@ -20,8 +20,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.security.AccessController;
 
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.tomcat.util.descriptor.Constants;
 import org.apache.tomcat.util.descriptor.DigesterFactory;
 import org.apache.tomcat.util.descriptor.XmlErrorHandler;
@@ -36,7 +36,7 @@ import org.xml.sax.SAXException;
  * Parses a Tag Library Descriptor.
  */
 public class TldParser {
-    private final Log log = LogFactory.getLog(TldParser.class); // must not be static
+    private final Logger log = LoggerFactory.getLogger(TldParser.class); // must not be static
     private final Digester digester;
 
     public TldParser(boolean namespaceAware, boolean validation,

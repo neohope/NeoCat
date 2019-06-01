@@ -20,8 +20,8 @@ import java.util.Collections;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.tomcat.util.res.StringManager;
 
 /**
@@ -29,7 +29,7 @@ import org.apache.tomcat.util.res.StringManager;
  */
 abstract class AbstractStream {
 
-    private static final Log log = LogFactory.getLog(AbstractStream.class);
+    private static final Logger log = LoggerFactory.getLogger(AbstractStream.class);
     private static final StringManager sm = StringManager.getManager(AbstractStream.class);
 
     private final Integer identifier;

@@ -20,7 +20,7 @@ import java.io.InputStream;
 
 import org.apache.catalina.WebResource;
 import org.apache.catalina.WebResourceRoot;
-import org.apache.juli.logging.Log;
+import org.slf4j.Logger;
 import org.apache.tomcat.util.http.FastHttpDateFormat;
 import org.apache.tomcat.util.res.StringManager;
 
@@ -102,5 +102,5 @@ public abstract class AbstractResource implements WebResource {
     protected abstract InputStream doGetInputStream();
 
 
-    protected abstract Log getLog();
+    protected abstract Logger getLog();
 }

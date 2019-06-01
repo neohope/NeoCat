@@ -24,13 +24,13 @@ import java.nio.channels.CompletionHandler;
 import javax.websocket.CloseReason;
 import javax.websocket.CloseReason.CloseCodes;
 
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.tomcat.util.res.StringManager;
 
 public class WsFrameClient extends WsFrameBase {
 
-    private final Log log = LogFactory.getLog(WsFrameClient.class); // must not be static
+    private final Logger log = LoggerFactory.getLogger(WsFrameClient.class); // must not be static
     private static final StringManager sm = StringManager.getManager(WsFrameClient.class);
 
     private final AsyncChannelWrapper channel;
@@ -141,7 +141,7 @@ public class WsFrameClient extends WsFrameBase {
 
 
     @Override
-    protected Log getLog() {
+    protected Logger getLog() {
         return log;
     }
 

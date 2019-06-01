@@ -59,8 +59,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.tomcat.util.res.StringManager;
 
 public class Diagnostics {
@@ -74,7 +74,7 @@ public class Diagnostics {
     private static final String CRLF = "\r\n";
     private static final String vminfoSystemProperty = "java.vm.info";
 
-    private static final Log log = LogFactory.getLog(Diagnostics.class);
+    private static final Logger log = LoggerFactory.getLogger(Diagnostics.class);
 
     private static final SimpleDateFormat timeformat =
         new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");

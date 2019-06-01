@@ -24,8 +24,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.tomcat.util.compat.JreVendor;
 import org.apache.tomcat.util.net.Constants;
 import org.apache.tomcat.util.net.SSLContext;
@@ -44,7 +44,7 @@ import org.apache.tomcat.util.res.StringManager;
  */
 public class JSSEUtil extends SSLUtilBase {
 
-    private static final Log log = LogFactory.getLog(JSSEUtil.class);
+    private static final Logger log = LoggerFactory.getLogger(JSSEUtil.class);
     private static final StringManager sm = StringManager.getManager(JSSEUtil.class);
 
     private static final Set<String> implementedProtocols;
@@ -115,7 +115,7 @@ public class JSSEUtil extends SSLUtilBase {
 
 
     @Override
-    protected Log getLog() {
+    protected Logger getLog() {
         return log;
     }
 

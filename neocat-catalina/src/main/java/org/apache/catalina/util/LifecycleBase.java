@@ -24,8 +24,8 @@ import org.apache.catalina.LifecycleEvent;
 import org.apache.catalina.LifecycleException;
 import org.apache.catalina.LifecycleListener;
 import org.apache.catalina.LifecycleState;
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.tomcat.util.ExceptionUtils;
 import org.apache.tomcat.util.res.StringManager;
 
@@ -36,7 +36,7 @@ import org.apache.tomcat.util.res.StringManager;
  */
 public abstract class LifecycleBase implements Lifecycle {
 
-    private static final Log log = LogFactory.getLog(LifecycleBase.class);
+    private static final Logger log = LoggerFactory.getLogger(LifecycleBase.class);
 
     private static final StringManager sm = StringManager.getManager(LifecycleBase.class);
 

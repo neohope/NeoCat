@@ -24,8 +24,8 @@ import java.io.InputStreamReader;
 import org.apache.jasper.JasperException;
 import org.apache.jasper.JspCompilationContext;
 import org.apache.jasper.runtime.ExceptionUtils;
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.tomcat.Jar;
 
 /**
@@ -49,7 +49,7 @@ class JspReader {
     /**
      * Logger.
      */
-    private final Log log = LogFactory.getLog(JspReader.class); // must not be static
+    private final Logger log = LoggerFactory.getLogger(JspReader.class); // must not be static
 
     /**
      * The current spot in the file.

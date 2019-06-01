@@ -43,7 +43,7 @@ import org.apache.catalina.Container;
 import org.apache.catalina.Globals;
 import org.apache.catalina.LifecycleException;
 import org.apache.catalina.Session;
-import org.apache.juli.logging.Log;
+import org.slf4j.Logger;
 import org.apache.tomcat.util.ExceptionUtils;
 
 /**
@@ -615,7 +615,7 @@ public class JDBCStore extends StoreBase {
     public Session load(String id) throws ClassNotFoundException, IOException {
         StandardSession _session = null;
         org.apache.catalina.Context context = getManager().getContext();
-        Log contextLog = context.getLogger();
+        Logger contextLog = context.getLogger();
 
         synchronized (this) {
             int numberOfTries = 2;

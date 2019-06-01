@@ -35,8 +35,8 @@ import org.apache.catalina.Pipeline;
 import org.apache.catalina.Valve;
 import org.apache.catalina.util.LifecycleBase;
 import org.apache.catalina.util.ToStringUtil;
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.tomcat.util.ExceptionUtils;
 import org.apache.tomcat.util.res.StringManager;
 
@@ -56,7 +56,7 @@ import org.apache.tomcat.util.res.StringManager;
 
 public class StandardPipeline extends LifecycleBase implements Pipeline {
 
-    private static final Log log = LogFactory.getLog(StandardPipeline.class);
+    private static final Logger log = LoggerFactory.getLogger(StandardPipeline.class);
     private static final StringManager sm = StringManager.getManager(Constants.Package);
 
     // ----------------------------------------------------------- Constructors

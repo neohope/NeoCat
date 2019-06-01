@@ -24,8 +24,8 @@ import java.lang.reflect.Method;
 import org.apache.catalina.Executor;
 import org.apache.catalina.Service;
 import org.apache.catalina.connector.Connector;
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.tomcat.util.IntrospectionUtils;
 import org.apache.tomcat.util.digester.Rule;
 import org.apache.tomcat.util.res.StringManager;
@@ -38,7 +38,7 @@ import org.xml.sax.Attributes;
 
 public class ConnectorCreateRule extends Rule {
 
-    private static final Log log = LogFactory.getLog(ConnectorCreateRule.class);
+    private static final Logger log = LoggerFactory.getLogger(ConnectorCreateRule.class);
     protected static final StringManager sm = StringManager.getManager(ConnectorCreateRule.class);
     // --------------------------------------------------------- Public Methods
 

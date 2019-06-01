@@ -16,7 +16,7 @@
  */
 package org.apache.tomcat.util.log;
 
-import org.apache.juli.logging.Log;
+import org.slf4j.Logger;
 
 /**
  * This helper class assists with the logging associated with invalid input
@@ -38,7 +38,7 @@ import org.apache.juli.logging.Log;
  */
 public class UserDataHelper {
 
-    private final Log log;
+    private final Logger log;
 
     private final Config config;
 
@@ -50,7 +50,7 @@ public class UserDataHelper {
     private volatile long lastInfoTime = 0;
 
 
-    public UserDataHelper(Log log) {
+    public UserDataHelper(Logger log) {
         this.log = log;
 
         Config tempConfig;

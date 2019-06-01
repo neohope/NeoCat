@@ -23,8 +23,8 @@ import java.util.Map;
 
 import javax.servlet.ServletContext;
 
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.tomcat.util.digester.Digester;
 import org.apache.tomcat.util.digester.RuleSet;
 import org.apache.tomcat.util.res.StringManager;
@@ -161,7 +161,7 @@ public class DigesterFactory {
         }
         
         if (location == null) {
-            Log log = LogFactory.getLog(DigesterFactory.class);
+            Logger log = LoggerFactory.getLogger(DigesterFactory.class);
             log.warn(sm.getString("digesterFactory.missingSchema", name));
             return null;
         }

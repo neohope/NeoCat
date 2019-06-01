@@ -22,8 +22,8 @@ import javax.servlet.ServletInputStream;
 import javax.servlet.ServletOutputStream;
 
 import org.apache.coyote.UpgradeToken;
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.tomcat.util.net.AbstractEndpoint.Handler.SocketState;
 import org.apache.tomcat.util.net.SSLSupport;
 import org.apache.tomcat.util.net.SocketEvent;
@@ -31,7 +31,7 @@ import org.apache.tomcat.util.net.SocketWrapperBase;
 
 public class UpgradeProcessorInternal extends UpgradeProcessorBase {
 
-    private static final Log log = LogFactory.getLog(UpgradeProcessorInternal.class);
+    private static final Logger log = LoggerFactory.getLogger(UpgradeProcessorInternal.class);
 
     private final InternalHttpUpgradeHandler internalHttpUpgradeHandler;
 
@@ -68,7 +68,7 @@ public class UpgradeProcessorInternal extends UpgradeProcessorBase {
 
 
     @Override
-    protected Log getLog() {
+    protected Logger getLog() {
         return log;
     }
 

@@ -43,8 +43,8 @@ import java.util.concurrent.TimeoutException;
 import javax.net.ssl.SSLEngine;
 import javax.net.ssl.SSLSession;
 
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.tomcat.util.ExceptionUtils;
 import org.apache.tomcat.util.collections.SynchronizedStack;
 import org.apache.tomcat.util.net.AbstractEndpoint.Handler.SocketState;
@@ -60,7 +60,7 @@ public class Nio2Endpoint extends AbstractJsseEndpoint<Nio2Channel,AsynchronousS
     // -------------------------------------------------------------- Constants
 
 
-    private static final Log log = LogFactory.getLog(Nio2Endpoint.class);
+    private static final Logger log = LoggerFactory.getLogger(Nio2Endpoint.class);
 
 
     // ----------------------------------------------------------------- Fields
@@ -373,7 +373,7 @@ public class Nio2Endpoint extends AbstractJsseEndpoint<Nio2Channel,AsynchronousS
 
 
     @Override
-    protected Log getLog() {
+    protected Logger getLog() {
         return log;
     }
 

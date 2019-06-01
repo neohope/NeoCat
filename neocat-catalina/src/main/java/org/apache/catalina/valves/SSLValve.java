@@ -28,8 +28,8 @@ import javax.servlet.ServletException;
 import org.apache.catalina.Globals;
 import org.apache.catalina.connector.Request;
 import org.apache.catalina.connector.Response;
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * When using mod_proxy_http, the client SSL information is not included in the
@@ -62,7 +62,7 @@ import org.apache.juli.logging.LogFactory;
  */
 public class SSLValve extends ValveBase {
 
-    private static final Log log = LogFactory.getLog(SSLValve.class);
+    private static final Logger log = LoggerFactory.getLogger(SSLValve.class);
 
     private String sslClientCertHeader = "ssl_client_cert";
     private String sslCipherHeader = "ssl_cipher";

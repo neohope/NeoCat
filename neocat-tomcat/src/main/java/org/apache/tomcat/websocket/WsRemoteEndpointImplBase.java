@@ -43,8 +43,8 @@ import javax.websocket.RemoteEndpoint;
 import javax.websocket.SendHandler;
 import javax.websocket.SendResult;
 
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.tomcat.util.buf.Utf8Encoder;
 import org.apache.tomcat.util.res.StringManager;
 
@@ -55,7 +55,7 @@ public abstract class WsRemoteEndpointImplBase implements RemoteEndpoint {
 
     protected static final SendResult SENDRESULT_OK = new SendResult();
 
-    private final Log log = LogFactory.getLog(WsRemoteEndpointImplBase.class); // must not be static
+    private final Logger log = LoggerFactory.getLogger(WsRemoteEndpointImplBase.class); // must not be static
 
     private final StateMachine stateMachine = new StateMachine();
 

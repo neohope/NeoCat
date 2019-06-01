@@ -16,8 +16,8 @@
  */
 package org.apache.coyote.http11;
 
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.tomcat.util.net.Nio2Channel;
 import org.apache.tomcat.util.net.Nio2Endpoint;
 
@@ -27,7 +27,7 @@ import org.apache.tomcat.util.net.Nio2Endpoint;
  */
 public class Http11Nio2Protocol extends AbstractHttp11JsseProtocol<Nio2Channel> {
 
-    private static final Log log = LogFactory.getLog(Http11Nio2Protocol.class);
+    private static final Logger log = LoggerFactory.getLogger(Http11Nio2Protocol.class);
 
 
     public Http11Nio2Protocol() {
@@ -36,7 +36,7 @@ public class Http11Nio2Protocol extends AbstractHttp11JsseProtocol<Nio2Channel> 
 
 
     @Override
-    protected Log getLog() { return log; }
+    protected Logger getLog() { return log; }
 
 
     // ----------------------------------------------------- JMX related methods

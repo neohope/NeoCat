@@ -26,8 +26,8 @@ import java.util.Map;
 
 import javax.net.ssl.SSLSession;
 
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.tomcat.util.net.SSLSessionManager;
 import org.apache.tomcat.util.net.SSLSupport;
 import org.apache.tomcat.util.net.openssl.ciphers.Cipher;
@@ -48,7 +48,7 @@ import org.apache.tomcat.util.res.StringManager;
 */
 public class JSSESupport implements SSLSupport, SSLSessionManager {
 
-    private static final Log log = LogFactory.getLog(JSSESupport.class);
+    private static final Logger log = LoggerFactory.getLogger(JSSESupport.class);
 
     private static final StringManager sm = StringManager.getManager(JSSESupport.class);
 

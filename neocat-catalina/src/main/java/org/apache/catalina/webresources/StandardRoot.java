@@ -42,8 +42,8 @@ import org.apache.catalina.WebResource;
 import org.apache.catalina.WebResourceRoot;
 import org.apache.catalina.WebResourceSet;
 import org.apache.catalina.util.LifecycleMBeanBase;
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.tomcat.util.buf.UriUtil;
 import org.apache.tomcat.util.http.RequestUtil;
 import org.apache.tomcat.util.res.StringManager;
@@ -62,7 +62,7 @@ import org.apache.tomcat.util.res.StringManager;
  */
 public class StandardRoot extends LifecycleMBeanBase implements WebResourceRoot {
 
-    private static final Log log = LogFactory.getLog(StandardRoot.class);
+    private static final Logger log = LoggerFactory.getLogger(StandardRoot.class);
     protected static final StringManager sm = StringManager.getManager(StandardRoot.class);
 
     private Context context;

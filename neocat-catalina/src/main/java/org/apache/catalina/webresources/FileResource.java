@@ -31,8 +31,8 @@ import java.security.cert.Certificate;
 import java.util.jar.Manifest;
 
 import org.apache.catalina.WebResourceRoot;
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Represents a single resource (file or directory) that is located on a file
@@ -40,7 +40,7 @@ import org.apache.juli.logging.LogFactory;
  */
 public class FileResource extends AbstractResource {
 
-    private static final Log log = LogFactory.getLog(FileResource.class);
+    private static final Logger log = LoggerFactory.getLogger(FileResource.class);
 
     private static final boolean PROPERTIES_NEED_CONVERT;
     static {
@@ -291,7 +291,7 @@ public class FileResource extends AbstractResource {
     }
 
     @Override
-    protected Log getLog() {
+    protected Logger getLog() {
         return log;
     }
 }

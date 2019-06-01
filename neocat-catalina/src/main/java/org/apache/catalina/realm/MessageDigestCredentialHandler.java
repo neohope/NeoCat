@@ -22,8 +22,8 @@ import java.nio.charset.StandardCharsets;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.tomcat.util.buf.B2CConverter;
 import org.apache.tomcat.util.buf.HexUtils;
 import org.apache.tomcat.util.codec.binary.Base64;
@@ -52,7 +52,7 @@ import org.apache.tomcat.util.security.ConcurrentMessageDigest;
  */
 public class MessageDigestCredentialHandler extends DigestCredentialHandlerBase {
 
-    private static final Log log = LogFactory.getLog(MessageDigestCredentialHandler.class);
+    private static final Logger log = LoggerFactory.getLogger(MessageDigestCredentialHandler.class);
 
     public static final int DEFAULT_ITERATIONS = 1;
 
@@ -184,7 +184,7 @@ public class MessageDigestCredentialHandler extends DigestCredentialHandlerBase 
 
 
     @Override
-    protected Log getLog() {
+    protected Logger getLog() {
         return log;
     }
 }

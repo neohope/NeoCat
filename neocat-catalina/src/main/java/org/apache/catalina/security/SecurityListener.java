@@ -23,14 +23,14 @@ import java.util.Set;
 import org.apache.catalina.Lifecycle;
 import org.apache.catalina.LifecycleEvent;
 import org.apache.catalina.LifecycleListener;
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.tomcat.util.buf.StringUtils;
 import org.apache.tomcat.util.res.StringManager;
 
 public class SecurityListener implements LifecycleListener {
 
-    private static final Log log = LogFactory.getLog(SecurityListener.class);
+    private static final Logger log = LoggerFactory.getLogger(SecurityListener.class);
 
     private static final StringManager sm =
         StringManager.getManager(Constants.PACKAGE);

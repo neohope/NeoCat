@@ -16,8 +16,8 @@
  */
 package org.apache.coyote.http11;
 
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.tomcat.util.net.NioChannel;
 import org.apache.tomcat.util.net.NioEndpoint;
 
@@ -32,7 +32,7 @@ import org.apache.tomcat.util.net.NioEndpoint;
  */
 public class Http11NioProtocol extends AbstractHttp11JsseProtocol<NioChannel> {
 
-    private static final Log log = LogFactory.getLog(Http11NioProtocol.class);
+    private static final Logger log = LoggerFactory.getLogger(Http11NioProtocol.class);
 
 
     public Http11NioProtocol() {
@@ -41,7 +41,7 @@ public class Http11NioProtocol extends AbstractHttp11JsseProtocol<NioChannel> {
 
 
     @Override
-    protected Log getLog() { return log; }
+    protected Logger getLog() { return log; }
 
 
     // -------------------- Pool setup --------------------

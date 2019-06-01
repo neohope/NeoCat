@@ -24,8 +24,8 @@ import java.net.URL;
 import java.util.Enumeration;
 import java.util.Properties;
 
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 /**
@@ -35,7 +35,7 @@ import org.apache.juli.logging.LogFactory;
  */
 public class CatalinaProperties {
 
-    private static final Log log = LogFactory.getLog(CatalinaProperties.class);
+    private static final Logger log = LoggerFactory.getLogger(CatalinaProperties.class);
 
     private static Properties properties = null;
 
@@ -102,7 +102,7 @@ public class CatalinaProperties {
                 properties.load(is);
             } catch (Throwable t) {
                 handleThrowable(t);
-                log.warn(t);
+                log.warn(t.getMessage());
             } finally {
                 try {
                     is.close();

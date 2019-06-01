@@ -50,8 +50,8 @@ import org.apache.catalina.Session;
 import org.apache.catalina.security.SecurityUtil;
 import org.apache.catalina.util.SessionConfig;
 import org.apache.coyote.ActionCode;
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.tomcat.util.buf.CharChunk;
 import org.apache.tomcat.util.buf.UEncoder;
 import org.apache.tomcat.util.buf.UEncoder.SafeCharsSet;
@@ -70,7 +70,7 @@ import org.apache.tomcat.util.security.Escape;
  */
 public class Response implements HttpServletResponse {
 
-    private static final Log log = LogFactory.getLog(Response.class);
+    private static final Logger log = LoggerFactory.getLogger(Response.class);
     protected static final StringManager sm = StringManager.getManager(Response.class);
 
     private static final MediaTypeCache MEDIA_TYPE_CACHE = new MediaTypeCache(100);

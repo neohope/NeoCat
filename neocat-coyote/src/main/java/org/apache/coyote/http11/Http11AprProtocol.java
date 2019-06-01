@@ -16,8 +16,8 @@
  */
 package org.apache.coyote.http11;
 
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.tomcat.util.net.AprEndpoint;
 
 
@@ -31,7 +31,7 @@ import org.apache.tomcat.util.net.AprEndpoint;
  */
 public class Http11AprProtocol extends AbstractHttp11Protocol<Long> {
 
-    private static final Log log = LogFactory.getLog(Http11AprProtocol.class);
+    private static final Logger log = LoggerFactory.getLogger(Http11AprProtocol.class);
 
     public Http11AprProtocol() {
         super(new AprEndpoint());
@@ -39,7 +39,7 @@ public class Http11AprProtocol extends AbstractHttp11Protocol<Long> {
 
 
     @Override
-    protected Log getLog() { return log; }
+    protected Logger getLog() { return log; }
 
     @Override
     public boolean isAprRequired() {

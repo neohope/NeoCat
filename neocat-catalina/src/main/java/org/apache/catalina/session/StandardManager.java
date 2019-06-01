@@ -40,8 +40,8 @@ import org.apache.catalina.Loader;
 import org.apache.catalina.Session;
 import org.apache.catalina.security.SecurityUtil;
 import org.apache.catalina.util.CustomObjectInputStream;
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.tomcat.util.ExceptionUtils;
 
 /**
@@ -58,7 +58,7 @@ import org.apache.tomcat.util.ExceptionUtils;
  */
 public class StandardManager extends ManagerBase {
 
-    private final Log log = LogFactory.getLog(StandardManager.class); // must not be static
+    private final Logger log = LoggerFactory.getLogger(StandardManager.class); // must not be static
 
     // ---------------------------------------------------- Security Classes
 
@@ -191,7 +191,7 @@ public class StandardManager extends ManagerBase {
         }
         Loader loader = null;
         ClassLoader classLoader = null;
-        Log logger = null;
+        Logger logger = null;
         try (FileInputStream fis = new FileInputStream(file.getAbsolutePath());
                 BufferedInputStream bis = new BufferedInputStream(fis)) {
             Context c = getContext();

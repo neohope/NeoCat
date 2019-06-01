@@ -30,8 +30,8 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.tomcat.util.ExceptionUtils;
 import org.apache.tomcat.util.collections.SynchronizedQueue;
 import org.apache.tomcat.util.collections.SynchronizedStack;
@@ -40,7 +40,7 @@ import org.apache.tomcat.util.res.StringManager;
 
 public class NioBlockingSelector {
 
-    private static final Log log = LogFactory.getLog(NioBlockingSelector.class);
+    private static final Logger log = LoggerFactory.getLogger(NioBlockingSelector.class);
     protected static final StringManager sm = StringManager.getManager(NioBlockingSelector.class);
 
     private final SynchronizedStack<KeyReference> keyReferenceStack =

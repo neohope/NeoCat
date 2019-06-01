@@ -42,8 +42,8 @@ import org.apache.catalina.AccessLog;
 import org.apache.catalina.Globals;
 import org.apache.catalina.connector.RequestFacade;
 import org.apache.catalina.util.RequestUtil;
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.tomcat.util.http.FastHttpDateFormat;
 import org.apache.tomcat.util.res.StringManager;
 
@@ -633,7 +633,7 @@ public class RemoteIpFilter extends GenericFilter {
 
     // Log must be non-static as loggers are created per class-loader and this
     // Filter may be used in multiple class loaders
-    private transient Log log = LogFactory.getLog(RemoteIpFilter.class);
+    private transient Logger log = LoggerFactory.getLogger(RemoteIpFilter.class);
     protected static final StringManager sm = StringManager.getManager(RemoteIpFilter.class);
 
     protected static final String PROTOCOL_HEADER_PARAMETER = "protocolHeader";
@@ -1189,6 +1189,6 @@ public class RemoteIpFilter extends GenericFilter {
      */
     private void readObject(ObjectInputStream ois) throws ClassNotFoundException, IOException {
         ois.defaultReadObject();
-        log = LogFactory.getLog(RemoteIpFilter.class);
+        log = LoggerFactory.getLogger(RemoteIpFilter.class);
     }
 }

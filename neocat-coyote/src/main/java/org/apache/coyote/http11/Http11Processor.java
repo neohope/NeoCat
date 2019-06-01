@@ -43,8 +43,8 @@ import org.apache.coyote.http11.filters.SavedRequestInputFilter;
 import org.apache.coyote.http11.filters.VoidInputFilter;
 import org.apache.coyote.http11.filters.VoidOutputFilter;
 import org.apache.coyote.http11.upgrade.InternalHttpUpgradeHandler;
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.tomcat.util.ExceptionUtils;
 import org.apache.tomcat.util.buf.Ascii;
 import org.apache.tomcat.util.buf.ByteChunk;
@@ -63,7 +63,7 @@ import org.apache.tomcat.util.res.StringManager;
 
 public class Http11Processor extends AbstractProcessor {
 
-    private static final Log log = LogFactory.getLog(Http11Processor.class);
+    private static final Logger log = LoggerFactory.getLogger(Http11Processor.class);
 
     /**
      * The string manager for this package.
@@ -1069,7 +1069,7 @@ public class Http11Processor extends AbstractProcessor {
 
 
     @Override
-    protected Log getLog() {
+    protected Logger getLog() {
         return log;
     }
 

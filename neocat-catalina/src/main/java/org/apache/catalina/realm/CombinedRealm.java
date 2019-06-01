@@ -29,8 +29,8 @@ import org.apache.catalina.Container;
 import org.apache.catalina.Lifecycle;
 import org.apache.catalina.LifecycleException;
 import org.apache.catalina.Realm;
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.ietf.jgss.GSSContext;
 import org.ietf.jgss.GSSException;
 import org.ietf.jgss.GSSName;
@@ -43,7 +43,7 @@ import org.ietf.jgss.GSSName;
  */
 public class CombinedRealm extends RealmBase {
 
-    private static final Log log = LogFactory.getLog(CombinedRealm.class);
+    private static final Logger log = LoggerFactory.getLogger(CombinedRealm.class);
 
     /**
      * The list of Realms contained by this Realm.

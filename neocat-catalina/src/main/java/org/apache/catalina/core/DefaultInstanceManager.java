@@ -48,7 +48,7 @@ import org.apache.catalina.ContainerServlet;
 import org.apache.catalina.Globals;
 import org.apache.catalina.security.SecurityUtil;
 import org.apache.catalina.util.Introspection;
-import org.apache.juli.logging.Log;
+import org.slf4j.Logger;
 import org.apache.tomcat.InstanceManager;
 import org.apache.tomcat.util.ExceptionUtils;
 import org.apache.tomcat.util.collections.ManagedConcurrentWeakHashMap;
@@ -112,17 +112,7 @@ public class DefaultInstanceManager implements InstanceManager {
         privileged = catalinaContext.getPrivileged();
         this.containerClassLoader = containerClassLoader;
         ignoreAnnotations = catalinaContext.getIgnoreAnnotations();
-        Log log = catalinaContext.getLogger();
         Set<String> classNames = new HashSet<>();
-        loadProperties(classNames,
-                "org/apache/catalina/core/RestrictedServlets.properties",
-                "defaultInstanceManager.restrictedServletsResource", log);
-        loadProperties(classNames,
-                "org/apache/catalina/core/RestrictedListeners.properties",
-                "defaultInstanceManager.restrictedListenersResource", log);
-        loadProperties(classNames,
-                "org/apache/catalina/core/RestrictedFilters.properties",
-                "defaultInstanceManager.restrictedFiltersResource", log);
         restrictedClasses = Collections.unmodifiableSet(classNames);
         this.context = context;
         this.injectionMap = injectionMap;
@@ -618,7 +608,7 @@ public class DefaultInstanceManager implements InstanceManager {
     }
 
     private static void loadProperties(Set<String> classNames, String resourceName,
-            String messageKey, Log log) {
+            String messageKey, Logger log) {
         Properties properties = new Properties();
         ClassLoader cl = DefaultInstanceManager.class.getClassLoader();
         try (InputStream is = cl.getResourceAsStream(resourceName)) {

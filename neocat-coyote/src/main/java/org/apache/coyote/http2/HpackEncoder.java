@@ -26,8 +26,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.tomcat.util.http.MimeHeaders;
 import org.apache.tomcat.util.res.StringManager;
 
@@ -36,7 +36,7 @@ import org.apache.tomcat.util.res.StringManager;
  */
 class HpackEncoder {
 
-    private static final Log log = LogFactory.getLog(HpackEncoder.class);
+    private static final Logger log = LoggerFactory.getLogger(HpackEncoder.class);
     private static final StringManager sm = StringManager.getManager(HpackEncoder.class);
 
     private static final HpackHeaderFunction DEFAULT_HEADER_FUNCTION = new HpackHeaderFunction() {

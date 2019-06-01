@@ -19,8 +19,8 @@ package org.apache.tomcat.util.net;
 
 import javax.net.ssl.SSLSession;
 
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.tomcat.util.net.jsse.JSSEImplementation;
 import org.apache.tomcat.util.res.StringManager;
 
@@ -31,7 +31,7 @@ import org.apache.tomcat.util.res.StringManager;
  */
 public abstract class SSLImplementation {
 
-    private static final Log logger = LogFactory.getLog(SSLImplementation.class);
+    private static final Logger logger = LoggerFactory.getLogger(SSLImplementation.class);
     private static final StringManager sm = StringManager.getManager(SSLImplementation.class);
 
     /**

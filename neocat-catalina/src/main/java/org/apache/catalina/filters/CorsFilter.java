@@ -37,8 +37,8 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.tomcat.util.http.ResponseUtil;
 import org.apache.tomcat.util.res.StringManager;
 
@@ -83,7 +83,7 @@ public class CorsFilter extends GenericFilter {
     private static final long serialVersionUID = 1L;
     private static final StringManager sm = StringManager.getManager(CorsFilter.class);
 
-    private transient Log log = LogFactory.getLog(CorsFilter.class); // must not be static
+    private transient Logger log = LoggerFactory.getLogger(CorsFilter.class); // must not be static
 
 
     /**
@@ -922,7 +922,7 @@ public class CorsFilter extends GenericFilter {
      */
     private void readObject(ObjectInputStream ois) throws ClassNotFoundException, IOException {
         ois.defaultReadObject();
-        log = LogFactory.getLog(CorsFilter.class);
+        log = LoggerFactory.getLogger(CorsFilter.class);
     }
 
 

@@ -32,8 +32,8 @@ import javax.net.ssl.SSLEngineResult.HandshakeStatus;
 import javax.net.ssl.SSLEngineResult.Status;
 import javax.net.ssl.SSLException;
 
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.tomcat.util.buf.ByteBufferUtils;
 import org.apache.tomcat.util.compat.JreCompat;
 import org.apache.tomcat.util.net.TLSClientHelloExtractor.ExtractorResult;
@@ -45,7 +45,7 @@ import org.apache.tomcat.util.res.StringManager;
  */
 public class SecureNioChannel extends NioChannel {
 
-    private static final Log log = LogFactory.getLog(SecureNioChannel.class);
+    private static final Logger log = LoggerFactory.getLogger(SecureNioChannel.class);
     private static final StringManager sm = StringManager.getManager(SecureNioChannel.class);
 
     // Value determined by observation of what the SSL Engine requested in

@@ -18,8 +18,8 @@ package org.apache.tomcat.util.http.parser;
 
 import java.nio.charset.StandardCharsets;
 
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.tomcat.util.http.ServerCookie;
 import org.apache.tomcat.util.http.ServerCookies;
 import org.apache.tomcat.util.log.UserDataHelper;
@@ -51,7 +51,7 @@ import org.apache.tomcat.util.res.StringManager;
  */
 public class Cookie {
 
-    private static final Log log = LogFactory.getLog(Cookie.class);
+    private static final Logger log = LoggerFactory.getLogger(Cookie.class);
     private static final UserDataHelper invalidCookieVersionLog = new UserDataHelper(log);
     private static final UserDataHelper invalidCookieLog = new UserDataHelper(log);
     private static final StringManager sm =

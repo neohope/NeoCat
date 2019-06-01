@@ -32,8 +32,8 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.catalina.util.NetMask;
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public final class RemoteCIDRFilter extends FilterBase {
 
@@ -46,7 +46,7 @@ public final class RemoteCIDRFilter extends FilterBase {
     /**
      * Our logger
      */
-    private final Log log = LogFactory.getLog(RemoteCIDRFilter.class); // must not be static
+    private final Logger log = LoggerFactory.getLogger(RemoteCIDRFilter.class); // must not be static
 
     /**
      * The list of allowed {@link NetMask}s
@@ -152,7 +152,7 @@ public final class RemoteCIDRFilter extends FilterBase {
 
 
     @Override
-    public Log getLogger() {
+    public Logger getLogger() {
         return log;
     }
 

@@ -47,8 +47,8 @@ import org.apache.catalina.util.LifecycleMBeanBase;
 import org.apache.catalina.util.SessionIdGeneratorBase;
 import org.apache.catalina.util.StandardSessionIdGenerator;
 import org.apache.catalina.util.ToStringUtil;
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.tomcat.util.res.StringManager;
 
 
@@ -61,7 +61,7 @@ import org.apache.tomcat.util.res.StringManager;
  */
 public abstract class ManagerBase extends LifecycleMBeanBase implements Manager {
 
-    private final Log log = LogFactory.getLog(ManagerBase.class); // must not be static
+    private final Logger log = LoggerFactory.getLogger(ManagerBase.class); // must not be static
 
     // ----------------------------------------------------- Instance Variables
 

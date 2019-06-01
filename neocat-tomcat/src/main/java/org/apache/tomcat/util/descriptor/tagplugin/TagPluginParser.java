@@ -24,8 +24,8 @@ import java.util.Map;
 
 import javax.servlet.ServletContext;
 
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.tomcat.util.descriptor.DigesterFactory;
 import org.apache.tomcat.util.descriptor.XmlErrorHandler;
 import org.apache.tomcat.util.digester.Digester;
@@ -37,7 +37,7 @@ import org.xml.sax.SAXException;
  * Parser for Tag Plugin descriptors.
  */
 public class TagPluginParser {
-    private final Log log = LogFactory.getLog(TagPluginParser.class); // must not be static
+    private final Logger log = LoggerFactory.getLogger(TagPluginParser.class); // must not be static
     private static final String PREFIX = "tag-plugins/tag-plugin";
     private final Digester digester;
     private final Map<String, String> plugins = new HashMap<>();

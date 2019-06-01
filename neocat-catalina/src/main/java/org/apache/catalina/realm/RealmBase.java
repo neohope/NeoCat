@@ -49,8 +49,8 @@ import org.apache.catalina.connector.Response;
 import org.apache.catalina.util.LifecycleMBeanBase;
 import org.apache.catalina.util.SessionConfig;
 import org.apache.catalina.util.ToStringUtil;
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.tomcat.util.IntrospectionUtils;
 import org.apache.tomcat.util.buf.B2CConverter;
 import org.apache.tomcat.util.descriptor.web.SecurityCollection;
@@ -72,7 +72,7 @@ import org.ietf.jgss.GSSName;
  */
 public abstract class RealmBase extends LifecycleMBeanBase implements Realm {
 
-    private static final Log log = LogFactory.getLog(RealmBase.class);
+    private static final Logger log = LoggerFactory.getLogger(RealmBase.class);
 
     private static final List<Class<? extends DigestCredentialHandlerBase>> credentialHandlerClasses =
             new ArrayList<>();
@@ -97,7 +97,7 @@ public abstract class RealmBase extends LifecycleMBeanBase implements Realm {
     /**
      * Container log
      */
-    protected Log containerLog = null;
+    protected Logger containerLog = null;
 
 
     private CredentialHandler credentialHandler;

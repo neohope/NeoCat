@@ -23,13 +23,13 @@ import java.security.spec.KeySpec;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.tomcat.util.buf.HexUtils;
 
 public class SecretKeyCredentialHandler extends DigestCredentialHandlerBase {
 
-    private static final Log log = LogFactory.getLog(SecretKeyCredentialHandler.class);
+    private static final Logger log = LoggerFactory.getLogger(SecretKeyCredentialHandler.class);
 
     public static final String DEFAULT_ALGORITHM = "PBKDF2WithHmacSHA1";
     public static final int DEFAULT_KEY_LENGTH = 160;
@@ -99,7 +99,7 @@ public class SecretKeyCredentialHandler extends DigestCredentialHandlerBase {
 
 
     @Override
-    protected Log getLog() {
+    protected Logger getLog() {
         return log;
     }
 }

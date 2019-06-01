@@ -24,7 +24,7 @@ import org.apache.catalina.Pipeline;
 import org.apache.catalina.Valve;
 import org.apache.catalina.util.LifecycleMBeanBase;
 import org.apache.catalina.util.ToStringUtil;
-import org.apache.juli.logging.Log;
+import org.slf4j.Logger;
 import org.apache.tomcat.util.res.StringManager;
 
 /**
@@ -70,7 +70,7 @@ public abstract class ValveBase extends LifecycleMBeanBase implements Contained,
     /**
      * Container log
      */
-    protected Log containerLog = null;
+    protected Logger containerLog = null;
 
 
     /**

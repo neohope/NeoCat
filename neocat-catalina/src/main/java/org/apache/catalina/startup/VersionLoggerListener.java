@@ -26,8 +26,8 @@ import org.apache.catalina.Lifecycle;
 import org.apache.catalina.LifecycleEvent;
 import org.apache.catalina.LifecycleListener;
 import org.apache.catalina.util.ServerInfo;
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.tomcat.util.res.StringManager;
 
 /**
@@ -35,7 +35,7 @@ import org.apache.tomcat.util.res.StringManager;
  */
 public class VersionLoggerListener implements LifecycleListener {
 
-    private static final Log log = LogFactory.getLog(VersionLoggerListener.class);
+    private static final Logger log = LoggerFactory.getLogger(VersionLoggerListener.class);
 
     /**
      * The string manager for this package.

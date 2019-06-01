@@ -38,9 +38,8 @@ import org.apache.catalina.Server;
 import org.apache.catalina.connector.Connector;
 import org.apache.catalina.core.StandardContext;
 import org.apache.catalina.security.SecurityConfig;
-import org.apache.juli.ClassLoaderLogManager;
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.tomcat.util.ExceptionUtils;
 import org.apache.tomcat.util.digester.Digester;
 import org.apache.tomcat.util.digester.Rule;
@@ -597,7 +596,7 @@ public class Catalina {
         }
 
         if (getServer() == null) {
-            log.fatal(sm.getString("catalina.noServer"));
+            log.error(sm.getString("catalina.noServer"));
             return;
         }
 
@@ -607,7 +606,7 @@ public class Catalina {
         try {
             getServer().start();
         } catch (LifecycleException e) {
-            log.fatal(sm.getString("catalina.serverStartFail"), e);
+            log.error(sm.getString("catalina.serverStartFail"), e);
             try {
                 getServer().destroy();
             } catch (LifecycleException e1) {
@@ -627,15 +626,6 @@ public class Catalina {
                 shutdownHook = new CatalinaShutdownHook();
             }
             Runtime.getRuntime().addShutdownHook(shutdownHook);
-
-            // If JULI is being used, disable JULI's shutdown hook since
-            // shutdown hooks run in parallel and log messages may be lost
-            // if JULI's hook completes before the CatalinaShutdownHook()
-            LogManager logManager = LogManager.getLogManager();
-            if (logManager instanceof ClassLoaderLogManager) {
-                ((ClassLoaderLogManager) logManager).setUseShutdownHook(
-                        false);
-            }
         }
 
         if (await) {
@@ -655,14 +645,6 @@ public class Catalina {
             // doesn't get invoked twice
             if (useShutdownHook) {
                 Runtime.getRuntime().removeShutdownHook(shutdownHook);
-
-                // If JULI is being used, re-enable JULI's shutdown to ensure
-                // log messages are not lost
-                LogManager logManager = LogManager.getLogManager();
-                if (logManager instanceof ClassLoaderLogManager) {
-                    ((ClassLoaderLogManager) logManager).setUseShutdownHook(
-                            true);
-                }
             }
         } catch (Throwable t) {
             ExceptionUtils.handleThrowable(t);
@@ -756,18 +738,12 @@ public class Catalina {
                 ExceptionUtils.handleThrowable(ex);
                 log.error(sm.getString("catalina.shutdownHookFail"), ex);
             } finally {
-                // If JULI is used, shut JULI down *after* the server shuts down
-                // so log messages aren't lost
-                LogManager logManager = LogManager.getLogManager();
-                if (logManager instanceof ClassLoaderLogManager) {
-                    ((ClassLoaderLogManager) logManager).shutdown();
-                }
             }
         }
     }
 
 
-    private static final Log log = LogFactory.getLog(Catalina.class);
+    private static final Logger log = LoggerFactory.getLogger(Catalina.class);
 
 }
 

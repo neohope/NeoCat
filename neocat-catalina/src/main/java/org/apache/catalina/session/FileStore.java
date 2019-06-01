@@ -32,7 +32,7 @@ import javax.servlet.ServletContext;
 import org.apache.catalina.Context;
 import org.apache.catalina.Globals;
 import org.apache.catalina.Session;
-import org.apache.juli.logging.Log;
+import org.slf4j.Logger;
 
 /**
  * Concrete implementation of the <b>Store</b> interface that utilizes
@@ -219,7 +219,7 @@ public final class FileStore extends StoreBase {
         }
 
         Context context = getManager().getContext();
-        Log contextLog = context.getLogger();
+        Logger contextLog = context.getLogger();
 
         if (contextLog.isDebugEnabled()) {
             contextLog.debug(sm.getString(getStoreName()+".loading", id, file.getAbsolutePath()));

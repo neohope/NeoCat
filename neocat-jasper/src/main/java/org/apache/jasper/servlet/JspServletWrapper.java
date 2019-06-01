@@ -47,8 +47,8 @@ import org.apache.jasper.runtime.InstanceManagerFactory;
 import org.apache.jasper.runtime.JspFactoryImpl;
 import org.apache.jasper.runtime.JspSourceDependent;
 import org.apache.jasper.util.FastRemovalDequeue;
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.tomcat.InstanceManager;
 import org.apache.tomcat.Jar;
 
@@ -82,7 +82,7 @@ public class JspServletWrapper {
     }
 
     // Logger
-    private final Log log = LogFactory.getLog(JspServletWrapper.class); // must not be static
+    private final Logger log = LoggerFactory.getLogger(JspServletWrapper.class); // must not be static
 
     private volatile Servlet theServlet;
     private final String jspUri;

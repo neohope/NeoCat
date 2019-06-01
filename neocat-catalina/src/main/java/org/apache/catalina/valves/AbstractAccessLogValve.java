@@ -48,8 +48,8 @@ import org.apache.catalina.connector.Response;
 import org.apache.catalina.util.TLSUtil;
 import org.apache.coyote.ActionCode;
 import org.apache.coyote.RequestInfo;
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.tomcat.util.ExceptionUtils;
 import org.apache.tomcat.util.collections.SynchronizedStack;
 import org.apache.tomcat.util.net.IPv6Utils;
@@ -146,7 +146,7 @@ import org.apache.tomcat.util.net.IPv6Utils;
  */
 public abstract class AbstractAccessLogValve extends ValveBase implements AccessLog {
 
-    private static final Log log = LogFactory.getLog(AbstractAccessLogValve.class);
+    private static final Logger log = LoggerFactory.getLogger(AbstractAccessLogValve.class);
 
     /**
      * The list of our time format types.

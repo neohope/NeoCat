@@ -38,8 +38,8 @@ import javax.servlet.jsp.tagext.Tag;
 
 import org.apache.jasper.JasperException;
 import org.apache.jasper.compiler.Localizer;
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.tomcat.InstanceManager;
 
 /**
@@ -967,7 +967,7 @@ public class JspRuntimeLibrary {
             tag.release();
         } catch (Throwable t) {
             ExceptionUtils.handleThrowable(t);
-            Log log = LogFactory.getLog(JspRuntimeLibrary.class);
+            Logger log = LoggerFactory.getLogger(JspRuntimeLibrary.class);
             log.warn(Localizer.getMessage("jsp.warning.tagRelease", tag.getClass().getName()), t);
         }
         try {
@@ -975,7 +975,7 @@ public class JspRuntimeLibrary {
         } catch (Exception e) {
             Throwable t = ExceptionUtils.unwrapInvocationTargetException(e);
             ExceptionUtils.handleThrowable(t);
-            Log log = LogFactory.getLog(JspRuntimeLibrary.class);
+            Logger log = LoggerFactory.getLogger(JspRuntimeLibrary.class);
             log.warn(Localizer.getMessage("jsp.warning.tagPreDestroy", tag.getClass().getName()), t);
         }
 

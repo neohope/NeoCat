@@ -19,8 +19,8 @@ package org.apache.tomcat.websocket;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.tomcat.util.ExceptionUtils;
 import org.apache.tomcat.util.res.StringManager;
 
@@ -31,8 +31,7 @@ import org.apache.tomcat.util.res.StringManager;
  */
 public class BackgroundProcessManager {
 
-    private final Log log =
-            LogFactory.getLog(BackgroundProcessManager.class);
+    private final Logger log = LoggerFactory.getLogger(BackgroundProcessManager.class);
     private static final StringManager sm =
             StringManager.getManager(BackgroundProcessManager.class);
     private static final BackgroundProcessManager instance;

@@ -51,7 +51,7 @@ import org.apache.catalina.connector.Response;
 import org.apache.catalina.deploy.NamingResourcesImpl;
 import org.apache.catalina.util.ContextName;
 import org.apache.catalina.util.LifecycleMBeanBase;
-import org.apache.juli.logging.Log;
+import org.slf4j.Logger;
 import org.apache.tomcat.InstanceManager;
 import org.apache.tomcat.JarScanner;
 import org.apache.tomcat.util.descriptor.web.ApplicationParameter;
@@ -237,7 +237,7 @@ public class FailedContext extends LifecycleMBeanBase implements Context {
     public void setLoader(Loader loader) { /* NO-OP */ }
 
     @Override
-    public Log getLogger() { return null; }
+    public Logger getLogger() { return null; }
 
     @Override
     public String getLogName() { return null; }

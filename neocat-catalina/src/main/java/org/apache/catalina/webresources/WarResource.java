@@ -18,8 +18,8 @@ package org.apache.catalina.webresources;
 
 import java.util.jar.JarEntry;
 
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.tomcat.util.buf.UriUtil;
 
 /**
@@ -28,7 +28,7 @@ import org.apache.tomcat.util.buf.UriUtil;
  */
 public class WarResource extends AbstractSingleArchiveResource {
 
-    private static final Log log = LogFactory.getLog(WarResource.class);
+    private static final Logger log = LoggerFactory.getLogger(WarResource.class);
 
 
     public WarResource(AbstractArchiveResourceSet archiveResourceSet, String webAppPath,
@@ -39,7 +39,7 @@ public class WarResource extends AbstractSingleArchiveResource {
 
 
     @Override
-    protected Log getLog() {
+    protected Logger getLog() {
         return log;
     }
 }

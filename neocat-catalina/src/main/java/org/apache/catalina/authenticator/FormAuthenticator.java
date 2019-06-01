@@ -34,8 +34,8 @@ import org.apache.catalina.Session;
 import org.apache.catalina.connector.Request;
 import org.apache.catalina.connector.Response;
 import org.apache.coyote.ActionCode;
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.tomcat.util.ExceptionUtils;
 import org.apache.tomcat.util.buf.ByteChunk;
 import org.apache.tomcat.util.buf.MessageBytes;
@@ -52,7 +52,7 @@ import org.apache.tomcat.util.http.MimeHeaders;
 public class FormAuthenticator
     extends AuthenticatorBase {
 
-    private final Log log = LogFactory.getLog(FormAuthenticator.class); // must not be static
+    private final Logger log = LoggerFactory.getLogger(FormAuthenticator.class); // must not be static
 
 
     // ----------------------------------------------------- Instance Variables

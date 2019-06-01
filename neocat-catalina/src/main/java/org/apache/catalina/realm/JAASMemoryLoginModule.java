@@ -35,8 +35,8 @@ import javax.security.auth.spi.LoginModule;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.catalina.CredentialHandler;
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.tomcat.util.IntrospectionUtils;
 import org.apache.tomcat.util.digester.Digester;
 
@@ -76,7 +76,7 @@ import org.apache.tomcat.util.digester.Digester;
 public class JAASMemoryLoginModule extends MemoryRealm implements LoginModule {
     // We need to extend MemoryRealm to avoid class cast
 
-    private static final Log log = LogFactory.getLog(JAASMemoryLoginModule.class);
+    private static final Logger log = LoggerFactory.getLogger(JAASMemoryLoginModule.class);
 
     // ----------------------------------------------------- Instance Variables
 

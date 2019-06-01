@@ -23,8 +23,8 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Concrete implementation of <code>RequestFilter</code> that filters
@@ -37,7 +37,7 @@ public final class RemoteAddrFilter extends RequestFilter {
 
     // Log must be non-static as loggers are created per class-loader and this
     // Filter may be used in multiple class loaders
-    private final Log log = LogFactory.getLog(RemoteAddrFilter.class); // must not be static
+    private final Logger log = LoggerFactory.getLogger(RemoteAddrFilter.class); // must not be static
 
 
     /**
@@ -62,7 +62,7 @@ public final class RemoteAddrFilter extends RequestFilter {
     }
 
     @Override
-    protected Log getLogger() {
+    protected Logger getLogger() {
         return log;
     }
 }

@@ -25,8 +25,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.catalina.Globals;
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.tomcat.util.ExceptionUtils;
 
 
@@ -74,7 +74,7 @@ import org.apache.tomcat.util.ExceptionUtils;
 public final class Tool {
 
 
-    private static final Log log = LogFactory.getLog(Tool.class);
+    private static final Logger log = LoggerFactory.getLogger(Tool.class);
 
     // ------------------------------------------------------- Static Variables
 

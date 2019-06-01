@@ -30,8 +30,8 @@ import javax.websocket.Extension;
 import javax.websocket.server.ServerEndpointConfig;
 
 import org.apache.coyote.http11.upgrade.InternalHttpUpgradeHandler;
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.tomcat.util.net.AbstractEndpoint.Handler.SocketState;
 import org.apache.tomcat.util.net.SSLSupport;
 import org.apache.tomcat.util.net.SocketEvent;
@@ -46,7 +46,7 @@ import org.apache.tomcat.websocket.WsSession;
  */
 public class WsHttpUpgradeHandler implements InternalHttpUpgradeHandler {
 
-    private final Log log = LogFactory.getLog(WsHttpUpgradeHandler.class); // must not be static
+    private final Logger log = LoggerFactory.getLogger(WsHttpUpgradeHandler.class); // must not be static
     private static final StringManager sm = StringManager.getManager(WsHttpUpgradeHandler.class);
 
     private final ClassLoader applicationClassLoader;

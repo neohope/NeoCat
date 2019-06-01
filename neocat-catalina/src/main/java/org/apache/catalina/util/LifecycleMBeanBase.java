@@ -24,14 +24,14 @@ import javax.management.ObjectName;
 import org.apache.catalina.Globals;
 import org.apache.catalina.JmxEnabled;
 import org.apache.catalina.LifecycleException;
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.tomcat.util.res.StringManager;
 
 public abstract class LifecycleMBeanBase extends LifecycleBase
         implements JmxEnabled {
 
-    private static final Log log = LogFactory.getLog(LifecycleMBeanBase.class);
+    private static final Logger log = LoggerFactory.getLogger(LifecycleMBeanBase.class);
 
     private static final StringManager sm =
         StringManager.getManager("org.apache.catalina.util");

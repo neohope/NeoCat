@@ -21,15 +21,15 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.nio.ByteBuffer;
 
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.tomcat.util.compat.JreCompat;
 import org.apache.tomcat.util.res.StringManager;
 
 public class ByteBufferUtils {
 
     private static final StringManager sm = StringManager.getManager(ByteBufferUtils.class);
-    private static final Log log = LogFactory.getLog(ByteBufferUtils.class);
+    private static final Logger log = LoggerFactory.getLogger(ByteBufferUtils.class);
 
     private static final Object unsafe;
     private static final Method cleanerMethod;

@@ -24,8 +24,8 @@ import java.util.Date;
 
 import javax.servlet.http.Cookie;
 
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.tomcat.util.buf.ByteChunk;
 import org.apache.tomcat.util.buf.MessageBytes;
 import org.apache.tomcat.util.log.UserDataHelper;
@@ -42,7 +42,7 @@ import org.apache.tomcat.util.res.StringManager;
  */
 public final class LegacyCookieProcessor extends CookieProcessorBase {
 
-    private static final Log log = LogFactory.getLog(LegacyCookieProcessor.class);
+    private static final Logger log = LoggerFactory.getLogger(LegacyCookieProcessor.class);
 
     private static final UserDataHelper userDataLog = new UserDataHelper(log);
 

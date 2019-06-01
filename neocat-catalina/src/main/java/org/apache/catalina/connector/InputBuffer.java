@@ -35,8 +35,8 @@ import org.apache.catalina.security.SecurityUtil;
 import org.apache.coyote.ActionCode;
 import org.apache.coyote.ContainerThreadMarker;
 import org.apache.coyote.Request;
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.tomcat.util.buf.B2CConverter;
 import org.apache.tomcat.util.buf.ByteChunk;
 import org.apache.tomcat.util.collections.SynchronizedStack;
@@ -59,7 +59,7 @@ public class InputBuffer extends Reader
      */
     protected static final StringManager sm = StringManager.getManager(InputBuffer.class);
 
-    private static final Log log = LogFactory.getLog(InputBuffer.class);
+    private static final Logger log = LoggerFactory.getLogger(InputBuffer.class);
 
     public static final int DEFAULT_BUFFER_SIZE = 8 * 1024;
 

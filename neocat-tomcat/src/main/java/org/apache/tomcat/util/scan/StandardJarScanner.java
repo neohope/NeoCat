@@ -33,8 +33,8 @@ import java.util.jar.Manifest;
 
 import javax.servlet.ServletContext;
 
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.tomcat.Jar;
 import org.apache.tomcat.JarScanFilter;
 import org.apache.tomcat.JarScanType;
@@ -61,7 +61,7 @@ import org.apache.tomcat.util.res.StringManager;
  */
 public class StandardJarScanner implements JarScanner {
 
-    private final Log log = LogFactory.getLog(StandardJarScanner.class); // must not be static
+    private final Logger log = LoggerFactory.getLogger(StandardJarScanner.class); // must not be static
 
     /**
      * The string resources for this package.

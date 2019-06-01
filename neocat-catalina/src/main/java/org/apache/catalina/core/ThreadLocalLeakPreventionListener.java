@@ -32,8 +32,8 @@ import org.apache.catalina.Server;
 import org.apache.catalina.Service;
 import org.apache.catalina.connector.Connector;
 import org.apache.coyote.ProtocolHandler;
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.tomcat.util.res.StringManager;
 import org.apache.tomcat.util.threads.ThreadPoolExecutor;
 
@@ -55,8 +55,8 @@ import org.apache.tomcat.util.threads.ThreadPoolExecutor;
 public class ThreadLocalLeakPreventionListener implements LifecycleListener,
         ContainerListener {
 
-    private static final Log log =
-        LogFactory.getLog(ThreadLocalLeakPreventionListener.class);
+    private static final Logger log =
+        LoggerFactory.getLogger(ThreadLocalLeakPreventionListener.class);
 
     private volatile boolean serverStopping = false;
 

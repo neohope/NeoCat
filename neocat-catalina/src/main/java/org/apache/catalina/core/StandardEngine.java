@@ -40,8 +40,8 @@ import org.apache.catalina.connector.Request;
 import org.apache.catalina.connector.Response;
 import org.apache.catalina.realm.NullRealm;
 import org.apache.catalina.util.ServerInfo;
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Standard implementation of the <b>Engine</b> interface.  Each
@@ -53,7 +53,7 @@ import org.apache.juli.logging.LogFactory;
  */
 public class StandardEngine extends ContainerBase implements Engine {
 
-    private static final Log log = LogFactory.getLog(StandardEngine.class);
+    private static final Logger log = LoggerFactory.getLogger(StandardEngine.class);
 
     // ----------------------------------------------------------- Constructors
 

@@ -25,7 +25,7 @@ import java.security.PrivilegedAction;
 
 import org.apache.catalina.Context;
 import org.apache.catalina.Globals;
-import org.apache.juli.logging.Log;
+import org.slf4j.Logger;
 import org.apache.tomcat.util.ExceptionUtils;
 import org.apache.tomcat.util.res.StringManager;
 
@@ -147,7 +147,7 @@ public class Introspection {
      */
     public static Class<?> loadClass(Context context, String className) {
         ClassLoader cl = context.getLoader().getClassLoader();
-        Log log = context.getLogger();
+        Logger log = context.getLogger();
         Class<?> clazz = null;
         try {
             clazz = cl.loadClass(className);

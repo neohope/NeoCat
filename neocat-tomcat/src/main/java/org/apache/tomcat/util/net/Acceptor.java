@@ -16,15 +16,15 @@
  */
 package org.apache.tomcat.util.net;
 
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.tomcat.jni.Error;
 import org.apache.tomcat.util.ExceptionUtils;
 import org.apache.tomcat.util.res.StringManager;
 
 public class Acceptor<U> implements Runnable {
 
-    private static final Log log = LogFactory.getLog(Acceptor.class);
+    private static final Logger log = LoggerFactory.getLogger(Acceptor.class);
     private static final StringManager sm = StringManager.getManager(Acceptor.class);
 
     private static final int INITIAL_ERROR_DELAY = 50;

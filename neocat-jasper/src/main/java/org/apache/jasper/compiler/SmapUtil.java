@@ -35,8 +35,8 @@ import java.util.Map;
 import org.apache.jasper.JasperException;
 import org.apache.jasper.JspCompilationContext;
 import org.apache.jasper.compiler.SmapStratum.LineInfo;
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Contains static utilities for generating SMAP data based on the
@@ -159,7 +159,7 @@ public class SmapUtil {
     // Installation logic (from Robert Field, JSR-045 spec lead)
     private static class SDEInstaller {
 
-        private final Log log = LogFactory.getLog(SDEInstaller.class); // must not be static
+        private final Logger log = LoggerFactory.getLogger(SDEInstaller.class); // must not be static
 
         static final String nameSDE = "SourceDebugExtension";
 
@@ -801,14 +801,14 @@ public class SmapUtil {
                 smap = new String(baos.toByteArray(), encoding);
             }
         } catch (IOException ioe) {
-            Log log = LogFactory.getLog(SmapUtil.class);
+            Logger log = LoggerFactory.getLogger(SmapUtil.class);
             log.warn(Localizer.getMessage("jsp.warning.loadSmap", className), ioe);
         } finally {
             if (is != null) {
                 try {
                     is.close();
                 } catch (IOException ioe) {
-                    Log log = LogFactory.getLog(SmapUtil.class);
+                    Logger log = LoggerFactory.getLogger(SmapUtil.class);
                     log.warn(Localizer.getMessage("jsp.warning.loadSmap", className), ioe);
                 }
             }

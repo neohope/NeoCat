@@ -24,8 +24,8 @@ import java.util.Arrays;
 
 import org.apache.coyote.InputBuffer;
 import org.apache.coyote.Request;
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.tomcat.util.buf.MessageBytes;
 import org.apache.tomcat.util.http.MimeHeaders;
 import org.apache.tomcat.util.http.parser.HttpParser;
@@ -41,7 +41,7 @@ public class Http11InputBuffer implements InputBuffer, ApplicationBufferHandler 
 
     // -------------------------------------------------------------- Constants
 
-    private static final Log log = LogFactory.getLog(Http11InputBuffer.class);
+    private static final Logger log = LoggerFactory.getLogger(Http11InputBuffer.class);
 
     /**
      * The string manager for this package.

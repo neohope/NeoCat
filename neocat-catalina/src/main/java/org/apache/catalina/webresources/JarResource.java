@@ -18,8 +18,8 @@ package org.apache.catalina.webresources;
 
 import java.util.jar.JarEntry;
 
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Represents a single resource (file or directory) that is located within a
@@ -27,7 +27,7 @@ import org.apache.juli.logging.LogFactory;
  */
 public class JarResource extends AbstractSingleArchiveResource {
 
-    private static final Log log = LogFactory.getLog(JarResource.class);
+    private static final Logger log = LoggerFactory.getLogger(JarResource.class);
 
 
     public JarResource(AbstractArchiveResourceSet archiveResourceSet, String webAppPath,
@@ -37,7 +37,7 @@ public class JarResource extends AbstractSingleArchiveResource {
 
 
     @Override
-    protected Log getLog() {
+    protected Logger getLog() {
         return log;
     }
 }

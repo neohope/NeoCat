@@ -43,7 +43,7 @@ import org.apache.catalina.connector.Request;
 import org.apache.catalina.connector.Response;
 import org.apache.catalina.util.URLEncoder;
 import org.apache.catalina.valves.ValveBase;
-import org.apache.juli.logging.LogFactory;
+import org.slf4j.LoggerFactory;
 import org.apache.tomcat.util.buf.CharChunk;
 import org.apache.tomcat.util.buf.MessageBytes;
 import org.apache.tomcat.util.buf.UDecoder;
@@ -128,7 +128,7 @@ public class RewriteValve extends ValveBase {
     @Override
     protected void initInternal() throws LifecycleException {
         super.initInternal();
-        containerLog = LogFactory.getLog(getContainer().getLogName() + ".rewrite");
+        containerLog = LoggerFactory.getLogger(getContainer().getLogName() + ".rewrite");
     }
 
 
@@ -187,7 +187,7 @@ public class RewriteValve extends ValveBase {
     public void setConfiguration(String configuration)
         throws Exception {
         if (containerLog == null) {
-            containerLog = LogFactory.getLog(getContainer().getLogName() + ".rewrite");
+            containerLog = LoggerFactory.getLogger(getContainer().getLogName() + ".rewrite");
         }
         maps.clear();
         parse(new BufferedReader(new StringReader(configuration)));

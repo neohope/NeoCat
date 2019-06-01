@@ -37,8 +37,8 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.catalina.Container;
 import org.apache.catalina.LifecycleException;
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.tomcat.util.ExceptionUtils;
 
 /**
@@ -126,7 +126,7 @@ org.foobar.auth.DatabaseLoginModule REQUIRED
  */
 public class JAASRealm extends RealmBase {
 
-    private static final Log log = LogFactory.getLog(JAASRealm.class);
+    private static final Logger log = LoggerFactory.getLogger(JAASRealm.class);
 
     // ----------------------------------------------------- Instance Variables
 

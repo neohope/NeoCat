@@ -24,8 +24,8 @@ import java.util.Set;
 
 import org.apache.catalina.LifecycleEvent;
 import org.apache.catalina.LifecycleListener;
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.tomcat.util.digester.ObjectCreateRule;
 import org.apache.tomcat.util.res.StringManager;
 import org.xml.sax.Attributes;
@@ -36,7 +36,7 @@ import org.xml.sax.Attributes;
  */
 public class ListenerCreateRule extends ObjectCreateRule {
 
-    private static final Log log = LogFactory.getLog(ListenerCreateRule.class);
+    private static final Logger log = LoggerFactory.getLogger(ListenerCreateRule.class);
     protected static final StringManager sm = StringManager.getManager(ListenerCreateRule.class);
 
     public ListenerCreateRule(String className, String attributeName) {

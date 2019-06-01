@@ -19,7 +19,7 @@ package org.apache.tomcat.util.descriptor;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.juli.logging.Log;
+import org.slf4j.Logger;
 import org.apache.tomcat.util.res.StringManager;
 import org.xml.sax.ErrorHandler;
 import org.xml.sax.SAXException;
@@ -62,7 +62,7 @@ public class XmlErrorHandler implements ErrorHandler {
         return warnings;
     }
 
-    public void logFindings(Log log, String source) {
+    public void logFindings(Logger log, String source) {
         for (SAXParseException e : getWarnings()) {
             log.warn(sm.getString(
                     "xmlErrorHandler.warning", e.getMessage(), source));

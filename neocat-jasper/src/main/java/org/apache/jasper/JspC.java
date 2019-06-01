@@ -57,8 +57,8 @@ import org.apache.jasper.compiler.TldCache;
 import org.apache.jasper.runtime.JspFactoryImpl;
 import org.apache.jasper.servlet.JspCServletContext;
 import org.apache.jasper.servlet.TldScanner;
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.tools.ant.AntClassLoader;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Task;
@@ -108,7 +108,7 @@ public class JspC extends Task implements Options {
             "clsid:8AD9C840-044E-11D1-B3E9-00805F499D93";
 
     // Logger
-    private static final Log log = LogFactory.getLog(JspC.class);
+    private static final Logger log = LoggerFactory.getLogger(JspC.class);
 
     protected static final String SWITCH_VERBOSE = "-v";
     protected static final String SWITCH_HELP = "-help";
@@ -1579,9 +1579,6 @@ public class JspC extends Task implements Options {
                 throw new BuildException(je);
             }
         } finally {
-            if (loader != null) {
-                LogFactory.release(loader);
-            }
         }
     }
 

@@ -46,8 +46,8 @@ import org.apache.coyote.http2.HpackDecoder.HeaderEmitter;
 import org.apache.coyote.http2.HpackEncoder.State;
 import org.apache.coyote.http2.Http2Parser.Input;
 import org.apache.coyote.http2.Http2Parser.Output;
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.apache.tomcat.util.http.MimeHeaders;
 import org.apache.tomcat.util.net.AbstractEndpoint.Handler.SocketState;
@@ -76,7 +76,7 @@ import org.apache.tomcat.util.res.StringManager;
 class Http2UpgradeHandler extends AbstractStream implements InternalHttpUpgradeHandler,
         Input, Output {
 
-    protected static final Log log = LogFactory.getLog(Http2UpgradeHandler.class);
+    protected static final Logger log = LoggerFactory.getLogger(Http2UpgradeHandler.class);
     protected static final StringManager sm = StringManager.getManager(Http2UpgradeHandler.class);
 
     private static final AtomicInteger connectionIdGenerator = new AtomicInteger(0);

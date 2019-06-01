@@ -34,8 +34,8 @@ import org.apache.catalina.Lifecycle;
 import org.apache.catalina.LifecycleEvent;
 import org.apache.catalina.LifecycleListener;
 import org.apache.catalina.startup.SafeForkJoinWorkerThreadFactory;
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.tomcat.util.ExceptionUtils;
 import org.apache.tomcat.util.compat.JreCompat;
 import org.apache.tomcat.util.compat.JreVendor;
@@ -59,8 +59,8 @@ import org.w3c.dom.ls.DOMImplementationLS;
  */
 public class JreMemoryLeakPreventionListener implements LifecycleListener {
 
-    private static final Log log =
-        LogFactory.getLog(JreMemoryLeakPreventionListener.class);
+    private static final Logger log =
+        LoggerFactory.getLogger(JreMemoryLeakPreventionListener.class);
     private static final StringManager sm =
         StringManager.getManager(Constants.Package);
 

@@ -22,8 +22,8 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.jar.JarInputStream;
 
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.tomcat.util.buf.UriUtil;
 
 /**
@@ -32,7 +32,7 @@ import org.apache.tomcat.util.buf.UriUtil;
  */
 public class JarWarResource extends AbstractArchiveResource {
 
-    private static final Log log = LogFactory.getLog(JarWarResource.class);
+    private static final Logger log = LoggerFactory.getLogger(JarWarResource.class);
 
     private final String archivePath;
 
@@ -92,7 +92,7 @@ public class JarWarResource extends AbstractArchiveResource {
     }
 
     @Override
-    protected Log getLog() {
+    protected Logger getLog() {
         return log;
     }
 }

@@ -47,8 +47,8 @@ import javax.websocket.Session;
 import javax.websocket.WebSocketContainer;
 import javax.websocket.server.ServerEndpointConfig;
 
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.tomcat.InstanceManager;
 import org.apache.tomcat.InstanceManagerBindings;
 import org.apache.tomcat.util.ExceptionUtils;
@@ -65,7 +65,7 @@ public class WsSession implements Session {
     private static final StringManager sm = StringManager.getManager(WsSession.class);
     private static AtomicLong ids = new AtomicLong(0);
 
-    private final Log log = LogFactory.getLog(WsSession.class); // must not be static
+    private final Logger log = LoggerFactory.getLogger(WsSession.class); // must not be static
 
     private final Endpoint localEndpoint;
     private final WsRemoteEndpointImplBase wsRemoteEndpoint;

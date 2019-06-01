@@ -26,8 +26,8 @@ import java.util.List;
 import org.apache.catalina.Lifecycle;
 import org.apache.catalina.LifecycleEvent;
 import org.apache.catalina.LifecycleListener;
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.tomcat.jni.Library;
 import org.apache.tomcat.jni.LibraryNotFoundError;
 import org.apache.tomcat.jni.SSL;
@@ -45,7 +45,7 @@ import org.apache.tomcat.util.res.StringManager;
 public class AprLifecycleListener
     implements LifecycleListener {
 
-    private static final Log log = LogFactory.getLog(AprLifecycleListener.class);
+    private static final Logger log = LoggerFactory.getLogger(AprLifecycleListener.class);
     private static boolean instanceCreated = false;
     /**
      * Info messages during init() are cached until Lifecycle.BEFORE_INIT_EVENT
@@ -145,7 +145,7 @@ public class AprLifecycleListener
                     String errorMessage = sm.getString("aprListener.initializeFIPSFailed");
                     Error e = new Error(errorMessage);
                     // Log here, because thrown error might be not logged
-                    log.fatal(errorMessage, e);
+                    log.error(errorMessage, e);
                     throw e;
                 }
             }

@@ -21,8 +21,8 @@ import java.io.FileReader;
 import java.util.Enumeration;
 import java.util.Hashtable;
 
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Concrete implementation of the <code>UserDatabase</code> interface
@@ -32,7 +32,7 @@ import org.apache.juli.logging.LogFactory;
  */
 public final class PasswdUserDatabase implements UserDatabase {
 
-    private static final Log log = LogFactory.getLog(PasswdUserDatabase.class);
+    private static final Logger log = LoggerFactory.getLogger(PasswdUserDatabase.class);
 
     /**
      * The pathname of the Unix password file.

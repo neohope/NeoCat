@@ -24,13 +24,13 @@ import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicLong;
 
 import org.apache.catalina.WebResource;
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.tomcat.util.res.StringManager;
 
 public class Cache {
 
-    private static final Log log = LogFactory.getLog(Cache.class);
+    private static final Logger log = LoggerFactory.getLogger(Cache.class);
     protected static final StringManager sm = StringManager.getManager(Cache.class);
 
     private static final long TARGET_FREE_PERCENT_GET = 5;

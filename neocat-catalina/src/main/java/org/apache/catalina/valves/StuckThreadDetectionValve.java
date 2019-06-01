@@ -33,8 +33,8 @@ import javax.servlet.ServletException;
 import org.apache.catalina.LifecycleException;
 import org.apache.catalina.connector.Request;
 import org.apache.catalina.connector.Response;
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.tomcat.util.res.StringManager;
 
 /**
@@ -46,7 +46,7 @@ public class StuckThreadDetectionValve extends ValveBase {
     /**
      * Logger
      */
-    private static final Log log = LogFactory.getLog(StuckThreadDetectionValve.class);
+    private static final Logger log = LoggerFactory.getLogger(StuckThreadDetectionValve.class);
 
     /**
      * The string manager for this package.

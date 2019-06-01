@@ -33,8 +33,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.catalina.LifecycleException;
 import org.apache.catalina.Realm;
 import org.apache.catalina.connector.Request;
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.tomcat.util.buf.ByteChunk;
 import org.apache.tomcat.util.buf.MessageBytes;
 import org.apache.tomcat.util.codec.binary.Base64;
@@ -54,7 +54,7 @@ import org.ietf.jgss.Oid;
  */
 public class SpnegoAuthenticator extends AuthenticatorBase {
 
-    private final Log log = LogFactory.getLog(SpnegoAuthenticator.class); // must not be static
+    private final Logger log = LoggerFactory.getLogger(SpnegoAuthenticator.class); // must not be static
     private static final String AUTH_HEADER_VALUE_NEGOTIATE = "Negotiate";
 
     private String loginConfigName = Constants.DEFAULT_LOGIN_MODULE_NAME;

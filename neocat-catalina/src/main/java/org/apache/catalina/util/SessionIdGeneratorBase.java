@@ -25,14 +25,14 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import org.apache.catalina.LifecycleException;
 import org.apache.catalina.LifecycleState;
 import org.apache.catalina.SessionIdGenerator;
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.tomcat.util.res.StringManager;
 
 public abstract class SessionIdGeneratorBase extends LifecycleBase
         implements SessionIdGenerator {
 
-    private final Log log = LogFactory.getLog(SessionIdGeneratorBase.class); // must not be static
+    private final Logger log = LoggerFactory.getLogger(SessionIdGeneratorBase.class); // must not be static
 
 
     private static final StringManager sm =

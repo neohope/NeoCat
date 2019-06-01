@@ -24,12 +24,12 @@ import java.security.cert.Certificate;
 import java.util.jar.Manifest;
 
 import org.apache.catalina.WebResourceRoot;
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class JarResourceRoot extends AbstractResource {
 
-    private static final Log log = LogFactory.getLog(JarResourceRoot.class);
+    private static final Logger log = LoggerFactory.getLogger(JarResourceRoot.class);
 
     private final File base;
     private final String baseUrl;
@@ -145,7 +145,7 @@ public class JarResourceRoot extends AbstractResource {
         }
     }
     @Override
-    protected Log getLog() {
+    protected Logger getLog() {
         return log;
     }
 

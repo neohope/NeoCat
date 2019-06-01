@@ -19,13 +19,13 @@ package org.apache.coyote.http2;
 import java.util.EnumMap;
 import java.util.Map;
 
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.tomcat.util.res.StringManager;
 
 abstract class ConnectionSettingsBase<T extends Throwable> {
 
-    private final Log log = LogFactory.getLog(ConnectionSettingsBase.class); // must not be static
+    private final Logger log = LoggerFactory.getLogger(ConnectionSettingsBase.class); // must not be static
     private final StringManager sm = StringManager.getManager(ConnectionSettingsBase.class);
 
     private final String connectionId;

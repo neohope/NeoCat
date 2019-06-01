@@ -21,7 +21,7 @@ import java.util.Iterator;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
 
-import org.apache.juli.logging.Log;
+import org.slf4j.Logger;
 import org.apache.tomcat.util.net.AbstractEndpoint.Handler.SocketState;
 import org.apache.tomcat.util.net.DispatchType;
 import org.apache.tomcat.util.net.SocketEvent;
@@ -165,5 +165,5 @@ public abstract class AbstractProcessorLight implements Processor {
 
     protected abstract SocketState asyncPostProcess();
 
-    protected abstract Log getLog();
+    protected abstract Logger getLog();
 }

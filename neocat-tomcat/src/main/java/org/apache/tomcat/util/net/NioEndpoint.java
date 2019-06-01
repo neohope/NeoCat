@@ -48,8 +48,8 @@ import java.util.concurrent.atomic.AtomicLong;
 import javax.net.ssl.SSLEngine;
 import javax.net.ssl.SSLSession;
 
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.tomcat.util.ExceptionUtils;
 import org.apache.tomcat.util.IntrospectionUtils;
 import org.apache.tomcat.util.collections.SynchronizedQueue;
@@ -77,7 +77,7 @@ public class NioEndpoint extends AbstractJsseEndpoint<NioChannel,SocketChannel> 
     // -------------------------------------------------------------- Constants
 
 
-    private static final Log log = LogFactory.getLog(NioEndpoint.class);
+    private static final Logger log = LoggerFactory.getLogger(NioEndpoint.class);
 
 
     public static final int OP_REGISTER = 0x100; //register interest op
@@ -479,7 +479,7 @@ public class NioEndpoint extends AbstractJsseEndpoint<NioChannel,SocketChannel> 
 
 
     @Override
-    protected Log getLog() {
+    protected Logger getLog() {
         return log;
     }
 

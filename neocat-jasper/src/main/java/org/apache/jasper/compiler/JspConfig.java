@@ -25,8 +25,8 @@ import javax.servlet.ServletContext;
 import javax.servlet.descriptor.JspConfigDescriptor;
 import javax.servlet.descriptor.JspPropertyGroupDescriptor;
 
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Handles the jsp-config element in WEB_INF/web.xml.  This is used
@@ -39,7 +39,7 @@ import org.apache.juli.logging.LogFactory;
 public class JspConfig {
 
     // Logger
-    private final Log log = LogFactory.getLog(JspConfig.class); // must not be static
+    private final Logger log = LoggerFactory.getLogger(JspConfig.class); // must not be static
 
     private Vector<JspPropertyGroup> jspProperties = null;
     private final ServletContext ctxt;

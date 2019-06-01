@@ -36,8 +36,8 @@ import javax.servlet.http.HttpSession;
 import org.apache.catalina.connector.Request;
 import org.apache.catalina.connector.Response;
 import org.apache.catalina.util.ServerInfo;
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.tomcat.util.ExceptionUtils;
 
 /**
@@ -126,7 +126,7 @@ import org.apache.tomcat.util.ExceptionUtils;
  */
 public class ExtendedAccessLogValve extends AccessLogValve {
 
-    private static final Log log = LogFactory.getLog(ExtendedAccessLogValve.class);
+    private static final Logger log = LoggerFactory.getLogger(ExtendedAccessLogValve.class);
 
     // ----------------------------------------------------- Instance Variables
 

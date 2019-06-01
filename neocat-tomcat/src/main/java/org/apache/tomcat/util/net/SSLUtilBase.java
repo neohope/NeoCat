@@ -55,8 +55,8 @@ import javax.net.ssl.TrustManager;
 import javax.net.ssl.TrustManagerFactory;
 import javax.net.ssl.X509KeyManager;
 
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.tomcat.util.file.ConfigFileLoader;
 import org.apache.tomcat.util.net.SSLHostConfig.CertificateVerification;
 import org.apache.tomcat.util.net.jsse.JSSEKeyManager;
@@ -69,7 +69,7 @@ import org.apache.tomcat.util.security.KeyStoreUtil;
  */
 public abstract class SSLUtilBase implements SSLUtil {
 
-    private static final Log log = LogFactory.getLog(SSLUtilBase.class);
+    private static final Logger log = LoggerFactory.getLogger(SSLUtilBase.class);
     private static final StringManager sm = StringManager.getManager(SSLUtilBase.class);
 
     protected final SSLHostConfig sslHostConfig;
@@ -127,7 +127,7 @@ public abstract class SSLUtilBase implements SSLUtil {
     }
 
 
-    static <T> List<T> getEnabled(String name, Log log, boolean warnOnSkip, Collection<T> configured,
+    static <T> List<T> getEnabled(String name, Logger log, boolean warnOnSkip, Collection<T> configured,
             Collection<T> implemented) {
 
         List<T> enabled = new ArrayList<>();
@@ -534,7 +534,7 @@ public abstract class SSLUtilBase implements SSLUtil {
 
     protected abstract Set<String> getImplementedProtocols();
     protected abstract Set<String> getImplementedCiphers();
-    protected abstract Log getLog();
+    protected abstract Logger getLog();
     protected abstract boolean isTls13RenegAuthAvailable();
     protected abstract SSLContext createSSLContextInternal(List<String> negotiableProtocols) throws Exception;
 }

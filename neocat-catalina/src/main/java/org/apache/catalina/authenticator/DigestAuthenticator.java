@@ -29,8 +29,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.catalina.LifecycleException;
 import org.apache.catalina.Realm;
 import org.apache.catalina.connector.Request;
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.tomcat.util.http.parser.Authorization;
 import org.apache.tomcat.util.security.ConcurrentMessageDigest;
 import org.apache.tomcat.util.security.MD5Encoder;
@@ -45,7 +45,7 @@ import org.apache.tomcat.util.security.MD5Encoder;
  */
 public class DigestAuthenticator extends AuthenticatorBase {
 
-    private final Log log = LogFactory.getLog(DigestAuthenticator.class); // must not be static
+    private final Logger log = LoggerFactory.getLogger(DigestAuthenticator.class); // must not be static
 
 
     // -------------------------------------------------------------- Constants

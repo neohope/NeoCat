@@ -30,8 +30,8 @@ import javax.security.auth.message.callback.CallerPrincipalCallback;
 import javax.security.auth.message.callback.GroupPrincipalCallback;
 
 import org.apache.catalina.realm.GenericPrincipal;
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.tomcat.util.res.StringManager;
 
 /**
@@ -83,7 +83,7 @@ public class CallbackHandlerImpl implements CallbackHandler {
                 } else {
                     // This is a singleton so need to get correct Logger for
                     // current TCCL
-                    Log log = LogFactory.getLog(CallbackHandlerImpl.class);
+                    Logger log = LoggerFactory.getLogger(CallbackHandlerImpl.class);
                     log.error(sm.getString("callbackHandlerImpl.jaspicCallbackMissing",
                             callback.getClass().getName()));
                 }

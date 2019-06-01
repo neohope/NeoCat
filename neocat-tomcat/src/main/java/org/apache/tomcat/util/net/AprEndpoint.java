@@ -34,8 +34,8 @@ import java.util.concurrent.locks.ReentrantReadWriteLock.WriteLock;
 
 import javax.net.ssl.KeyManager;
 
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.tomcat.jni.Address;
 import org.apache.tomcat.jni.Error;
 import org.apache.tomcat.jni.File;
@@ -78,7 +78,7 @@ public class AprEndpoint extends AbstractEndpoint<Long,Long> implements SNICallB
 
     // -------------------------------------------------------------- Constants
 
-    private static final Log log = LogFactory.getLog(AprEndpoint.class);
+    private static final Logger log = LoggerFactory.getLogger(AprEndpoint.class);
 
     // ----------------------------------------------------------------- Fields
 
@@ -800,7 +800,7 @@ public class AprEndpoint extends AbstractEndpoint<Long,Long> implements SNICallB
     }
 
     @Override
-    protected Log getLog() {
+    protected Logger getLog() {
         return log;
     }
 

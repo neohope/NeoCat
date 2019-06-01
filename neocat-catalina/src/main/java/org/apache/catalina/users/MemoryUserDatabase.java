@@ -36,8 +36,8 @@ import org.apache.catalina.Group;
 import org.apache.catalina.Role;
 import org.apache.catalina.User;
 import org.apache.catalina.UserDatabase;
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.tomcat.util.digester.AbstractObjectCreationFactory;
 import org.apache.tomcat.util.digester.Digester;
 import org.apache.tomcat.util.file.ConfigFileLoader;
@@ -79,7 +79,7 @@ import org.xml.sax.Attributes;
  */
 public class MemoryUserDatabase implements UserDatabase {
 
-    private static final Log log = LogFactory.getLog(MemoryUserDatabase.class);
+    private static final Logger log = LoggerFactory.getLogger(MemoryUserDatabase.class);
     private static final StringManager sm = StringManager.getManager(MemoryUserDatabase.class);
 
 

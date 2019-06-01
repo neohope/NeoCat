@@ -107,8 +107,8 @@ import org.apache.catalina.util.ErrorPageSupport;
 import org.apache.catalina.util.ExtensionValidator;
 import org.apache.catalina.util.URLEncoder;
 import org.apache.catalina.webresources.StandardRoot;
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.tomcat.InstanceManager;
 import org.apache.tomcat.InstanceManagerBindings;
 import org.apache.tomcat.JarScanner;
@@ -144,7 +144,7 @@ import org.apache.tomcat.util.security.PrivilegedSetTccl;
 public class StandardContext extends ContainerBase
         implements Context, NotificationEmitter {
 
-    private static final Log log = LogFactory.getLog(StandardContext.class);
+    private static final Logger log = LoggerFactory.getLogger(StandardContext.class);
 
 
     // ----------------------------------------------------------- Constructors

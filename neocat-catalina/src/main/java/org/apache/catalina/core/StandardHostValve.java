@@ -33,8 +33,8 @@ import org.apache.catalina.connector.Request;
 import org.apache.catalina.connector.Response;
 import org.apache.catalina.valves.ValveBase;
 import org.apache.coyote.ActionCode;
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.tomcat.util.ExceptionUtils;
 import org.apache.tomcat.util.descriptor.web.ErrorPage;
 import org.apache.tomcat.util.res.StringManager;
@@ -51,7 +51,7 @@ import org.apache.tomcat.util.res.StringManager;
  */
 final class StandardHostValve extends ValveBase {
 
-    private static final Log log = LogFactory.getLog(StandardHostValve.class);
+    private static final Logger log = LoggerFactory.getLogger(StandardHostValve.class);
 
     // Saves a call to getClassLoader() on very request. Under high load these
     // calls took just long enough to appear as a hot spot (although a very

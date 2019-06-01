@@ -25,8 +25,8 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.catalina.Globals;
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.tomcat.util.http.Parameters.FailReason;
 
 /**
@@ -45,10 +45,10 @@ public class FailedRequestFilter extends FilterBase {
 
     // Log must be non-static as loggers are created per class-loader and this
     // Filter may be used in multiple class loaders
-    private final Log log = LogFactory.getLog(FailedRequestFilter.class); // must not be static
+    private final Logger log = LoggerFactory.getLogger(FailedRequestFilter.class); // must not be static
 
     @Override
-    protected Log getLogger() {
+    protected Logger getLogger() {
         return log;
     }
 

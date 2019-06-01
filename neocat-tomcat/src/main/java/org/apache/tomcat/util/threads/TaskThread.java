@@ -16,8 +16,8 @@
  */
 package org.apache.tomcat.util.threads;
 
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * A Thread implementation that records the time at which it was created.
@@ -25,7 +25,7 @@ import org.apache.juli.logging.LogFactory;
  */
 public class TaskThread extends Thread {
 
-    private static final Log log = LogFactory.getLog(TaskThread.class);
+    private static final Logger log = LoggerFactory.getLogger(TaskThread.class);
     private final long creationTime;
 
     public TaskThread(ThreadGroup group, Runnable target, String name) {

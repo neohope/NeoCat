@@ -32,8 +32,8 @@ import org.apache.catalina.Session;
 import org.apache.catalina.Store;
 import org.apache.catalina.StoreManager;
 import org.apache.catalina.security.SecurityUtil;
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 /**
  * Extends the {@link ManagerBase} class to implement most of the
  * functionality required by a Manager which supports any kind of
@@ -49,7 +49,7 @@ import org.apache.juli.logging.LogFactory;
 public abstract class PersistentManagerBase extends ManagerBase
         implements StoreManager {
 
-    private final Log log = LogFactory.getLog(PersistentManagerBase.class); // must not be static
+    private final Logger log = LoggerFactory.getLogger(PersistentManagerBase.class); // must not be static
 
     // ---------------------------------------------------- Security Classes
 

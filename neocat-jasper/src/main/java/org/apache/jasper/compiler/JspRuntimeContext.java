@@ -43,8 +43,8 @@ import org.apache.jasper.Options;
 import org.apache.jasper.runtime.ExceptionUtils;
 import org.apache.jasper.servlet.JspServletWrapper;
 import org.apache.jasper.util.FastRemovalDequeue;
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 /**
@@ -64,7 +64,7 @@ public final class JspRuntimeContext {
     /**
      * Logger
      */
-    private final Log log = LogFactory.getLog(JspRuntimeContext.class); // must not be static
+    private final Logger log = LoggerFactory.getLogger(JspRuntimeContext.class); // must not be static
 
     /**
      * Counts how many times the webapp's JSPs have been reloaded.

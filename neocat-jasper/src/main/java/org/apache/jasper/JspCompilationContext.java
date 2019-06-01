@@ -37,8 +37,8 @@ import org.apache.jasper.compiler.Localizer;
 import org.apache.jasper.compiler.ServletWriter;
 import org.apache.jasper.servlet.JasperLoader;
 import org.apache.jasper.servlet.JspServletWrapper;
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.tomcat.Jar;
 import org.apache.tomcat.util.descriptor.tld.TldResourcePath;
 
@@ -58,7 +58,7 @@ import org.apache.tomcat.util.descriptor.tld.TldResourcePath;
  */
 public class JspCompilationContext {
 
-    private final Log log = LogFactory.getLog(JspCompilationContext.class); // must not be static
+    private final Logger log = LoggerFactory.getLogger(JspCompilationContext.class); // must not be static
 
     private String className;
     private final String jspUri;

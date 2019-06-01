@@ -22,8 +22,8 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.WriteListener;
 
 import org.apache.coyote.ContainerThreadMarker;
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.tomcat.util.ExceptionUtils;
 import org.apache.tomcat.util.net.DispatchType;
 import org.apache.tomcat.util.net.SocketWrapperBase;
@@ -31,7 +31,7 @@ import org.apache.tomcat.util.res.StringManager;
 
 public class UpgradeServletOutputStream extends ServletOutputStream {
 
-    private static final Log log = LogFactory.getLog(UpgradeServletOutputStream.class);
+    private static final Logger log = LoggerFactory.getLogger(UpgradeServletOutputStream.class);
     private static final StringManager sm =
             StringManager.getManager(UpgradeServletOutputStream.class);
 

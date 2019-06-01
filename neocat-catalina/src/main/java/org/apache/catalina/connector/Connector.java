@@ -35,8 +35,8 @@ import org.apache.coyote.Adapter;
 import org.apache.coyote.ProtocolHandler;
 import org.apache.coyote.UpgradeProtocol;
 import org.apache.coyote.http11.AbstractHttp11JsseProtocol;
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.tomcat.util.IntrospectionUtils;
 import org.apache.tomcat.util.buf.B2CConverter;
 import org.apache.tomcat.util.net.SSLHostConfig;
@@ -52,7 +52,7 @@ import org.apache.tomcat.util.res.StringManager;
  */
 public class Connector extends LifecycleMBeanBase  {
 
-    private static final Log log = LogFactory.getLog(Connector.class);
+    private static final Logger log = LoggerFactory.getLogger(Connector.class);
 
 
     /**

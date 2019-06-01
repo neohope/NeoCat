@@ -37,8 +37,8 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.tomcat.util.ExceptionUtils;
 import org.apache.tomcat.util.IntrospectionUtils;
 import org.apache.tomcat.util.buf.B2CConverter;
@@ -100,7 +100,7 @@ public class Digester extends DefaultHandler2 {
                     break;
                 } catch (Throwable t) {
                     ExceptionUtils.handleThrowable(t);
-                    LogFactory.getLog(Digester.class).error(sm.getString("digester.propertySourceLoadError", className), t);
+                    LoggerFactory.getLogger(Digester.class).error(sm.getString("digester.propertySourceLoadError", className), t);
                 }
             }
         }
@@ -308,12 +308,12 @@ public class Digester extends DefaultHandler2 {
     /**
      * The Log to which most logging calls will be made.
      */
-    protected Log log = LogFactory.getLog(Digester.class);
+    protected Logger log = LoggerFactory.getLogger(Digester.class);
 
     /**
      * The Log to which all SAX event related logging calls will be made.
      */
-    protected Log saxLog = LogFactory.getLog("org.apache.tomcat.util.digester.Digester.sax");
+    protected Logger saxLog = LoggerFactory.getLogger("org.apache.tomcat.util.digester.Digester.sax");
 
 
     public Digester() {
@@ -325,7 +325,7 @@ public class Digester extends DefaultHandler2 {
 
 
     public static void replaceSystemProperties() {
-        Log log = LogFactory.getLog(Digester.class);
+        Logger log = LoggerFactory.getLogger(Digester.class);
         if (propertySource != null) {
             IntrospectionUtils.PropertySource[] propertySources =
                     new IntrospectionUtils.PropertySource[] { propertySource };
@@ -509,7 +509,7 @@ public class Digester extends DefaultHandler2 {
     /**
      * @return the current Logger associated with this instance of the Digester
      */
-    public Log getLogger() {
+    public Logger getLogger() {
 
         return log;
 
@@ -520,7 +520,7 @@ public class Digester extends DefaultHandler2 {
      * Set the current logger for this Digester.
      * @param log The logger that will be used
      */
-    public void setLogger(Log log) {
+    public void setLogger(Logger log) {
 
         this.log = log;
 
@@ -533,7 +533,7 @@ public class Digester extends DefaultHandler2 {
      * @since 1.6
      * @return the SAX logger
      */
-    public Log getSAXLogger() {
+    public Logger getSAXLogger() {
 
         return saxLog;
     }
@@ -546,7 +546,7 @@ public class Digester extends DefaultHandler2 {
      *
      * @since 1.6
      */
-    public void setSAXLogger(Log saxLog) {
+    public void setSAXLogger(Logger saxLog) {
 
         this.saxLog = saxLog;
     }
@@ -1764,8 +1764,8 @@ public class Digester extends DefaultHandler2 {
             return;
         }
 
-        log = LogFactory.getLog("org.apache.tomcat.util.digester.Digester");
-        saxLog = LogFactory.getLog("org.apache.tomcat.util.digester.Digester.sax");
+        log = LoggerFactory.getLogger("org.apache.tomcat.util.digester.Digester");
+        saxLog = LoggerFactory.getLogger("org.apache.tomcat.util.digester.Digester.sax");
 
         // Set the configuration flag to avoid repeating
         configured = true;

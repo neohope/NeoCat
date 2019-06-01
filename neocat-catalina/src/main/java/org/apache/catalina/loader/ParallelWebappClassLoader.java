@@ -17,12 +17,12 @@
 package org.apache.catalina.loader;
 
 import org.apache.catalina.LifecycleException;
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ParallelWebappClassLoader extends WebappClassLoaderBase {
 
-    private static final Log log = LogFactory.getLog(ParallelWebappClassLoader.class);
+    private static final Logger log = LoggerFactory.getLogger(ParallelWebappClassLoader.class);
 
     static {
         boolean result = ClassLoader.registerAsParallelCapable();

@@ -38,7 +38,7 @@ import java.util.concurrent.TimeUnit;
 import javax.management.MalformedObjectNameException;
 import javax.management.ObjectName;
 
-import org.apache.juli.logging.Log;
+import org.slf4j.Logger;
 import org.apache.tomcat.util.ExceptionUtils;
 import org.apache.tomcat.util.IntrospectionUtils;
 import org.apache.tomcat.util.collections.SynchronizedStack;
@@ -1239,7 +1239,7 @@ public abstract class AbstractEndpoint<S,U> {
     }
 
 
-    protected abstract Log getLog();
+    protected abstract Logger getLog();
 
     protected LimitLatch initializeConnectionLatch() {
         if (maxConnections==-1) return null;
