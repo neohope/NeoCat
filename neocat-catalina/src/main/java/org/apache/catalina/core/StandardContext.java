@@ -5019,19 +5019,10 @@ public class StandardContext extends ContainerBase
                 if (manager == null) {
                     if (log.isDebugEnabled()) {
                         log.debug(sm.getString("standardContext.cluster.noManager",
-                                Boolean.valueOf((getCluster() != null)),
+                                Boolean.valueOf(false),
                                 Boolean.valueOf(distributable)));
                     }
-                    if ((getCluster() != null) && distributable) {
-                        try {
-                            contextManager = getCluster().createManager(getName());
-                        } catch (Exception ex) {
-                            log.error(sm.getString("standardContext.cluster.managerError"), ex);
-                            ok = false;
-                        }
-                    } else {
-                        contextManager = new StandardManager();
-                    }
+                    contextManager = new StandardManager();
                 }
 
                 // Configure default manager if none was specified
@@ -5043,11 +5034,6 @@ public class StandardContext extends ContainerBase
                     setManager(contextManager);
                 }
 
-                if (manager!=null && (getCluster() != null) && distributable) {
-                    //let the cluster know that there is a context that is distributable
-                    //and that it has its own manager
-                    getCluster().registerManager(manager);
-                }
             }
 
             if (!getConfigured()) {

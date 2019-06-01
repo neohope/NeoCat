@@ -29,9 +29,6 @@ import org.apache.catalina.Realm;
 import org.apache.catalina.Valve;
 import org.apache.catalina.WebResourceRoot;
 import org.apache.catalina.WebResourceSet;
-import org.apache.catalina.ha.CatalinaCluster;
-import org.apache.catalina.ha.ClusterDeployer;
-import org.apache.catalina.ha.ClusterListener;
 import org.apache.catalina.tribes.Channel;
 import org.apache.catalina.tribes.ChannelInterceptor;
 import org.apache.catalina.tribes.ChannelReceiver;
@@ -62,11 +59,11 @@ public class StoreRegistry {
     private String version;
 
     // Access Information
-    private static Class<?> interfaces[] = { CatalinaCluster.class,
+    private static Class<?> interfaces[] = {
             ChannelSender.class, ChannelReceiver.class, Channel.class,
-            MembershipService.class, ClusterDeployer.class, Realm.class,
+            MembershipService.class, Realm.class,
             Manager.class, DirContext.class, LifecycleListener.class,
-            Valve.class, ClusterListener.class, MessageListener.class,
+            Valve.class, MessageListener.class,
             DataSender.class, ChannelInterceptor.class, Member.class,
             WebResourceRoot.class, WebResourceSet.class,
             CredentialHandler.class, UpgradeProtocol.class,

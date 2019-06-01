@@ -32,7 +32,6 @@ import javax.servlet.descriptor.JspConfigDescriptor;
 
 import org.apache.catalina.AccessLog;
 import org.apache.catalina.Authenticator;
-import org.apache.catalina.Cluster;
 import org.apache.catalina.Container;
 import org.apache.catalina.ContainerListener;
 import org.apache.catalina.Context;
@@ -250,11 +249,6 @@ public class FailedContext extends LifecycleMBeanBase implements Context {
 
     @Override
     public Pipeline getPipeline() { return null; }
-
-    @Override
-    public Cluster getCluster() { return null; }
-    @Override
-    public void setCluster(Cluster cluster) { /* NO-OP */ }
 
     @Override
     public int getBackgroundProcessorDelay() { return -1; }
