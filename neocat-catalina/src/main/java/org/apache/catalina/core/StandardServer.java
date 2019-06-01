@@ -48,7 +48,6 @@ import org.apache.catalina.LifecycleState;
 import org.apache.catalina.Server;
 import org.apache.catalina.Service;
 import org.apache.catalina.deploy.NamingResourcesImpl;
-import org.apache.catalina.mbeans.MBeanFactory;
 import org.apache.catalina.startup.Catalina;
 import org.apache.catalina.util.ExtensionValidator;
 import org.apache.catalina.util.LifecycleMBeanBase;
@@ -989,11 +988,6 @@ public final class StandardServer extends LifecycleMBeanBase implements Server {
         // present in the JVM (may happen when embedding) then the same cache
         // will be registered under multiple names
         onameStringCache = register(new StringCache(), "type=StringCache");
-
-        // Register the MBeanFactory
-        MBeanFactory factory = new MBeanFactory();
-        factory.setContainer(this);
-        onameMBeanFactory = register(factory, "type=MBeanFactory");
 
         // Register the naming resources
         globalNamingResources.init();
