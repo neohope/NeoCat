@@ -38,7 +38,6 @@ import java.util.Set;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.annotation.Resource;
-import javax.ejb.EJB;
 import javax.naming.Context;
 import javax.naming.NamingException;
 import javax.persistence.PersistenceContext;
@@ -73,12 +72,7 @@ public class DefaultInstanceManager implements InstanceManager {
 
     static {
         Class<?> clazz = null;
-        try {
-            clazz = Class.forName("javax.ejb.EJB");
-        } catch (ClassNotFoundException cnfe) {
-            // Expected
-        }
-        EJB_PRESENT = (clazz != null);
+        EJB_PRESENT = false;
 
         clazz = null;
         try {
@@ -341,13 +335,6 @@ public class DefaultInstanceManager implements InstanceManager {
                                     method.getParameterTypes(),
                                     resourceAnnotation.name(),
                                     AnnotationCacheEntryType.SETTER));
-                        } else if (EJB_PRESENT &&
-                                (ejbAnnotation = method.getAnnotation(EJB.class)) != null) {
-                            annotations.add(new AnnotationCacheEntry(
-                                    method.getName(),
-                                    method.getParameterTypes(),
-                                    ((EJB) ejbAnnotation).name(),
-                                    AnnotationCacheEntryType.SETTER));
                         } else if (WS_PRESENT && (webServiceRefAnnotation =
                                 method.getAnnotation(WebServiceRef.class)) != null) {
                             annotations.add(new AnnotationCacheEntry(
@@ -416,10 +403,6 @@ public class DefaultInstanceManager implements InstanceManager {
                                 field.getAnnotation(Resource.class)) != null) {
                             annotations.add(new AnnotationCacheEntry(fieldName, null,
                                     resourceAnnotation.name(), AnnotationCacheEntryType.FIELD));
-                        } else if (EJB_PRESENT &&
-                                (ejbAnnotation = field.getAnnotation(EJB.class)) != null) {
-                            annotations.add(new AnnotationCacheEntry(fieldName, null,
-                                    ((EJB) ejbAnnotation).name(), AnnotationCacheEntryType.FIELD));
                         } else if (WS_PRESENT && (webServiceRefAnnotation =
                                 field.getAnnotation(WebServiceRef.class)) != null) {
                             annotations.add(new AnnotationCacheEntry(fieldName, null,
