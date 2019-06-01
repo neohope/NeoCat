@@ -59,8 +59,6 @@ import org.apache.tomcat.InstanceManager;
 import org.apache.tomcat.PeriodicEventListener;
 import org.apache.tomcat.util.ExceptionUtils;
 import org.apache.tomcat.util.log.SystemLogHandler;
-import org.apache.tomcat.util.modeler.Registry;
-import org.apache.tomcat.util.modeler.Util;
 
 /**
  * Standard implementation of the <b>Wrapper</b> interface that represents
@@ -988,7 +986,6 @@ public class StandardWrapper extends ContainerBase
 
             try {
                 jspMonitorON = new ObjectName(oname.toString());
-                Registry.getRegistry(null, null).registerComponent(instance, jspMonitorON, null);
             } catch (Exception ex) {
                 log.warn(sm.getString("standardWrapper.jspMonitorError", instance));
             }
@@ -1318,10 +1315,6 @@ public class StandardWrapper extends ContainerBase
         instance = null;
         instanceInitialized = false;
 
-        if (isJspServlet && jspMonitorON != null ) {
-            Registry.getRegistry(null, null).unregisterComponent(jspMonitorON);
-        }
-
         if (singleThreadModel && (instancePool != null)) {
             try {
                 while (!instancePool.isEmpty()) {
@@ -1614,9 +1607,9 @@ public class StandardWrapper extends ContainerBase
         keyProperties.append(",name=");
 
         String name = getName();
-        if (Util.objectNameValueNeedsQuote(name)) {
-            name = ObjectName.quote(name);
-        }
+//        if (Util.objectNameValueNeedsQuote(name)) {
+//            name = ObjectName.quote(name);
+//        }
         keyProperties.append(name);
 
         keyProperties.append(getJ2EEKeyProperties());

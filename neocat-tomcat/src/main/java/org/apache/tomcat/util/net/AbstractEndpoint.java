@@ -42,7 +42,6 @@ import org.apache.juli.logging.Log;
 import org.apache.tomcat.util.ExceptionUtils;
 import org.apache.tomcat.util.IntrospectionUtils;
 import org.apache.tomcat.util.collections.SynchronizedStack;
-import org.apache.tomcat.util.modeler.Registry;
 import org.apache.tomcat.util.net.Acceptor.AcceptorState;
 import org.apache.tomcat.util.res.StringManager;
 import org.apache.tomcat.util.threads.LimitLatch;
@@ -1133,15 +1132,6 @@ public abstract class AbstractEndpoint<S,U> {
             bindState = BindState.BOUND_ON_INIT;
         }
         if (this.domain != null) {
-            // Register endpoint (as ThreadPool - historical name)
-            oname = new ObjectName(domain + ":type=ThreadPool,name=\"" + getName() + "\"");
-            Registry.getRegistry(null, null).registerComponent(this, oname, null);
-
-            ObjectName socketPropertiesOname = new ObjectName(domain +
-                    ":type=ThreadPool,name=\"" + getName() + "\",subType=SocketProperties");
-            socketProperties.setObjectName(socketPropertiesOname);
-            Registry.getRegistry(null, null).registerComponent(socketProperties, socketPropertiesOname, null);
-
             for (SSLHostConfig sslHostConfig : findSslHostConfigs()) {
                 registerJmx(sslHostConfig);
             }
@@ -1159,11 +1149,6 @@ public abstract class AbstractEndpoint<S,U> {
             sslOname = new ObjectName(domain + ":type=SSLHostConfig,ThreadPool=\"" +
                     getName() + "\",name=" + ObjectName.quote(sslHostConfig.getHostName()));
             sslHostConfig.setObjectName(sslOname);
-            try {
-                Registry.getRegistry(null, null).registerComponent(sslHostConfig, sslOname, null);
-            } catch (Exception e) {
-                getLog().warn(sm.getString("endpoint.jmxRegistrationFailed", sslOname), e);
-            }
         } catch (MalformedObjectNameException e) {
             getLog().warn(sm.getString("endpoint.invalidJmxNameSslHost",
                     sslHostConfig.getHostName()), e);
@@ -1177,12 +1162,6 @@ public abstract class AbstractEndpoint<S,U> {
                         "\",Host=" + ObjectName.quote(sslHostConfig.getHostName()) +
                         ",name=" + sslHostConfigCert.getType());
                 sslHostConfigCert.setObjectName(sslCertOname);
-                try {
-                    Registry.getRegistry(null, null).registerComponent(
-                            sslHostConfigCert, sslCertOname, null);
-                } catch (Exception e) {
-                    getLog().warn(sm.getString("endpoint.jmxRegistrationFailed", sslCertOname), e);
-                }
             } catch (MalformedObjectNameException e) {
                 getLog().warn(sm.getString("endpoint.invalidJmxNameSslHostCert",
                         sslHostConfig.getHostName(), sslHostConfigCert.getType()), e);
@@ -1192,11 +1171,6 @@ public abstract class AbstractEndpoint<S,U> {
 
 
     private void unregisterJmx(SSLHostConfig sslHostConfig) {
-        Registry registry = Registry.getRegistry(null, null);
-        registry.unregisterComponent(sslHostConfig.getObjectName());
-        for (SSLHostConfigCertificate sslHostConfigCert : sslHostConfig.getCertificates()) {
-            registry.unregisterComponent(sslHostConfigCert.getObjectName());
-        }
     }
 
 
@@ -1261,12 +1235,6 @@ public abstract class AbstractEndpoint<S,U> {
         if (bindState == BindState.BOUND_ON_INIT) {
             unbind();
             bindState = BindState.UNBOUND;
-        }
-        Registry registry = Registry.getRegistry(null, null);
-        registry.unregisterComponent(oname);
-        registry.unregisterComponent(socketProperties.getObjectName());
-        for (SSLHostConfig sslHostConfig : findSslHostConfigs()) {
-            unregisterJmx(sslHostConfig);
         }
     }
 

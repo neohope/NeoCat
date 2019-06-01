@@ -56,7 +56,6 @@ import org.apache.juli.logging.Log;
 import org.apache.juli.logging.LogFactory;
 import org.apache.tomcat.util.ExceptionUtils;
 import org.apache.tomcat.util.buf.StringCache;
-import org.apache.tomcat.util.modeler.Registry;
 import org.apache.tomcat.util.res.StringManager;
 import org.apache.tomcat.util.threads.TaskThreadFactory;
 
@@ -837,12 +836,6 @@ public final class StandardServer extends LifecycleMBeanBase implements Server {
         try {
             // Note: Hard-coded domain used since this object is per Server/JVM
             ObjectName sname = new ObjectName("Catalina:type=StoreConfig");
-            MBeanServer server = Registry.getRegistry(null, null).getMBeanServer();
-            if (server.isRegistered(sname)) {
-                server.invoke(sname, "storeConfig", null, null);
-            } else {
-                log.error(sm.getString("standardServer.storeConfig.notAvailable", sname));
-            }
         } catch (Throwable t) {
             ExceptionUtils.handleThrowable(t);
             log.error(sm.getString("standardServer.storeConfig.error"), t);
@@ -867,14 +860,7 @@ public final class StandardServer extends LifecycleMBeanBase implements Server {
         try {
             // Note: Hard-coded domain used since this object is per Server/JVM
             ObjectName sname = new ObjectName("Catalina:type=StoreConfig");
-            MBeanServer server = Registry.getRegistry(null, null).getMBeanServer();
-            if (server.isRegistered(sname)) {
-                server.invoke(sname, "store",
-                    new Object[] {context},
-                    new String [] { "java.lang.String"});
-            } else {
-                log.error(sm.getString("standardServer.storeConfig.notAvailable", sname));
-            }
+            log.error(sm.getString("standardServer.storeConfig.notAvailable", sname));
         } catch (Throwable t) {
             ExceptionUtils.handleThrowable(t);
             log.error(sm.getString("standardServer.storeConfig.contextError", context.getName()), t);

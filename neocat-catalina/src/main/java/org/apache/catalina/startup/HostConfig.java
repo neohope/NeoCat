@@ -70,7 +70,6 @@ import org.apache.juli.logging.LogFactory;
 import org.apache.tomcat.util.ExceptionUtils;
 import org.apache.tomcat.util.buf.UriUtil;
 import org.apache.tomcat.util.digester.Digester;
-import org.apache.tomcat.util.modeler.Registry;
 import org.apache.tomcat.util.res.StringManager;
 
 /**
@@ -1559,8 +1558,6 @@ public class HostConfig implements LifecycleListener {
             ObjectName hostON = host.getObjectName();
             oname = new ObjectName
                 (hostON.getDomain() + ":type=Deployer,host=" + host.getName());
-            Registry.getRegistry(null, null).registerComponent
-                (this, oname, this.getClass().getName());
         } catch (Exception e) {
             log.warn(sm.getString("hostConfig.jmx.register", oname), e);
         }
@@ -1586,13 +1583,6 @@ public class HostConfig implements LifecycleListener {
         if (log.isDebugEnabled())
             log.debug(sm.getString("hostConfig.stop"));
 
-        if (oname != null) {
-            try {
-                Registry.getRegistry(null, null).unregisterComponent(oname);
-            } catch (Exception e) {
-                log.warn(sm.getString("hostConfig.jmx.unregister", oname), e);
-            }
-        }
         oname = null;
     }
 

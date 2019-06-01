@@ -40,7 +40,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.catalina.util.ServerInfo;
-import org.apache.tomcat.util.modeler.Registry;
 import org.apache.tomcat.util.res.StringManager;
 
 /**
@@ -99,65 +98,6 @@ public class StatusManagerServlet
      */
     @Override
     public void init() throws ServletException {
-
-        // Retrieve the MBean server
-        mBeanServer = Registry.getRegistry(null, null).getMBeanServer();
-
-        try {
-
-            // Query protocol handlers
-            String onStr = "*:type=ProtocolHandler,*";
-            ObjectName objectName = new ObjectName(onStr);
-            Set<ObjectInstance> set = mBeanServer.queryMBeans(objectName, null);
-            Iterator<ObjectInstance> iterator = set.iterator();
-            while (iterator.hasNext()) {
-                ObjectInstance oi = iterator.next();
-                protocolHandlers.addElement(oi.getObjectName());
-            }
-
-            // Query Thread Pools
-            onStr = "*:type=ThreadPool,*";
-            objectName = new ObjectName(onStr);
-            set = mBeanServer.queryMBeans(objectName, null);
-            onStr = "*:type=ThreadPool,*,subType=SocketProperties";
-            objectName = new ObjectName(onStr);
-            Set<ObjectInstance> set2 = mBeanServer.queryMBeans(objectName, null);
-            iterator = set.iterator();
-            while (iterator.hasNext()) {
-                ObjectInstance oi = iterator.next();
-                if (!set2.contains(oi)) {
-                    threadPools.addElement(oi.getObjectName());
-                }
-            }
-
-            // Query Global Request Processors
-            onStr = "*:type=GlobalRequestProcessor,*";
-            objectName = new ObjectName(onStr);
-            set = mBeanServer.queryMBeans(objectName, null);
-            iterator = set.iterator();
-            while (iterator.hasNext()) {
-                ObjectInstance oi = iterator.next();
-                globalRequestProcessors.addElement(oi.getObjectName());
-            }
-
-            // Query Request Processors
-            onStr = "*:type=RequestProcessor,*";
-            objectName = new ObjectName(onStr);
-            set = mBeanServer.queryMBeans(objectName, null);
-            iterator = set.iterator();
-            while (iterator.hasNext()) {
-                ObjectInstance oi = iterator.next();
-                requestProcessors.addElement(oi.getObjectName());
-            }
-
-            // Register with MBean server
-            onStr = "JMImplementation:type=MBeanServerDelegate";
-            objectName = new ObjectName(onStr);
-            mBeanServer.addNotificationListener(objectName, this, null, null);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
     }
 

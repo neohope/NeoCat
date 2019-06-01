@@ -40,8 +40,6 @@ import org.apache.juli.logging.LogFactory;
 import org.apache.tomcat.util.ExceptionUtils;
 import org.apache.tomcat.util.descriptor.web.FilterDef;
 import org.apache.tomcat.util.log.SystemLogHandler;
-import org.apache.tomcat.util.modeler.Registry;
-import org.apache.tomcat.util.modeler.Util;
 import org.apache.tomcat.util.res.StringManager;
 
 
@@ -342,9 +340,9 @@ public final class ApplicationFilterConfig implements FilterConfig, Serializable
         String webMod = "//" + hostName + parentName;
         String onameStr = null;
         String filterName = filterDef.getFilterName();
-        if (Util.objectNameValueNeedsQuote(filterName)) {
-            filterName = ObjectName.quote(filterName);
-        }
+//        if (Util.objectNameValueNeedsQuote(filterName)) {
+//            filterName = ObjectName.quote(filterName);
+//        }
         if (context instanceof StandardContext) {
             StandardContext standardContext = (StandardContext) context;
             onameStr = domain + ":j2eeType=Filter,WebModule=" + webMod +
@@ -357,7 +355,6 @@ public final class ApplicationFilterConfig implements FilterConfig, Serializable
         }
         try {
             oname = new ObjectName(onameStr);
-            Registry.getRegistry(null, null).registerComponent(this, oname, null);
         } catch (Exception ex) {
             log.warn(sm.getString("applicationFilterConfig.jmxRegisterFail",
                     getFilterClass(), getFilterName()), ex);
@@ -369,7 +366,6 @@ public final class ApplicationFilterConfig implements FilterConfig, Serializable
         // unregister this component
         if (oname != null) {
             try {
-                Registry.getRegistry(null, null).unregisterComponent(oname);
                 if (log.isDebugEnabled())
                     log.debug(sm.getString("applicationFilterConfig.jmxUnregister",
                             getFilterClass(), getFilterName()));

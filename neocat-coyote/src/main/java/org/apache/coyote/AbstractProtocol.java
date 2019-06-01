@@ -43,7 +43,6 @@ import org.apache.juli.logging.Log;
 import org.apache.tomcat.InstanceManager;
 import org.apache.tomcat.util.ExceptionUtils;
 import org.apache.tomcat.util.collections.SynchronizedStack;
-import org.apache.tomcat.util.modeler.Registry;
 import org.apache.tomcat.util.net.AbstractEndpoint;
 import org.apache.tomcat.util.net.AbstractEndpoint.Handler;
 import org.apache.tomcat.util.net.SocketEvent;
@@ -536,19 +535,6 @@ public abstract class AbstractProtocol<S> implements ProtocolHandler,
             logPortOffset();
         }
 
-        if (oname == null) {
-            // Component not pre-registered so register it
-            oname = createObjectName();
-            if (oname != null) {
-                Registry.getRegistry(null, null).registerComponent(this, oname, null);
-            }
-        }
-
-        if (this.domain != null) {
-            rgOname = new ObjectName(domain + ":type=GlobalRequestProcessor,name=" + getName());
-            Registry.getRegistry(null, null).registerComponent(
-                    getHandler().getGlobal(), rgOname, null);
-        }
 
         String endpointName = getName();
         endpoint.setName(endpointName.substring(1, endpointName.length()-1));
@@ -667,21 +653,12 @@ public abstract class AbstractProtocol<S> implements ProtocolHandler,
             endpoint.destroy();
         } finally {
             if (oname != null) {
-                if (mserver == null) {
-                    Registry.getRegistry(null, null).unregisterComponent(oname);
-                } else {
-                    // Possibly registered with a different MBeanServer
-                    try {
-                        mserver.unregisterMBean(oname);
-                    } catch (MBeanRegistrationException | InstanceNotFoundException e) {
-                        getLog().info(sm.getString("abstractProtocol.mbeanDeregistrationFailed",
-                                oname, mserver));
-                    }
+            	try {
+                    mserver.unregisterMBean(oname);
+                } catch (MBeanRegistrationException | InstanceNotFoundException e) {
+                    getLog().info(sm.getString("abstractProtocol.mbeanDeregistrationFailed",
+                            oname, mserver));
                 }
-            }
-
-            if (rgOname != null) {
-                Registry.getRegistry(null, null).unregisterComponent(rgOname);
             }
         }
     }
@@ -1058,8 +1035,6 @@ public abstract class AbstractProtocol<S> implements ProtocolHandler,
                         if (getLog().isDebugEnabled()) {
                             getLog().debug("Register " + rpName);
                         }
-                        Registry.getRegistry(null, null).registerComponent(rp,
-                                rpName, null);
                         rp.setRpName(rpName);
                     } catch (Exception e) {
                         getLog().warn("Error registering request");
@@ -1083,8 +1058,6 @@ public abstract class AbstractProtocol<S> implements ProtocolHandler,
                         if (getLog().isDebugEnabled()) {
                             getLog().debug("Unregister " + rpName);
                         }
-                        Registry.getRegistry(null, null).unregisterComponent(
-                                rpName);
                         rp.setRpName(null);
                     } catch (Exception e) {
                         getLog().warn("Error unregistering request", e);

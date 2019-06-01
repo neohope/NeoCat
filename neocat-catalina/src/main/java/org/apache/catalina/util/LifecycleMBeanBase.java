@@ -26,7 +26,6 @@ import org.apache.catalina.JmxEnabled;
 import org.apache.catalina.LifecycleException;
 import org.apache.juli.logging.Log;
 import org.apache.juli.logging.LogFactory;
-import org.apache.tomcat.util.modeler.Registry;
 import org.apache.tomcat.util.res.StringManager;
 
 public abstract class LifecycleMBeanBase extends LifecycleBase
@@ -54,7 +53,6 @@ public abstract class LifecycleMBeanBase extends LifecycleBase
         // If oname is not null then registration has already happened via
         // preRegister().
         if (oname == null) {
-            mserver = Registry.getRegistry(null, null).getMBeanServer();
 
             oname = register(this, getObjectNameKeyProperties());
         }
@@ -155,7 +153,6 @@ public abstract class LifecycleMBeanBase extends LifecycleBase
 
         try {
             on = new ObjectName(name.toString());
-            Registry.getRegistry(null, null).registerComponent(obj, on, null);
         } catch (MalformedObjectNameException e) {
             log.warn(sm.getString("lifecycleMBeanBase.registerFail", obj, name),
                     e);
@@ -184,7 +181,6 @@ public abstract class LifecycleMBeanBase extends LifecycleBase
         StringBuilder name = new StringBuilder(getDomain());
         name.append(':');
         name.append(objectNameKeyProperties);
-        Registry.getRegistry(null, null).unregisterComponent(name.toString());
     }
 
 
@@ -198,7 +194,6 @@ public abstract class LifecycleMBeanBase extends LifecycleBase
      * @param on    The name of the component to unregister
      */
     protected final void unregister(ObjectName on) {
-        Registry.getRegistry(null, null).unregisterComponent(on);
     }
 
 

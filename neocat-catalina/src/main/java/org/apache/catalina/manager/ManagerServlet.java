@@ -67,7 +67,6 @@ import org.apache.coyote.http11.AbstractHttp11Protocol;
 import org.apache.tomcat.util.Diagnostics;
 import org.apache.tomcat.util.ExceptionUtils;
 import org.apache.tomcat.util.IntrospectionUtils;
-import org.apache.tomcat.util.modeler.Registry;
 import org.apache.tomcat.util.net.SSLContext;
 import org.apache.tomcat.util.net.SSLHostConfig;
 import org.apache.tomcat.util.net.SSLHostConfigCertificate;
@@ -270,9 +269,6 @@ public class ManagerServlet extends HttpServlet implements ContainerServlet {
                 log(sm.getString("managerServlet.objectNameFail", name), e);
             }
         }
-
-        // Retrieve the MBean server
-        mBeanServer = Registry.getRegistry(null, null).getMBeanServer();
 
     }
 

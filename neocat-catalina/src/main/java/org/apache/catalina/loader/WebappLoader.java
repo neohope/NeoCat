@@ -40,7 +40,6 @@ import org.apache.juli.logging.Log;
 import org.apache.juli.logging.LogFactory;
 import org.apache.tomcat.util.ExceptionUtils;
 import org.apache.tomcat.util.buf.UDecoder;
-import org.apache.tomcat.util.modeler.Registry;
 import org.apache.tomcat.util.res.StringManager;
 
 /**
@@ -404,8 +403,6 @@ public class WebappLoader extends LifecycleMBeanBase
             ObjectName cloname = new ObjectName(context.getDomain() + ":type=" +
                     classLoader.getClass().getSimpleName() + ",host=" +
                     context.getParent().getName() + ",context=" + contextName);
-            Registry.getRegistry(null, null)
-                .registerComponent(classLoader, cloname, null);
 
         } catch (Throwable t) {
             t = ExceptionUtils.unwrapInvocationTargetException(t);
@@ -453,7 +450,6 @@ public class WebappLoader extends LifecycleMBeanBase
                 ObjectName cloname = new ObjectName(context.getDomain() + ":type=" +
                         classLoader.getClass().getSimpleName() + ",host=" +
                         context.getParent().getName() + ",context=" + contextName);
-                Registry.getRegistry(null, null).unregisterComponent(cloname);
             } catch (Exception e) {
                 log.warn(sm.getString("webappLoader.stopError"), e);
             }
