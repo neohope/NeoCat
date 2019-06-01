@@ -86,13 +86,6 @@ public final class StandardServer extends LifecycleMBeanBase implements Server {
         globalNamingResources = new NamingResourcesImpl();
         globalNamingResources.setContainer(this);
 
-        if (isUseNaming()) {
-            namingContextListener = new NamingContextListener();
-            addLifecycleListener(namingContextListener);
-        } else {
-            namingContextListener = null;
-        }
-
     }
 
 
@@ -109,12 +102,6 @@ public final class StandardServer extends LifecycleMBeanBase implements Server {
      * Global naming resources.
      */
     private NamingResourcesImpl globalNamingResources = null;
-
-
-    /**
-     * The naming context listener for this web application.
-     */
-    private final NamingContextListener namingContextListener;
 
 
     /**
@@ -893,21 +880,6 @@ public final class StandardServer extends LifecycleMBeanBase implements Server {
             ExceptionUtils.handleThrowable(t);
             log.error(sm.getString("standardServer.storeConfig.contextError", context.getName()), t);
         }
-    }
-
-
-    /**
-     * @return <code>true</code> if naming should be used.
-     */
-    private boolean isUseNaming() {
-        boolean useNaming = true;
-        // Reading the "catalina.useNaming" environment variable
-        String useNamingProperty = System.getProperty("catalina.useNaming");
-        if ((useNamingProperty != null)
-            && (useNamingProperty.equals("false"))) {
-            useNaming = false;
-        }
-        return useNaming;
     }
 
 

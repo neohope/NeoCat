@@ -30,6 +30,7 @@ import org.apache.catalina.User;
 import org.apache.catalina.UserDatabase;
 import org.apache.catalina.Wrapper;
 import org.apache.tomcat.util.ExceptionUtils;
+import org.neocat.factory.NeoFactory;
 
 /**
  * Implementation of {@link org.apache.catalina.Realm} that is based on an
@@ -201,8 +202,7 @@ public class UserDatabaseRealm extends RealmBase {
     protected void startInternal() throws LifecycleException {
 
         try {
-            Context context = getServer().getGlobalNamingContext();
-            database = (UserDatabase) context.lookup(resourceName);
+            database = NeoFactory.getUserDatabase();
         } catch (Throwable e) {
             ExceptionUtils.handleThrowable(e);
             containerLog.error(sm.getString("userDatabaseRealm.lookup", resourceName), e);

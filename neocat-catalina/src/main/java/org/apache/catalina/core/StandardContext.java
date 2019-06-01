@@ -109,7 +109,6 @@ import org.apache.catalina.util.URLEncoder;
 import org.apache.catalina.webresources.StandardRoot;
 import org.apache.juli.logging.Log;
 import org.apache.juli.logging.LogFactory;
-import org.apache.naming.ContextBindings;
 import org.apache.tomcat.InstanceManager;
 import org.apache.tomcat.InstanceManagerBindings;
 import org.apache.tomcat.JarScanner;
@@ -417,12 +416,6 @@ public class StandardContext extends ContainerBase
 
 
     /**
-     * The naming context listener for this web application.
-     */
-    private NamingContextListener namingContextListener = null;
-
-
-    /**
      * The naming resources for this web application.
      */
     private NamingResourcesImpl namingResources = null;
@@ -599,12 +592,6 @@ public class StandardContext extends ContainerBase
      */
     private String wrapperClassName = StandardWrapper.class.getName();
     private Class<?> wrapperClass = null;
-
-
-    /**
-     * JNDI use flag.
-     */
-    private boolean useNaming = true;
 
 
     /**
@@ -1284,24 +1271,6 @@ public class StandardContext extends ContainerBase
         support.firePropertyChange("delegate", oldDelegate,
                                    this.delegate);
 
-    }
-
-
-    /**
-     * @return true if the internal naming support is used.
-     */
-    public boolean isUseNaming() {
-        return useNaming;
-    }
-
-
-    /**
-     * Enables or disables naming.
-     *
-     * @param useNaming <code>true</code> to enable the naming environment
-     */
-    public void setUseNaming(boolean useNaming) {
-        this.useNaming = useNaming;
     }
 
 
@@ -4960,23 +4929,7 @@ public class StandardContext extends ContainerBase
             // do not make application available if dependency check fails
             ok = false;
         }
-
-        // Reading the "catalina.useNaming" environment variable
-        String useNamingProperty = System.getProperty("catalina.useNaming");
-        if ((useNamingProperty != null)
-            && (useNamingProperty.equals("false"))) {
-            useNaming = false;
-        }
-
-        if (ok && isUseNaming()) {
-            if (getNamingContextListener() == null) {
-                NamingContextListener ncl = new NamingContextListener();
-                ncl.setName(getNamingContextName());
-                ncl.setExceptionOnFailedWrite(getJndiExceptionOnFailedWrite());
-                addLifecycleListener(ncl);
-                setNamingContextListener(ncl);
-            }
-        }
+        
 
         // Standard container startup
         if (log.isDebugEnabled())
@@ -5110,9 +5063,6 @@ public class StandardContext extends ContainerBase
             if (ok ) {
                 if (getInstanceManager() == null) {
                     javax.naming.Context context = null;
-                    if (isUseNaming() && getNamingContextListener() != null) {
-                        context = getNamingContextListener().getEnvContext();
-                    }
                     Map<String, Map<String, String>> injectionMap = buildInjectionMap(
                             getIgnoreAnnotations() ? new NamingResourcesImpl(): getNamingResources());
                     setInstanceManager(new DefaultInstanceManager(context,
@@ -5717,15 +5667,6 @@ public class StandardContext extends ContainerBase
 
         ClassLoader oldContextClassLoader = bind(false, null);
 
-        if (isUseNaming()) {
-            try {
-                ContextBindings.bindThread(this, getNamingToken());
-            } catch (NamingException e) {
-                // Silent catch, as this is a normal case during the early
-                // startup stages
-            }
-        }
-
         return oldContextClassLoader;
     }
 
@@ -5736,10 +5677,6 @@ public class StandardContext extends ContainerBase
      * @param oldContextClassLoader the previous classloader
      */
     protected void unbindThread(ClassLoader oldContextClassLoader) {
-
-        if (isUseNaming()) {
-            ContextBindings.unbindThread(this, getNamingToken());
-        }
 
         unbind(false, oldContextClassLoader);
     }
@@ -5841,26 +5778,6 @@ public class StandardContext extends ContainerBase
             }
         }
         return namingContextName;
-    }
-
-
-    /**
-     * Naming context listener accessor.
-     *
-     * @return the naming context listener associated with the webapp
-     */
-    public NamingContextListener getNamingContextListener() {
-        return namingContextListener;
-    }
-
-
-    /**
-     * Naming context listener setter.
-     *
-     * @param namingContextListener the new naming context listener
-     */
-    public void setNamingContextListener(NamingContextListener namingContextListener) {
-        this.namingContextListener = namingContextListener;
     }
 
 

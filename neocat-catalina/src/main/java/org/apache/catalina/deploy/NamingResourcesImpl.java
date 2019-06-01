@@ -42,7 +42,7 @@ import org.apache.catalina.util.Introspection;
 import org.apache.catalina.util.LifecycleMBeanBase;
 import org.apache.juli.logging.Log;
 import org.apache.juli.logging.LogFactory;
-import org.apache.naming.ContextBindings;
+//import org.apache.naming.ContextBindings;
 import org.apache.tomcat.util.ExceptionUtils;
 import org.apache.tomcat.util.descriptor.web.ContextEjb;
 import org.apache.tomcat.util.descriptor.web.ContextEnvironment;
@@ -1012,12 +1012,12 @@ public class NamingResourcesImpl extends LifecycleMBeanBase
         if (resources.size() == 0) {
             return;
         }
-        javax.naming.Context ctxt;
+        javax.naming.Context ctxt = null;
         try {
             if (container instanceof Server) {
                 ctxt = ((Server) container).getGlobalNamingContext();
             } else {
-                ctxt = ContextBindings.getClassLoader();
+                //ctxt = ContextBindings.getClassLoader();
                 ctxt = (javax.naming.Context) ctxt.lookup("comp/env");
             }
         } catch (NamingException e) {

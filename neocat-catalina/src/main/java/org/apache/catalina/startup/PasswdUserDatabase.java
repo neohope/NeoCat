@@ -23,7 +23,6 @@ import java.util.Hashtable;
 
 import org.apache.juli.logging.Log;
 import org.apache.juli.logging.LogFactory;
-import org.apache.naming.StringManager;
 
 /**
  * Concrete implementation of the <code>UserDatabase</code> interface
@@ -34,7 +33,6 @@ import org.apache.naming.StringManager;
 public final class PasswdUserDatabase implements UserDatabase {
 
     private static final Log log = LogFactory.getLog(PasswdUserDatabase.class);
-    private static final StringManager sm = StringManager.getManager(PasswdUserDatabase.class);
 
     /**
      * The pathname of the Unix password file.
@@ -111,7 +109,7 @@ public final class PasswdUserDatabase implements UserDatabase {
                 line = reader.readLine();
             }
         } catch (Exception e) {
-            log.warn(sm.getString("passwdUserDatabase.readFail"), e);
+            log.warn("passwdUserDatabase.readFail", e);
         }
     }
 }

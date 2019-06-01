@@ -121,12 +121,6 @@ public class Catalina {
 
 
     /**
-     * Is naming enabled ?
-     */
-    protected boolean useNaming = true;
-
-
-    /**
      * Prevent duplicate loads.
      */
     protected boolean loaded = false;
@@ -188,23 +182,6 @@ public class Catalina {
     }
 
 
-    /**
-     * @return <code>true</code> if naming is enabled.
-     */
-    public boolean isUseNaming() {
-        return this.useNaming;
-    }
-
-
-    /**
-     * Enables or disables naming support.
-     *
-     * @param useNaming The new use naming value
-     */
-    public void setUseNaming(boolean useNaming) {
-        this.useNaming = useNaming;
-    }
-
     public void setAwait(boolean b) {
         await = b;
     }
@@ -237,8 +214,6 @@ public class Catalina {
                 isConfig = false;
             } else if (args[i].equals("-config")) {
                 isConfig = true;
-            } else if (args[i].equals("-nonaming")) {
-                setUseNaming(false);
             } else if (args[i].equals("-help")) {
                 usage();
                 return false;
@@ -749,32 +724,7 @@ public class Catalina {
 
 
     protected void initNaming() {
-        // Setting additional variables
-        if (!useNaming) {
-            log.info(sm.getString("catalina.noNatming"));
-            System.setProperty("catalina.useNaming", "false");
-        } else {
-            System.setProperty("catalina.useNaming", "true");
-            String value = "org.apache.naming";
-            String oldValue =
-                System.getProperty(javax.naming.Context.URL_PKG_PREFIXES);
-            if (oldValue != null) {
-                value = value + ":" + oldValue;
-            }
-            System.setProperty(javax.naming.Context.URL_PKG_PREFIXES, value);
-            if( log.isDebugEnabled() ) {
-                log.debug("Setting naming prefix=" + value);
-            }
-            value = System.getProperty
-                (javax.naming.Context.INITIAL_CONTEXT_FACTORY);
-            if (value == null) {
-                System.setProperty
-                    (javax.naming.Context.INITIAL_CONTEXT_FACTORY,
-                     "org.apache.naming.java.javaURLContextFactory");
-            } else {
-                log.debug("INITIAL_CONTEXT_FACTORY already set " + value );
-            }
-        }
+    	log.info(sm.getString("catalina.noNatming"));
     }
 
 

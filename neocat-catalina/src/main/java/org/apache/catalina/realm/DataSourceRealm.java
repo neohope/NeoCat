@@ -28,7 +28,7 @@ import javax.naming.Context;
 import javax.sql.DataSource;
 
 import org.apache.catalina.LifecycleException;
-import org.apache.naming.ContextBindings;
+//import org.apache.naming.ContextBindings;
 
 /**
 *
@@ -377,7 +377,7 @@ public class DataSourceRealm extends RealmBase {
         try {
             Context context = null;
             if (localDataSource) {
-                context = ContextBindings.getClassLoader();
+                //context = ContextBindings.getClassLoader();
                 context = (Context) context.lookup("comp/env");
             } else {
                 context = getServer().getGlobalNamingContext();
