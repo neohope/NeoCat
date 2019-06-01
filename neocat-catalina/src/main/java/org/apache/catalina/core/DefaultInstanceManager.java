@@ -40,8 +40,6 @@ import javax.annotation.PreDestroy;
 import javax.annotation.Resource;
 import javax.naming.Context;
 import javax.naming.NamingException;
-import javax.persistence.PersistenceContext;
-import javax.persistence.PersistenceUnit;
 import javax.xml.ws.WebServiceRef;
 
 import org.apache.catalina.ContainerServlet;
@@ -66,23 +64,10 @@ public class DefaultInstanceManager implements InstanceManager {
     protected static final StringManager sm =
         StringManager.getManager(Constants.Package);
 
-    private static final boolean EJB_PRESENT;
-    private static final boolean JPA_PRESENT;
     private static final boolean WS_PRESENT;
 
     static {
         Class<?> clazz = null;
-        EJB_PRESENT = false;
-
-        clazz = null;
-        try {
-            clazz = Class.forName("javax.persistence.PersistenceContext");
-        } catch (ClassNotFoundException cnfe) {
-            // Expected
-        }
-        JPA_PRESENT = (clazz != null);
-
-        clazz = null;
         try {
             clazz = Class.forName("javax.xml.ws.WebServiceRef");
         } catch (ClassNotFoundException cnfe) {
@@ -332,21 +317,7 @@ public class DefaultInstanceManager implements InstanceManager {
                                     method.getParameterTypes(),
                                     ((WebServiceRef) webServiceRefAnnotation).name(),
                                     AnnotationCacheEntryType.SETTER));
-                        } else if (JPA_PRESENT && (persistenceContextAnnotation =
-                                method.getAnnotation(PersistenceContext.class)) != null) {
-                            annotations.add(new AnnotationCacheEntry(
-                                    method.getName(),
-                                    method.getParameterTypes(),
-                                    ((PersistenceContext) persistenceContextAnnotation).name(),
-                                    AnnotationCacheEntryType.SETTER));
-                        } else if (JPA_PRESENT && (persistenceUnitAnnotation =
-                                method.getAnnotation(PersistenceUnit.class)) != null) {
-                            annotations.add(new AnnotationCacheEntry(
-                                    method.getName(),
-                                    method.getParameterTypes(),
-                                    ((PersistenceUnit) persistenceUnitAnnotation).name(),
-                                    AnnotationCacheEntryType.SETTER));
-                        }
+                        } 
                     }
 
                     postConstruct = findPostConstruct(postConstruct, postConstructFromXml, method);
@@ -397,16 +368,6 @@ public class DefaultInstanceManager implements InstanceManager {
                                 field.getAnnotation(WebServiceRef.class)) != null) {
                             annotations.add(new AnnotationCacheEntry(fieldName, null,
                                     ((WebServiceRef) webServiceRefAnnotation).name(),
-                                    AnnotationCacheEntryType.FIELD));
-                        } else if (JPA_PRESENT && (persistenceContextAnnotation =
-                                field.getAnnotation(PersistenceContext.class)) != null) {
-                            annotations.add(new AnnotationCacheEntry(fieldName, null,
-                                    ((PersistenceContext) persistenceContextAnnotation).name(),
-                                    AnnotationCacheEntryType.FIELD));
-                        } else if (JPA_PRESENT && (persistenceUnitAnnotation =
-                                field.getAnnotation(PersistenceUnit.class)) != null) {
-                            annotations.add(new AnnotationCacheEntry(fieldName, null,
-                                    ((PersistenceUnit) persistenceUnitAnnotation).name(),
                                     AnnotationCacheEntryType.FIELD));
                         }
                     }
