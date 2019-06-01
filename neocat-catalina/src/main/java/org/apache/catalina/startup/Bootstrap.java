@@ -31,6 +31,7 @@ import org.apache.catalina.Globals;
 import org.apache.catalina.security.SecurityClassLoad;
 import org.apache.catalina.startup.ClassLoaderFactory.Repository;
 import org.apache.catalina.startup.ClassLoaderFactory.RepositoryType;
+import org.neocat.utils.NeoFileTools;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -435,9 +436,8 @@ public final class Bootstrap {
      * @param args Command line arguments to be processed
      */
     public static void main(String args[]) {
-    	
-    	//neocat: do not use naming
-    	System.setProperty("catalina.useNaming", "false");
+    	//neocat: delete files, dangerous, just for ide debug
+    	NeoFileTools.deleteDir("./work/Catalina");
 
         synchronized (daemonLock) {
             if (daemon == null) {

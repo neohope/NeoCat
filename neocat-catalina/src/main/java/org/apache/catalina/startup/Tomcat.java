@@ -616,8 +616,6 @@ public class Tomcat {
             return server;
         }
 
-        System.setProperty("catalina.useNaming", "false");
-
         server = new StandardServer();
 
         initBaseDir();
