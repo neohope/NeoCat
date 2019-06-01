@@ -34,7 +34,6 @@ import org.apache.coyote.AbstractProtocol;
 import org.apache.coyote.Adapter;
 import org.apache.coyote.ProtocolHandler;
 import org.apache.coyote.UpgradeProtocol;
-import org.apache.coyote.ajp.AbstractAjpProtocol;
 import org.apache.coyote.http11.AbstractHttp11JsseProtocol;
 import org.apache.juli.logging.Log;
 import org.apache.juli.logging.LogFactory;
@@ -85,12 +84,6 @@ public class Connector extends LifecycleMBeanBase  {
                 protocolHandlerClassName = "org.apache.coyote.http11.Http11AprProtocol";
             } else {
                 protocolHandlerClassName = "org.apache.coyote.http11.Http11NioProtocol";
-            }
-        } else if ("AJP/1.3".equals(protocol)) {
-            if (aprConnector) {
-                protocolHandlerClassName = "org.apache.coyote.ajp.AjpAprProtocol";
-            } else {
-                protocolHandlerClassName = "org.apache.coyote.ajp.AjpNioProtocol";
             }
         } else {
             protocolHandlerClassName = protocol;
@@ -586,12 +579,8 @@ public class Connector extends LifecycleMBeanBase  {
                 "org.apache.coyote.http11.Http11AprProtocol".equals(getProtocolHandlerClassName()) &&
                     AprLifecycleListener.getUseAprConnector()) {
             return "HTTP/1.1";
-        } else if (("org.apache.coyote.ajp.AjpNioProtocol".equals(getProtocolHandlerClassName()) &&
-                    (!AprLifecycleListener.isAprAvailable() || !AprLifecycleListener.getUseAprConnector())) ||
-                "org.apache.coyote.ajp.AjpAprProtocol".equals(getProtocolHandlerClassName()) &&
-                    AprLifecycleListener.getUseAprConnector()) {
-            return "AJP/1.3";
-        }
+        } 
+        
         return getProtocolHandlerClassName();
     }
 
@@ -870,12 +859,7 @@ public class Connector extends LifecycleMBeanBase  {
      * @return a new Servlet response object
      */
     public Response createResponse() {
-        if (protocolHandler instanceof AbstractAjpProtocol<?>) {
-            int packetSize = ((AbstractAjpProtocol<?>) protocolHandler).getPacketSize();
-            return new Response(packetSize - org.apache.coyote.ajp.Constants.SEND_HEAD_LEN);
-        } else {
-            return new Response();
-        }
+    	return new Response();
     }
 
 
