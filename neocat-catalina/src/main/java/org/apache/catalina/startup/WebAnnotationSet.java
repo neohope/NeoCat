@@ -356,10 +356,6 @@ public class WebAnnotationSet {
             context.getNamingResources().addService(service);
 
         } else if (type.equals("javax.sql.DataSource") ||
-                type.equals("javax.jms.ConnectionFactory") ||
-                type.equals("javax.jms.QueueConnectionFactory") ||
-                type.equals("javax.jms.TopicConnectionFactory") ||
-                type.equals("javax.mail.Session") ||
                 type.equals("java.net.URL") ||
                 type.equals("javax.resource.cci.ConnectionFactory") ||
                 type.equals("org.omg.CORBA_2_3.ORB") ||
@@ -383,20 +379,6 @@ public class WebAnnotationSet {
             resource.setLookupName(annotation.lookup());
 
             context.getNamingResources().addResource(resource);
-
-        } else if (type.equals("javax.jms.Queue") ||
-                type.equals("javax.jms.Topic")) {
-
-            // message-destination-ref
-            MessageDestinationRef resource = new MessageDestinationRef();
-
-            resource.setName(name);
-            resource.setType(type);
-            resource.setUsage(annotation.mappedName());
-            resource.setDescription(annotation.description());
-            resource.setLookupName(annotation.lookup());
-
-            context.getNamingResources().addMessageDestinationRef(resource);
 
         } else {
             /*
