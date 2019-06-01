@@ -30,7 +30,7 @@ import org.apache.coyote.Response;
 import org.apache.coyote.http11.HttpOutputBuffer;
 import org.apache.coyote.http11.OutputFilter;
 import org.apache.tomcat.util.buf.HexUtils;
-import org.apache.tomcat.util.http.fileupload.ByteArrayOutputStream;
+import org.apache.tomcat.util.http.ByteArrayOutputStream;
 
 /**
  * Chunked output filter.

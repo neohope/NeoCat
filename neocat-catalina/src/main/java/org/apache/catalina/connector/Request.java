@@ -77,7 +77,6 @@ import org.apache.catalina.TomcatPrincipal;
 import org.apache.catalina.Wrapper;
 import org.apache.catalina.core.ApplicationFilterChain;
 import org.apache.catalina.core.ApplicationMapping;
-import org.apache.catalina.core.ApplicationPart;
 import org.apache.catalina.core.ApplicationPushBuilder;
 import org.apache.catalina.core.ApplicationSessionCookieConfig;
 import org.apache.catalina.core.AsyncContextImpl;
@@ -104,13 +103,6 @@ import org.apache.tomcat.util.http.Parameters;
 import org.apache.tomcat.util.http.Parameters.FailReason;
 import org.apache.tomcat.util.http.ServerCookie;
 import org.apache.tomcat.util.http.ServerCookies;
-import org.apache.tomcat.util.http.fileupload.FileItem;
-import org.apache.tomcat.util.http.fileupload.FileUploadBase;
-import org.apache.tomcat.util.http.fileupload.FileUploadBase.InvalidContentTypeException;
-import org.apache.tomcat.util.http.fileupload.FileUploadException;
-import org.apache.tomcat.util.http.fileupload.disk.DiskFileItemFactory;
-import org.apache.tomcat.util.http.fileupload.servlet.ServletFileUpload;
-import org.apache.tomcat.util.http.fileupload.servlet.ServletRequestContext;
 import org.apache.tomcat.util.http.parser.AcceptLanguage;
 import org.apache.tomcat.util.net.SSLSupport;
 import org.apache.tomcat.util.res.StringManager;
@@ -472,7 +464,6 @@ public class Request implements HttpServletRequest {
                 try {
                     part.delete();
                 } catch (IOException ignored) {
-                    // ApplicationPart.delete() never throws an IOEx
                 }
             }
             parts = null;
@@ -2830,80 +2821,6 @@ public class Request implements HttpServletRequest {
                         sm.getString("coyoteRequest.uploadLocationInvalid",
                                 location));
                 return;
-            }
-
-
-            // Create a new file upload handler
-            DiskFileItemFactory factory = new DiskFileItemFactory();
-            try {
-                factory.setRepository(location.getCanonicalFile());
-            } catch (IOException ioe) {
-                parameters.setParseFailedReason(FailReason.IO_ERROR);
-                partsParseException = ioe;
-                return;
-            }
-            factory.setSizeThreshold(mce.getFileSizeThreshold());
-
-            ServletFileUpload upload = new ServletFileUpload();
-            upload.setFileItemFactory(factory);
-            upload.setFileSizeMax(mce.getMaxFileSize());
-            upload.setSizeMax(mce.getMaxRequestSize());
-
-            parts = new ArrayList<>();
-            try {
-                List<FileItem> items =
-                        upload.parseRequest(new ServletRequestContext(this));
-                int maxPostSize = getConnector().getMaxPostSize();
-                int postSize = 0;
-                Charset charset = getCharset();
-                for (FileItem item : items) {
-                    ApplicationPart part = new ApplicationPart(item, location);
-                    parts.add(part);
-                    if (part.getSubmittedFileName() == null) {
-                        String name = part.getName();
-                        String value = null;
-                        try {
-                            value = part.getString(charset.name());
-                        } catch (UnsupportedEncodingException uee) {
-                            // Not possible
-                        }
-                        if (maxPostSize >= 0) {
-                            // Have to calculate equivalent size. Not completely
-                            // accurate but close enough.
-                            postSize += name.getBytes(charset).length;
-                            if (value != null) {
-                                // Equals sign
-                                postSize++;
-                                // Value length
-                                postSize += part.getSize();
-                            }
-                            // Value separator
-                            postSize++;
-                            if (postSize > maxPostSize) {
-                                parameters.setParseFailedReason(FailReason.POST_TOO_LARGE);
-                                throw new IllegalStateException(sm.getString(
-                                        "coyoteRequest.maxPostSizeExceeded"));
-                            }
-                        }
-                        parameters.addParameter(name, value);
-                    }
-                }
-
-                success = true;
-            } catch (InvalidContentTypeException e) {
-                parameters.setParseFailedReason(FailReason.INVALID_CONTENT_TYPE);
-                partsParseException = new ServletException(e);
-            } catch (FileUploadBase.SizeException e) {
-                parameters.setParseFailedReason(FailReason.POST_TOO_LARGE);
-                checkSwallowInput();
-                partsParseException = new IllegalStateException(e);
-            } catch (FileUploadException e) {
-                parameters.setParseFailedReason(FailReason.IO_ERROR);
-                partsParseException = new IOException(e);
-            } catch (IllegalStateException e) {
-                // addParameters() will set parseFailedReason
-                checkSwallowInput();
-                partsParseException = e;
             }
         } finally {
             // This might look odd but is correct. setParseFailedReason() only
