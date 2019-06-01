@@ -8,7 +8,7 @@
 	<parent>
 		<groupId>com.neohope.neocat</groupId>
 		<artifactId>neocat-parent</artifactId>
-		<version>0.3.0</version>
+		<version>0.4.0</version>
 		<relativePath>../neocat-parent/pom.xml</relativePath>
 	</parent>
 
@@ -16,7 +16,7 @@
 		<dependency>
 			<groupId>com.neohope.neocat</groupId>
 			<artifactId>neocat-javax</artifactId>
-			<version>0.3.0</version>
+			<version>0.4.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.ant</groupId>
