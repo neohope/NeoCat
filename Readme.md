@@ -16,4 +16,5 @@ Bootstrap.java->Debug/Run
 version
 =========
 1. update tomcat9 project to mvn project, keeping all the code, remove some unnecessary file.
+2. remove naming, cluster, ant, ejb, ssi, cgi, mbeans.
 
