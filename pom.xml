@@ -23,14 +23,14 @@
 	</dependencies>
 
 	<modules>
-		<module>../neocat-javax</module>
-		<module>../neocat-el</module>
-		<module>../neocat-tomcat</module>
-		<module>../neocat-jasper</module>
-		<module>../neocat-coyote</module>
-		<module>../neocat-catalina</module>
+		<module>neocat-javax</module>
+		<module>neocat-el</module>
+		<module>neocat-tomcat</module>
+		<module>neocat-jasper</module>
+		<module>neocat-coyote</module>
+		<module>neocat-catalina</module>
 	</modules>
-	
+
 	<build>
 		<plugins>
 			<plugin>
