@@ -217,12 +217,6 @@ public abstract class AuthenticatorBase extends ValveBase
 
     protected SessionIdGeneratorBase sessionIdGenerator = null;
 
-    /**
-     * The SingleSignOn implementation in our request processing chain, if there
-     * is one.
-     */
-    protected SingleSignOn sso = null;
-
     private volatile String jaspicAppContextID = null;
     private volatile Optional<AuthConfigProvider> jaspicProvider = null;
 
@@ -725,29 +719,10 @@ public abstract class AuthenticatorBase extends ValveBase
         return false;
     }
 
-    /**
-     * Associate the specified single sign on identifier with the specified
-     * Session.
-     *
-     * @param ssoId
-     *            Single sign on identifier
-     * @param session
-     *            Session to be associated
-     */
-    protected void associate(String ssoId, Session session) {
-
-        if (sso == null) {
-            return;
-        }
-        sso.associate(ssoId, session);
-
-    }
-
-
     private boolean authenticateJaspic(Request request, Response response, JaspicState state,
             boolean requirePrincipal) {
 
-        boolean cachedAuth = checkForCachedAuthentication(request, response, false);
+        boolean cachedAuth = checkForCachedAuthentication(request, response);
         Subject client = new Subject();
         AuthStatus authStatus;
         try {
@@ -820,11 +795,10 @@ public abstract class AuthenticatorBase extends ValveBase
      * @return <code>true</code> if the user was authenticated via the cache,
      *         otherwise <code>false</code>
      */
-    protected boolean checkForCachedAuthentication(Request request, HttpServletResponse response, boolean useSSO) {
+    protected boolean checkForCachedAuthentication(Request request, HttpServletResponse response) {
 
         // Has the user already been authenticated?
         Principal principal = request.getUserPrincipal();
-        String ssoId = (String) request.getNote(Constants.REQ_SSOID_NOTE);
         if (principal != null) {
             if (log.isDebugEnabled()) {
                 log.debug(sm.getString("authenticator.check.found", principal.getName()));
@@ -832,28 +806,7 @@ public abstract class AuthenticatorBase extends ValveBase
             // Associate the session with any existing SSO session. Even if
             // useSSO is false, this will ensure coordinated session
             // invalidation at log out.
-            if (ssoId != null) {
-                associate(ssoId, request.getSessionInternal(true));
-            }
             return true;
-        }
-
-        // Is there an SSO session against which we can try to reauthenticate?
-        if (useSSO && ssoId != null) {
-            if (log.isDebugEnabled()) {
-                log.debug(sm.getString("authenticator.check.sso", ssoId));
-            }
-            /*
-             * Try to reauthenticate using data cached by SSO. If this fails,
-             * either the original SSO logon was of DIGEST or SSL (which we
-             * can't reauthenticate ourselves because there is no cached
-             * username and password), or the realm denied the user's
-             * reauthentication for some reason. In either case we have to
-             * prompt the user for a logon
-             */
-            if (reauthenticateFromSSO(ssoId, request)) {
-                return true;
-            }
         }
 
         // Has the Connector provided a pre-authenticated Principal that now
@@ -884,45 +837,6 @@ public abstract class AuthenticatorBase extends ValveBase
         return false;
     }
 
-    /**
-     * Attempts reauthentication to the <code>Realm</code> using the credentials
-     * included in argument <code>entry</code>.
-     *
-     * @param ssoId
-     *            identifier of SingleSignOn session with which the caller is
-     *            associated
-     * @param request
-     *            the request that needs to be authenticated
-     * @return <code>true</code> if the reauthentication from SSL occurred
-     */
-    protected boolean reauthenticateFromSSO(String ssoId, Request request) {
-
-        if (sso == null || ssoId == null) {
-            return false;
-        }
-
-        boolean reauthenticated = false;
-
-        Container parent = getContainer();
-        if (parent != null) {
-            Realm realm = parent.getRealm();
-            if (realm != null) {
-                reauthenticated = sso.reauthenticate(ssoId, realm, request);
-            }
-        }
-
-        if (reauthenticated) {
-            associate(ssoId, request.getSessionInternal(true));
-
-            if (log.isDebugEnabled()) {
-                log.debug(" Reauthenticated cached principal '" +
-                        request.getUserPrincipal().getName() +
-                        "' with auth type '" + request.getAuthType() + "'");
-            }
-        }
-
-        return reauthenticated;
-    }
 
     /**
      * Register an authenticated Principal and authentication type in our
@@ -1001,68 +915,6 @@ public abstract class AuthenticatorBase extends ValveBase
                 }
             }
         }
-
-        // Construct a cookie to be returned to the client
-        if (sso == null) {
-            return;
-        }
-
-        // Only create a new SSO entry if the SSO did not already set a note
-        // for an existing entry (as it would do with subsequent requests
-        // for DIGEST and SSL authenticated contexts)
-        String ssoId = (String) request.getNote(Constants.REQ_SSOID_NOTE);
-        if (ssoId == null) {
-            // Construct a cookie to be returned to the client
-            ssoId = sessionIdGenerator.generateSessionId();
-            Cookie cookie = new Cookie(Constants.SINGLE_SIGN_ON_COOKIE, ssoId);
-            cookie.setMaxAge(-1);
-            cookie.setPath("/");
-
-            // Bugzilla 41217
-            cookie.setSecure(request.isSecure());
-
-            // Bugzilla 34724
-            String ssoDomain = sso.getCookieDomain();
-            if (ssoDomain != null) {
-                cookie.setDomain(ssoDomain);
-            }
-
-            // Configure httpOnly on SSO cookie using same rules as session
-            // cookies
-            if (request.getServletContext().getSessionCookieConfig().isHttpOnly()
-                    || request.getContext().getUseHttpOnly()) {
-                cookie.setHttpOnly(true);
-            }
-
-            response.addCookie(cookie);
-
-            // Register this principal with our SSO valve
-            sso.register(ssoId, principal, authType, username, password);
-            request.setNote(Constants.REQ_SSOID_NOTE, ssoId);
-
-        } else {
-            if (principal == null) {
-                // Registering a programmatic logout
-                sso.deregister(ssoId);
-                request.removeNote(Constants.REQ_SSOID_NOTE);
-                return;
-            } else {
-                // Update the SSO session with the latest authentication data
-                sso.update(ssoId, principal, authType, username, password);
-            }
-        }
-
-        // Fix for Bug 10040
-        // Always associate a session with a new SSO reqistration.
-        // SSO entries are only removed from the SSO registry map when
-        // associated sessions are destroyed; if a new SSO entry is created
-        // above for this request and the user never revisits the context, the
-        // SSO entry will never be cleared if we don't associate the session
-        if (session == null) {
-            session = request.getSessionInternal(true);
-        }
-        sso.associate(ssoId, session);
-
     }
 
     @Override
@@ -1143,29 +995,6 @@ public abstract class AuthenticatorBase extends ValveBase
         jaspicAppContextID = servletContext.getVirtualServerName() + " " +
                 servletContext.getContextPath();
 
-        // Look up the SingleSignOn implementation in our request processing
-        // path, if there is one
-        Container parent = context.getParent();
-        while ((sso == null) && (parent != null)) {
-            Valve valves[] = parent.getPipeline().getValves();
-            for (int i = 0; i < valves.length; i++) {
-                if (valves[i] instanceof SingleSignOn) {
-                    sso = (SingleSignOn) valves[i];
-                    break;
-                }
-            }
-            if (sso == null) {
-                parent = parent.getParent();
-            }
-        }
-        if (log.isDebugEnabled()) {
-            if (sso != null) {
-                log.debug("Found SingleSignOn Valve at " + sso);
-            } else {
-                log.debug("No SingleSignOn Valve is present");
-            }
-        }
-
         sessionIdGenerator = new StandardSessionIdGenerator();
         sessionIdGenerator.setSecureRandomAlgorithm(getSecureRandomAlgorithm());
         sessionIdGenerator.setSecureRandomClass(getSecureRandomClass());
@@ -1186,8 +1015,6 @@ public abstract class AuthenticatorBase extends ValveBase
     protected synchronized void stopInternal() throws LifecycleException {
 
         super.stopInternal();
-
-        sso = null;
     }
 
 

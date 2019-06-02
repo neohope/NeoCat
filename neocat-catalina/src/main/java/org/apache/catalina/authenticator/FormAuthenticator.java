@@ -133,7 +133,7 @@ public class FormAuthenticator
     protected boolean doAuthenticate(Request request, HttpServletResponse response)
             throws IOException {
 
-        if (checkForCachedAuthentication(request, response, true)) {
+        if (checkForCachedAuthentication(request, response)) {
             return true;
         }
 
