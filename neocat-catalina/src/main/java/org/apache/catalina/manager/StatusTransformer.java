@@ -152,58 +152,40 @@ public class StatusTransformer {
      */
     public static void writeOSState(PrintWriter writer, int mode, Object[] args) {
         long[] result = new long[16];
-        boolean ok = false;
-        try {
-            String methodName = "info";
-            Class<?> paramTypes[] = new Class[1];
-            paramTypes[0] = result.getClass();
-            Object paramValues[] = new Object[1];
-            paramValues[0] = result;
-            Method method = Class.forName("org.apache.tomcat.jni.OS")
-                .getMethod(methodName, paramTypes);
-            method.invoke(null, paramValues);
-            ok = true;
-        } catch (Throwable t) {
-            t = ExceptionUtils.unwrapInvocationTargetException(t);
-            ExceptionUtils.handleThrowable(t);
-        }
+        if (mode == 0){
+            writer.print("<h1>OS</h1>");
 
-        if (ok) {
-            if (mode == 0){
-                writer.print("<h1>OS</h1>");
-
-                writer.print("<p>");
-                writer.print( args[0] );
-                writer.print(' ');
-                writer.print(formatSize(Long.valueOf(result[0]), true));
-                writer.print(' ');
-                writer.print(args[1]);
-                writer.print(' ');
-                writer.print(formatSize(Long.valueOf(result[1]), true));
-                writer.print(' ');
-                writer.print(args[2]);
-                writer.print(' ');
-                writer.print(formatSize(Long.valueOf(result[2]), true));
-                writer.print(' ');
-                writer.print(args[3]);
-                writer.print(' ');
-                writer.print(formatSize(Long.valueOf(result[3]), true));
-                writer.print(' ');
-                writer.print(args[4]);
-                writer.print(' ');
-                writer.print(Long.valueOf(result[6]));
-                writer.print("<br>");
-                writer.print(args[5]);
-                writer.print(' ');
-                writer.print(formatTime(Long.valueOf(result[11] / 1000), true));
-                writer.print(' ');
-                writer.print(args[6]);
-                writer.print(' ');
-                writer.print(formatTime(Long.valueOf(result[12] / 1000), true));
-                writer.print("</p>");
-            } else if (mode == 1){
-                // NO-OP
-            }
+            writer.print("<p>");
+            writer.print( args[0] );
+            writer.print(' ');
+            writer.print(formatSize(Long.valueOf(result[0]), true));
+            writer.print(' ');
+            writer.print(args[1]);
+            writer.print(' ');
+            writer.print(formatSize(Long.valueOf(result[1]), true));
+            writer.print(' ');
+            writer.print(args[2]);
+            writer.print(' ');
+            writer.print(formatSize(Long.valueOf(result[2]), true));
+            writer.print(' ');
+            writer.print(args[3]);
+            writer.print(' ');
+            writer.print(formatSize(Long.valueOf(result[3]), true));
+            writer.print(' ');
+            writer.print(args[4]);
+            writer.print(' ');
+            writer.print(Long.valueOf(result[6]));
+            writer.print("<br>");
+            writer.print(args[5]);
+            writer.print(' ');
+            writer.print(formatTime(Long.valueOf(result[11] / 1000), true));
+            writer.print(' ');
+            writer.print(args[6]);
+            writer.print(' ');
+            writer.print(formatTime(Long.valueOf(result[12] / 1000), true));
+            writer.print("</p>");
+        } else if (mode == 1){
+            // NO-OP
         }
 
     }
