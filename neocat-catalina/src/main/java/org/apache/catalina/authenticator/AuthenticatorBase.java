@@ -49,8 +49,6 @@ import org.apache.catalina.Realm;
 import org.apache.catalina.Session;
 import org.apache.catalina.TomcatPrincipal;
 import org.apache.catalina.Valve;
-import org.apache.catalina.authenticator.jaspic.CallbackHandlerImpl;
-import org.apache.catalina.authenticator.jaspic.MessageInfoImpl;
 import org.apache.catalina.connector.Request;
 import org.apache.catalina.connector.Response;
 import org.apache.catalina.realm.GenericPrincipal;
@@ -207,13 +205,6 @@ public abstract class AuthenticatorBase extends ValveBase
      * instances will be created using platform defaults.
      */
     protected String secureRandomProvider = null;
-
-    /**
-     * The name of the JASPIC callback handler class. If none is specified the
-     * default {@link org.apache.catalina.authenticator.jaspic.CallbackHandlerImpl}
-     * will be used.
-     */
-    protected String jaspicCallbackHandlerClass = null;
 
     protected SessionIdGeneratorBase sessionIdGenerator = null;
 
@@ -405,24 +396,6 @@ public abstract class AuthenticatorBase extends ValveBase
         this.secureRandomProvider = secureRandomProvider;
     }
 
-    /**
-     * Return the JASPIC callback handler class name
-     *
-     * @return The name of the JASPIC callback handler
-     */
-    public String getJaspicCallbackHandlerClass() {
-        return jaspicCallbackHandlerClass;
-    }
-
-    /**
-     * Set the JASPIC callback handler class name
-     *
-     * @param jaspicCallbackHandlerClass
-     *            The new JASPIC callback handler class name
-     */
-    public void setJaspicCallbackHandlerClass(String jaspicCallbackHandlerClass) {
-        this.jaspicCallbackHandlerClass = jaspicCallbackHandlerClass;
-    }
 
     // --------------------------------------------------------- Public Methods
 
@@ -473,10 +446,7 @@ public abstract class AuthenticatorBase extends ValveBase
         // Is this request URI subject to a security constraint?
         SecurityConstraint[] constraints = realm.findSecurityConstraints(request, this.context);
 
-        AuthConfigProvider jaspicProvider = getJaspicProvider();
-        if (jaspicProvider != null) {
-            authRequired = true;
-        }
+        authRequired = false;
 
         if (constraints == null && !context.getPreemptiveAuthentication() && !authRequired) {
             if (log.isDebugEnabled()) {
@@ -544,23 +514,12 @@ public abstract class AuthenticatorBase extends ValveBase
                     request.getCoyoteRequest().getMimeHeaders().getValue("authorization") != null;
         }
 
-        JaspicState jaspicState = null;
-
         if (authRequired) {
             if (log.isDebugEnabled()) {
                 log.debug(" Calling authenticate()");
             }
-
-            if (jaspicProvider != null) {
-                jaspicState = getJaspicState(jaspicProvider, request, response, hasAuthConstraint);
-                if (jaspicState == null) {
-                    return;
-                }
-            }
-
-            if (jaspicProvider == null && !doAuthenticate(request, response) ||
-                    jaspicProvider != null &&
-                            !authenticateJaspic(request, response, jaspicState, false)) {
+            
+            if (!doAuthenticate(request, response)) {
                 if (log.isDebugEnabled()) {
                     log.debug(" Failed authenticate() test");
                 }
@@ -570,7 +529,6 @@ public abstract class AuthenticatorBase extends ValveBase
                  */
                 return;
             }
-
         }
 
         if (constraints != null) {
@@ -594,97 +552,16 @@ public abstract class AuthenticatorBase extends ValveBase
             log.debug(" Successfully passed all security constraints");
         }
         getNext().invoke(request, response);
-
-        if (jaspicProvider != null) {
-            secureResponseJspic(request, response, jaspicState);
-        }
     }
 
 
     @Override
     public boolean authenticate(Request request, HttpServletResponse httpResponse)
             throws IOException {
-
-        AuthConfigProvider jaspicProvider = getJaspicProvider();
-
-        if (jaspicProvider == null) {
-            return doAuthenticate(request, httpResponse);
-        } else {
-            Response response = request.getResponse();
-            JaspicState jaspicState = getJaspicState(jaspicProvider, request, response, true);
-            if (jaspicState == null) {
-                return false;
-            }
-
-            boolean result = authenticateJaspic(request, response, jaspicState, true);
-
-            secureResponseJspic(request, response, jaspicState);
-
-            return result;
-        }
+    	return doAuthenticate(request, httpResponse);
     }
 
-
-    private void secureResponseJspic(Request request, Response response, JaspicState state) {
-        try {
-            state.serverAuthContext.secureResponse(state.messageInfo, null);
-            request.setRequest((HttpServletRequest) state.messageInfo.getRequestMessage());
-            response.setResponse((HttpServletResponse) state.messageInfo.getResponseMessage());
-        } catch (AuthException e) {
-            log.warn(sm.getString("authenticator.jaspicSecureResponseFail"), e);
-        }
-    }
-
-
-    private JaspicState getJaspicState(AuthConfigProvider jaspicProvider, Request request,
-            Response response, boolean authMandatory) throws IOException {
-        JaspicState jaspicState = new JaspicState();
-
-        jaspicState.messageInfo =
-                new MessageInfoImpl(request.getRequest(), response.getResponse(), authMandatory);
-
-        try {
-            CallbackHandler callbackHandler = createCallbackHandler();
-            ServerAuthConfig serverAuthConfig = jaspicProvider.getServerAuthConfig(
-                    "HttpServlet", jaspicAppContextID, callbackHandler);
-            String authContextID = serverAuthConfig.getAuthContextID(jaspicState.messageInfo);
-            jaspicState.serverAuthContext = serverAuthConfig.getAuthContext(authContextID, null, null);
-        } catch (AuthException e) {
-            log.warn(sm.getString("authenticator.jaspicServerAuthContextFail"), e);
-            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            return null;
-        }
-
-        return jaspicState;
-    }
-
-    private CallbackHandler createCallbackHandler() {
-        CallbackHandler callbackHandler = null;
-        if (jaspicCallbackHandlerClass == null) {
-            callbackHandler = CallbackHandlerImpl.getInstance();
-        } else {
-            Class<?> clazz = null;
-            try {
-                clazz = Class.forName(jaspicCallbackHandlerClass, true,
-                        Thread.currentThread().getContextClassLoader());
-            } catch (ClassNotFoundException e) {
-                // Proceed with the retry below
-            }
-
-            try {
-                if (clazz == null) {
-                    clazz = Class.forName(jaspicCallbackHandlerClass);
-                }
-                callbackHandler = (CallbackHandler)clazz.getConstructor().newInstance();
-            } catch (ReflectiveOperationException e) {
-                throw new SecurityException(e);
-            }
-        }
-
-        return callbackHandler;
-    }
-
-
+    
     // ------------------------------------------------------ Protected Methods
 
     /**
@@ -717,65 +594,6 @@ public abstract class AuthenticatorBase extends ValveBase
      */
     protected boolean isContinuationRequired(Request request) {
         return false;
-    }
-
-    private boolean authenticateJaspic(Request request, Response response, JaspicState state,
-            boolean requirePrincipal) {
-
-        boolean cachedAuth = checkForCachedAuthentication(request, response);
-        Subject client = new Subject();
-        AuthStatus authStatus;
-        try {
-            authStatus = state.serverAuthContext.validateRequest(state.messageInfo, client, null);
-        } catch (AuthException e) {
-            log.debug(sm.getString("authenticator.loginFail"), e);
-            return false;
-        }
-
-        request.setRequest((HttpServletRequest) state.messageInfo.getRequestMessage());
-        response.setResponse((HttpServletResponse) state.messageInfo.getResponseMessage());
-
-        if (authStatus == AuthStatus.SUCCESS) {
-            GenericPrincipal principal = getPrincipal(client);
-            if (log.isDebugEnabled()) {
-                log.debug("Authenticated user: " + principal);
-            }
-            if (principal == null) {
-                request.setUserPrincipal(null);
-                request.setAuthType(null);
-                if (requirePrincipal) {
-                    return false;
-                }
-            } else if (cachedAuth == false ||
-                    !principal.getUserPrincipal().equals(request.getUserPrincipal())) {
-                // Skip registration if authentication credentials were
-                // cached and the Principal did not change.
-                @SuppressWarnings("rawtypes")// JASPIC API uses raw types
-                Map map = state.messageInfo.getMap();
-                if (map != null && map.containsKey("javax.servlet.http.registerSession")) {
-                    register(request, response, principal, "JASPIC", null, null, true, true);
-                } else {
-                    register(request, response, principal, "JASPIC", null, null);
-                }
-            }
-            request.setNote(Constants.REQ_JASPIC_SUBJECT_NOTE, client);
-            return true;
-        }
-        return false;
-    }
-
-
-    private GenericPrincipal getPrincipal(Subject subject) {
-        if (subject == null) {
-            return null;
-        }
-
-        Set<GenericPrincipal> principals = subject.getPrivateCredentials(GenericPrincipal.class);
-        if (principals.isEmpty()) {
-            return null;
-        }
-
-        return principals.iterator().next();
     }
 
 
@@ -949,24 +767,6 @@ public abstract class AuthenticatorBase extends ValveBase
 
     @Override
     public void logout(Request request) {
-        AuthConfigProvider provider = getJaspicProvider();
-        if (provider != null) {
-            MessageInfo messageInfo = new MessageInfoImpl(request, request.getResponse(), true);
-            Subject client = (Subject) request.getNote(Constants.REQ_JASPIC_SUBJECT_NOTE);
-            if (client != null) {
-                ServerAuthContext serverAuthContext;
-                try {
-                    ServerAuthConfig serverAuthConfig = provider.getServerAuthConfig("HttpServlet",
-                            jaspicAppContextID, CallbackHandlerImpl.getInstance());
-                    String authContextID = serverAuthConfig.getAuthContextID(messageInfo);
-                    serverAuthContext = serverAuthConfig.getAuthContext(authContextID, null, null);
-                    serverAuthContext.cleanSubject(messageInfo, client);
-                } catch (AuthException e) {
-                    log.debug(sm.getString("authenticator.jaspicCleanSubjectFail"), e);
-                }
-            }
-        }
-
         Principal p = request.getPrincipal();
         if (p instanceof TomcatPrincipal) {
             try {
@@ -1018,37 +818,7 @@ public abstract class AuthenticatorBase extends ValveBase
     }
 
 
-    private AuthConfigProvider getJaspicProvider() {
-        Optional<AuthConfigProvider> provider = jaspicProvider;
-        if (provider == null) {
-            provider = findJaspicProvider();
-        }
-        return provider.orElse(null);
-    }
-
-
-    private Optional<AuthConfigProvider> findJaspicProvider() {
-        AuthConfigFactory factory = AuthConfigFactory.getFactory();
-        Optional<AuthConfigProvider> provider;
-        if (factory == null) {
-            provider = Optional.empty();
-        } else {
-            provider = Optional.ofNullable(
-                    factory.getConfigProvider("HttpServlet", jaspicAppContextID, this));
-        }
-        jaspicProvider = provider;
-        return provider;
-    }
-
-
     @Override
     public void notify(String layer, String appContext) {
-        findJaspicProvider();
-    }
-
-
-    private static class JaspicState {
-        public MessageInfo messageInfo = null;
-        public ServerAuthContext serverAuthContext = null;
     }
 }
